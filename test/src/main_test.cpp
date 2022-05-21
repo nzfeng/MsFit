@@ -6,4 +6,5 @@
 int main(int argc, char** argv) {
 
     MsFitInterface::init();
+    return 0;
 }

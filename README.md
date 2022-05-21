@@ -3,7 +3,7 @@ MsFit (pronounced "misfit") is a crossword construction tool.
 
 # Getting started
 ```
-git clone --recursive https://github.com/nzfeng/msfit
+git clone --recursive https://github.com/nzfeng/MsFit
 ```
 
 # Dependencies

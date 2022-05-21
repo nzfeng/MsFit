@@ -11,7 +11,7 @@ SET(SRCS
   interface/msfit-interface.cpp
 )
 
-SET(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../include/msfit")
+SET(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../include/msfit/")
 SET(HEADERS
   ${INCLUDE_ROOT}/engine/word-searcher.h
   ${INCLUDE_ROOT}/interface/msfit-interface.h
