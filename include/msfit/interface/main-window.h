@@ -2,8 +2,11 @@
 
 #include "gtkmm/window.h"
 
+#include "msfit/interface/bottom-menu-container.h"
+#include "msfit/interface/canvas-container.h"
 #include "msfit/interface/grid-container.h"
 #include "msfit/interface/main-container.h"
+#include "msfit/interface/right-menu-container.h"
 
 namespace MsFitInterface {
 
@@ -14,12 +17,6 @@ class MainWindow : public Gtk::Window {
     ~MainWindow() {}
 
   protected:
-    // Defaults
-    int window_width = 800;
-    int window_height = 600;
-    int margin = 10;
-
-    // TODO: Make containers for menu panels
     // Child widgets
 
     // Container widgets:
@@ -35,10 +32,7 @@ class MainWindow : public Gtk::Window {
     // its parent is destroyed (See "Memory Management")
 
 
-    // Container widget splitting the main window into the grid area, and r.h.s. menu panel.
-    // Will contain two children: (1) container widget for grid area, and (2) a container widget for r.h.s. menu panel.
-    // The container widget for the grid area will itself contain two containers: (1) the grid; (2) the bottom
-    // panel/dialog.
+    // Contains everything else
     MainContainer mainContainer;
 
     // Contains the grid, and the bottom menu.
@@ -47,6 +41,13 @@ class MainWindow : public Gtk::Window {
     // Contains the r.h.s menu.
     RightMenuContainer rightMenuContainer;
 
+    // Contains the bottom menu/dialog.
+    BottomMenuContainer bottomMenuContainer;
+
+    // Contains the actual grid.
+    CanvasContainer canvasContainer;
+
     // TODO: Signal handlers
 };
+
 } // namespace MsFitInterface

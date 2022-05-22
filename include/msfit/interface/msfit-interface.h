@@ -1,8 +1,6 @@
 #pragma once
 
 #include <gtkmm/application.h>
-#include <gtkmm/button.h>
-#include <gtkmm/window.h>
 
 #include "msfit/interface/main-window.h"
 

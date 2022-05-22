@@ -1,4 +1,5 @@
 #include "msfit/interface/right-menu-container.h"
+#include "msfit/interface/state.h"
 
 namespace MsFitInterface {
 
@@ -9,7 +10,7 @@ namespace MsFitInterface {
  *	(2) Clues
  */
 RightMenuContainer::RightMenuContainer() {
-    set_margin(margin);
+    set_margin(state::margin);
     set_expand();
     append_page(label_1, "Menu");
     append_page(label_2, "Clues");

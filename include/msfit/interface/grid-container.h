@@ -2,8 +2,6 @@
 
 #include "gtkmm/paned.h"
 
-#include "msfit/interface/bottom-menu-container.h"
-
 namespace MsFitInterface {
 
 class GridContainer : public Gtk::Paned {
@@ -12,6 +10,5 @@ class GridContainer : public Gtk::Paned {
     ~GridContainer() {}
 
     int margin = 10;
-    BottomMenuContainer bottomMenuContainer;
 };
 } // namespace MsFitInterface
