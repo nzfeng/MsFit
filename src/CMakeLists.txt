@@ -9,12 +9,22 @@ endif()
 SET(SRCS
   engine/word-searcher.cpp
   interface/msfit-interface.cpp
+  interface/main-window.cpp
+  interface/main-container.cpp
+  interface/grid-container.cpp
+  interface/right-menu-container.cpp
+  interface/bottom-menu-container.cpp
 )
 
 SET(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../include/msfit/")
 SET(HEADERS
   ${INCLUDE_ROOT}/engine/word-searcher.h
   ${INCLUDE_ROOT}/interface/msfit-interface.h
+  ${INCLUDE_ROOT}/interface/main-window.h
+  ${INCLUDE_ROOT}/interface/main-container.h
+  ${INCLUDE_ROOT}/interface/grid-container.h
+  ${INCLUDE_ROOT}/interface/right-menu-container.h
+  ${INCLUDE_ROOT}/interface/bottom-menu-container.h
 )
 
 # Create a single library for the project
