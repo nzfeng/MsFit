@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gtkmm/window.h"
+#include <gtkmm/window.h>
 
 #include "msfit/interface/bottom-menu-container.h"
 #include "msfit/interface/canvas-container.h"
@@ -17,8 +17,6 @@ class MainWindow : public Gtk::Window {
     ~MainWindow() {}
 
   protected:
-    // Child widgets
-
     // Container widgets:
     // 	- Gtk::Grid arranges its child widgets in rows and columns. Use attach() and attach_next_to() to insert child
     // widgets.
@@ -28,22 +26,16 @@ class MainWindow : public Gtk::Window {
     // top-level window.
     //	- Each grid cell should be either a text box or a black square (which can perhaps be rendered using Cairo?)
 
-    // Use Gtk::make_managed() when adding children to container widgets, so children automatically get destroyed when
-    // its parent is destroyed (See "Memory Management")
-
+    // Child widgets
 
     // Contains everything else
     MainContainer mainContainer;
-
     // Contains the grid, and the bottom menu.
     GridContainer gridContainer;
-
     // Contains the r.h.s menu.
     RightMenuContainer rightMenuContainer;
-
     // Contains the bottom menu/dialog.
     BottomMenuContainer bottomMenuContainer;
-
     // Contains the actual grid.
     CanvasContainer canvasContainer;
 

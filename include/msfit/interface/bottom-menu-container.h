@@ -1,14 +1,32 @@
 #pragma once
 
-#include "gtkmm/frame.h"
+#include <gtkmm/frame.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/treeview.h>
 
 namespace MsFitInterface {
 
-class BottomMenuContainer : public Gtk::Frame {
+class BottomMenuContainer : public Gtk::ScrolledWindow {
   public:
     BottomMenuContainer();
     ~BottomMenuContainer() {}
 
-    int margin = 10;
+    void setUpDialogPanel();
+
+    class DialogColumns : public Gtk::TreeModel::ColumnRecord {
+      public:
+        DialogColumns() {
+            add(m_col_text);
+        }
+
+        Gtk::TreeModelColumn<Glib::ustring> m_col_text;
+    };
+
+    DialogColumns dialogColumns;
+
+  protected:
+    Glib::RefPtr<Gtk::ListStore> m_refListStore; // The Tree Model.
+    Gtk::TreeView m_TreeView;                    // The Tree View.
 };
 } // namespace MsFitInterface

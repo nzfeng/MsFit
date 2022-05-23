@@ -18,8 +18,8 @@ MainWindow::MainWindow()
     set_default_size(state::window_width, state::window_height);
 
     // Paradigm: Each individual constructor handles all the settings (margin size, default size,
-    // orientation, more complicated setups, etc.) All the parenting actions are done here, in one place, so that the
-    // whole hierarchy (parent-child relationships) can be seen at a glance.
+    // orientation, function callbacks, etc.) All the parenting actions are done here, in one place, so that the
+    // whole hierarchy (parent-child relationships) can be seen at a glance, as well as all of the signal handling.
 
     // TODO: It may be overkill to define a separate class for each container widget; the application may end up being
     // simple enough that we can just declare/define everything here.
