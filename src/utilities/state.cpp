@@ -1,5 +1,3 @@
-#include "msfit/interface/msfit-interface.h"
-
 namespace interface {
 namespace state {
 
@@ -16,8 +14,9 @@ namespace state {
     int minButtonHeight = 20;
     int minRows = 1;
     int maxRows = 1000;
-    int N_ROWS = 15; // the initial # of rows
-    int N_COLS = 15; // the initial # of cols
+    int N_ROWS = 15;                              // the initial # of rows
+    int N_COLS = 15;                              // the initial # of cols
+    int grid_width = 0.9 * grid_container_height; // default size of the puzzle grid
 
 } // namespace state
 } // namespace interface

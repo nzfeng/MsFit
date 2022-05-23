@@ -73,6 +73,11 @@ endif()
 # gtkmm
 find_package(PkgConfig)
 pkg_check_modules(GTKMM gtkmm-4.0) # sets GTKMM_INCLUDE_DIRS, GTKMM_LIBRARY_DIRS and GTKMM_LIBRARIES
+if (GTKMM)
+  message(STATUS "gtkmm-4.0 found")
+else()
+  message(FATAL_ERROR "gtkmm-4.0 not found")
+endif()
 
 # Add MsFit as a subproject
 add_subdirectory(../ "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")

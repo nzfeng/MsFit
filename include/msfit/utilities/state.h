@@ -1,5 +1,7 @@
-namespace interface {
 // Global variables
+
+
+namespace interface {
 namespace state {
     extern int margin;
     extern int window_width;
@@ -15,6 +17,12 @@ namespace state {
     extern int maxRows;
     extern int N_ROWS;
     extern int N_COLS;
+    extern int grid_width;
 
 } // namespace state
 } // namespace interface
+
+namespace puzzle {
+
+extern enum CellState { BLACK, WHITE };
+} // namespace puzzle

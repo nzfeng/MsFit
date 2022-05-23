@@ -1,3 +1,8 @@
+/*
+ * A PuzzleGraph structure is used when the puzzle consists of more complicated cells besides squares. Then, it becomes
+ * worthwhile to invest in a fancier data structure to enable navigation.
+ */
+
 #pragma once
 
 #include <algorithm>
@@ -10,7 +15,7 @@
 #include <string>
 #include <vector>
 
-namespace engine {
+namespace puzzle {
 
 class PuzzleGraph {
   public:
@@ -28,4 +33,4 @@ class PuzzleGraph {
     // white squares) and their numbers.
     void determineWords();
 };
-} // namespace engine
+} // namespace puzzle

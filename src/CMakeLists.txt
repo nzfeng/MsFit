@@ -8,7 +8,7 @@ endif()
 # List of .cpp files to be compiled
 SET(SRCS
   interface/msfit_interface.cpp
-  interface/state.cpp
+  utilities/state.cpp
   interface/main_window.cpp
   interface/main_container.cpp
   interface/grid_container.cpp
@@ -20,7 +20,7 @@ SET(SRCS
 SET(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../include/msfit/")
 SET(HEADERS
   ${INCLUDE_ROOT}/interface/msfit_interface.h
-  ${INCLUDE_ROOT}/interface/state.h
+  ${INCLUDE_ROOT}/utilities/state.h
   ${INCLUDE_ROOT}/interface/main_window.h
   ${INCLUDE_ROOT}/interface/main_container.h
   ${INCLUDE_ROOT}/interface/grid_container.h

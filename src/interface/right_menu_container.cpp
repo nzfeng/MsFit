@@ -1,5 +1,5 @@
 #include "msfit/interface/right_menu_container.h"
-#include "msfit/interface/state.h"
+#include "msfit/utilities/state.h"
 
 namespace interface {
 
@@ -131,8 +131,6 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
     return saveBox;
 }
 
-void RightMenuContainer::setUpCluesPage() {
-    append_page(clueBox, "Clues");
-}
+void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
 
 } // namespace interface

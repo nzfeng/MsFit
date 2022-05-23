@@ -1,5 +1,5 @@
 #include "msfit/interface/canvas_container.h"
-#include "msfit/interface/state.h"
+#include "msfit/utilities/state.h"
 
 namespace interface {
 
