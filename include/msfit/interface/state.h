@@ -1,4 +1,4 @@
-namespace MsFitInterface {
+namespace interface {
 // Global variables
 namespace state {
     extern int margin;
@@ -13,6 +13,8 @@ namespace state {
     extern int minButtonHeight;
     extern int minRows;
     extern int maxRows;
+    extern int N_ROWS;
+    extern int N_COLS;
 
 } // namespace state
-} // namespace MsFitInterface
+} // namespace interface

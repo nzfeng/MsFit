@@ -1,7 +1,7 @@
-#include "msfit/interface/grid-container.h"
+#include "msfit/interface/grid_container.h"
 #include "msfit/interface/state.h"
 
-namespace MsFitInterface {
+namespace interface {
 
 /*
  * Construct grid container. This is another Paned object with two panes:
@@ -15,4 +15,4 @@ GridContainer::GridContainer() {
     set_position(state::grid_container_height); // initial position of slider between canvas and bottom menu container
 }
 
-} // namespace MsFitInterface
+} // namespace interface

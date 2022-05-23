@@ -2,9 +2,9 @@
 
 #include <gtkmm/application.h>
 
-#include "msfit/interface/main-window.h"
+#include "msfit/interface/main_window.h"
 
-namespace MsFitInterface {
+namespace interface {
 
 // Forward declarations
 class MainWindow;
@@ -16,4 +16,4 @@ class BottomMenuContainer;
 // Initialize gtkmm and enter the gtkmm main processing loop.
 void init();
 
-} // namespace MsFitInterface
+} // namespace interface

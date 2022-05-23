@@ -2,11 +2,11 @@
 
 #include <gtkmm/paned.h>
 
-namespace MsFitInterface {
+namespace interface {
 
 class GridContainer : public Gtk::Paned {
   public:
     GridContainer();
     ~GridContainer() {}
 };
-} // namespace MsFitInterface
+} // namespace interface

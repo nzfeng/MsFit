@@ -2,13 +2,13 @@
 
 #include <gtkmm/window.h>
 
-#include "msfit/interface/bottom-menu-container.h"
-#include "msfit/interface/canvas-container.h"
-#include "msfit/interface/grid-container.h"
-#include "msfit/interface/main-container.h"
-#include "msfit/interface/right-menu-container.h"
+#include "msfit/interface/bottom_menu_container.h"
+#include "msfit/interface/canvas_container.h"
+#include "msfit/interface/grid_container.h"
+#include "msfit/interface/main_container.h"
+#include "msfit/interface/right_menu_container.h"
 
-namespace MsFitInterface {
+namespace interface {
 
 class MainWindow : public Gtk::Window {
 
@@ -42,4 +42,4 @@ class MainWindow : public Gtk::Window {
     // TODO: Signal handlers
 };
 
-} // namespace MsFitInterface
+} // namespace interface

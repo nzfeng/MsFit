@@ -2,11 +2,11 @@
 
 #include <gtkmm/aspectframe.h>
 
-namespace MsFitInterface {
+namespace interface {
 
 class CanvasContainer : public Gtk::AspectFrame {
   public:
     CanvasContainer();
     ~CanvasContainer() {}
 };
-} // namespace MsFitInterface
+} // namespace interface

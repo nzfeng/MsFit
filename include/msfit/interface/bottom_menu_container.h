@@ -5,7 +5,7 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treeview.h>
 
-namespace MsFitInterface {
+namespace interface {
 
 class BottomMenuContainer : public Gtk::ScrolledWindow {
   public:
@@ -29,4 +29,4 @@ class BottomMenuContainer : public Gtk::ScrolledWindow {
     Glib::RefPtr<Gtk::ListStore> m_refListStore; // The Tree Model.
     Gtk::TreeView m_TreeView;                    // The Tree View.
 };
-} // namespace MsFitInterface
+} // namespace interface

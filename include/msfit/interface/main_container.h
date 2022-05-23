@@ -2,9 +2,9 @@
 
 #include <gtkmm/paned.h>
 
-#include "msfit/interface/right-menu-container.h"
+#include "msfit/interface/right_menu_container.h"
 
-namespace MsFitInterface {
+namespace interface {
 
 class MainContainer : public Gtk::Paned {
 
@@ -12,4 +12,4 @@ class MainContainer : public Gtk::Paned {
     MainContainer();
     ~MainContainer() {}
 };
-} // namespace MsFitInterface
+} // namespace interface

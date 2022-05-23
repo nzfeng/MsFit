@@ -1,7 +1,7 @@
-#include "msfit/interface/main-container.h"
+#include "msfit/interface/main_container.h"
 #include "msfit/interface/state.h"
 
-namespace MsFitInterface {
+namespace interface {
 
 
 MainContainer::MainContainer() {
@@ -11,4 +11,4 @@ MainContainer::MainContainer() {
     set_position(state::grid_container_width); // intiial position of slider between grid and r.h.s. menu
 }
 
-} // namespace MsFitInterface
+} // namespace interface

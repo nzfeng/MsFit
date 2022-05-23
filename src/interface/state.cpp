@@ -1,6 +1,6 @@
 #include "msfit/interface/msfit-interface.h"
 
-namespace MsFitInterface {
+namespace interface {
 namespace state {
 
     // Default parameters for the interface (window sizes, etc.)
@@ -13,9 +13,11 @@ namespace state {
     int bottom_menu_height = window_height - grid_container_height;
     int separator_margin = 5;
     int minButtonWidth = 40;
-    int maxButtonWidth = 20;
+    int minButtonHeight = 20;
     int minRows = 1;
     int maxRows = 1000;
+    int N_ROWS = 15; // the initial # of rows
+    int N_COLS = 15; // the initial # of cols
 
 } // namespace state
-} // namespace MsFitInterface
+} // namespace interface

@@ -15,7 +15,7 @@
 // #include <iostream>
 // #include <sstream>
 
-namespace MsFitInterface {
+namespace interface {
 
 class RightMenuContainer : public Gtk::Notebook {
 
@@ -45,4 +45,4 @@ class RightMenuContainer : public Gtk::Notebook {
 
     Gtk::Button saveButton, loadButton;
 };
-} // namespace MsFitInterface
+} // namespace interface

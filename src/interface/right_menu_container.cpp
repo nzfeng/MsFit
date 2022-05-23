@@ -1,7 +1,7 @@
-#include "msfit/interface/right-menu-container.h"
+#include "msfit/interface/right_menu_container.h"
 #include "msfit/interface/state.h"
 
-namespace MsFitInterface {
+namespace interface {
 
 /*
  * Construct r.h.s. menu. This menu will have multiple tabs:
@@ -94,9 +94,11 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
         gridDimSpin[i].set_increments(1, 1); // step, page (left/right mouse clicks)
         // gridDimSpin[i].set_climb_rate(); // accleration rate when button is held down
         gridDimSpin[i].set_snap_to_ticks(true);
-        gridDimSpin[i].set_size_request(state::minButtonWidth, state::maxButtonWidth);
+        gridDimSpin[i].set_size_request(state::minButtonWidth, state::minButtonHeight);
         gridSizeBox.attach(gridDimSpin[i], i, 1);
     }
+    gridDimSpin[0].set_value(state::N_ROWS);
+    gridDimSpin[1].set_value(state::N_COLS);
 
     // preset sizes
     int nGridSizes = *(&gridSizePresetButtons + 1) - gridSizePresetButtons;
@@ -133,4 +135,4 @@ void RightMenuContainer::setUpCluesPage() {
     append_page(clueBox, "Clues");
 }
 
-} // namespace MsFitInterface
+} // namespace interface
