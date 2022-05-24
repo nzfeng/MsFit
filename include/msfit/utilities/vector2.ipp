@@ -11,6 +11,11 @@ inline Vector2 Vector2::operator/(double s) const {
 
 inline const Vector2 Vector2::operator-() const { return Vector2{-x, -y}; }
 
+template <typename T>
+inline Vector2 operator*(const T s, const Vector2& v) {
+    return Vector2{s * v.x, s * v.y};
+}
+
 inline Vector2& Vector2::operator+=(const Vector2& other) {
     x += other.x;
     y += other.y;
@@ -46,3 +51,15 @@ inline Vector2 Vector2::normalize() const {
 
 inline double Vector2::norm() const { return std::sqrt(x * x + y * y); }
 inline double Vector2::norm2() const { return x * x + y * y; }
+
+inline std::ostream& operator<<(std::ostream& output, const Vector2& v) {
+    output << "<" << v.x << ", " << v.y << ">";
+    return output;
+}
+
+inline std::istream& operator>>(std::istream& input, Vector2& v) {
+    double x, y;
+    input >> x >> y;
+    v = Vector2{x, y};
+    return input;
+}

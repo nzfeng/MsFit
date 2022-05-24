@@ -6,6 +6,8 @@
 
 #include <array>
 #include <cmath>
+#include <iostream>
+#include <sstream>
 
 struct Vector2 {
     double x, y;
@@ -33,5 +35,11 @@ struct Vector2 {
     double norm() const;
     double norm2() const;
 };
+
+template <typename T>
+Vector2 operator*(const T s, const Vector2& v);
+
+::std::ostream& operator<<(std::ostream& output, const Vector2& v);
+::std::istream& operator<<(std::istream& input, Vector2& v);
 
 #include "msfit/utilities/vector2.ipp"

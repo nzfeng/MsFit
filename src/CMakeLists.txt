@@ -12,8 +12,6 @@ SET(SRCS
 
   interface/msfit_interface.cpp
   interface/main_window.cpp
-  interface/main_container.cpp
-  interface/grid_container.cpp
   interface/right_menu_container.cpp
   interface/bottom_menu_container.cpp
   interface/canvas_container.cpp
@@ -31,14 +29,14 @@ SET(HEADERS
 
   ${INCLUDE_ROOT}/interface/msfit_interface.h
   ${INCLUDE_ROOT}/interface/main_window.h
-  ${INCLUDE_ROOT}/interface/main_container.h
-  ${INCLUDE_ROOT}/interface/grid_container.h
   ${INCLUDE_ROOT}/interface/right_menu_container.h
   ${INCLUDE_ROOT}/interface/bottom_menu_container.h
   ${INCLUDE_ROOT}/interface/canvas_container.h
 
   ${INCLUDE_ROOT}/puzzle/square.h
+  ${INCLUDE_ROOT}/puzzle/square.ipp
   ${INCLUDE_ROOT}/puzzle/puzzle_grid.h
+  ${INCLUDE_ROOT}/puzzle/puzzle_grid.ipp
 )
 
 

@@ -1,21 +1,11 @@
 #include "msfit/puzzle/square.h"
 #include "msfit/utilities/drawing_utils.h"
-#include "msfit/utilities/state.h"
 #include "msfit/utilities/vector2.h"
 
 // Square::Square() { Square(WHITE, ""); }
 
-Square::Square(int isSolid_, Glib::ustring data_, int width_) : solid(isSolid_), data(data_), width(width_) {}
-
-inline Glib::ustring Square::getData() const { return data; }
-
-inline void Square::setData(const Glib::ustring& str) { data = str; }
-
-inline void Square::setSize(int width_) { width = width_; }
-
-inline int Square::getSize() const { return width; }
-
-inline bool Square::isSolid() const { return solid; }
+Square::Square(int isSolid_, Glib::ustring data_, int width_, int selectionStatus_)
+    : solid(isSolid_), data(data_), width(width_), selectionStatus(selectionStatus_) {}
 
 void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, size_t size, size_t x,
                   size_t y) {
@@ -29,12 +19,24 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
         cr->rectangle(x, y, size, size);
         cr->fill();
     } else {
-        // Draw a white square with a gray outline by first drawing a gray square, then drawing a slightly smaller
-        // white square on top. Have the borders be 1px wide.
+        // Draw a colored square with a gray outline by first drawing a gray square, then drawing a slightly smaller
+        // colored square on top.
         cr->set_source_rgb(0.8, 0.8, 0.8);
         cr->rectangle(x, y, size, size);
         cr->fill();
-        cr->set_source_rgb(1.0, 1.0, 1.0);
+
+        switch (selectionStatus) {
+        case (cell::UNSELECTED):
+            cr->set_source_rgb(1.0, 1.0, 1.0); // white
+            break;
+        case (cell::SELECTED):
+            cr->set_source_rgb(1.0, 0.0, 0.0); // pale yellow
+            break;
+        case (cell::HIGHLIGHTED):
+            cr->set_source_rgb(0.0, 0.0, 0.5); // pale blue
+            break;
+        }
+        // border is 0.5px wide inside each square, 1px wide when squares are next to each other.
         cr->rectangle(x + 0.5, y + 0.5, size - 1, size - 1);
         cr->fill();
 
@@ -45,5 +47,6 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
                                         {static_cast<double>(x + size), static_cast<double>(y + size)},
                                         {static_cast<double>(x), static_cast<double>(y + size)}};
         draw_text(drawingArea, cr, data, corners);
+        draw_number(drawingArea, cr, number, corners);
     }
 }

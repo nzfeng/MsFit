@@ -1,11 +1,10 @@
 #pragma once
 
+#include <gtkmm/paned.h>
 #include <gtkmm/window.h>
 
 #include "msfit/interface/bottom_menu_container.h"
 #include "msfit/interface/canvas_container.h"
-#include "msfit/interface/grid_container.h"
-#include "msfit/interface/main_container.h"
 #include "msfit/interface/right_menu_container.h"
 #include "msfit/puzzle/puzzle_grid.h"
 
@@ -28,9 +27,9 @@ class MainWindow : public Gtk::Window {
     // Child widgets
 
     // Contains everything else
-    MainContainer mainContainer;
+    Gtk::Paned mainContainer;
     // Contains the grid, and the bottom menu.
-    GridContainer gridContainer;
+    Gtk::Paned gridContainer;
     // Contains the r.h.s menu.
     RightMenuContainer rightMenuContainer;
     // Contains the bottom menu/dialog.

@@ -40,5 +40,9 @@ class PuzzleGrid {
 
     // Based on the current pattern of white/black squares, determine the words of the puzzle (contiguous blocks of
     // white squares) and their numbers.
-    void determineWords();
+    std::vector<std::vector<Square*>> acrossWords;
+    std::vector<std::vector<Square*>> downWords;
+    void getWords();
 };
+
+#include "msfit/puzzle/puzzle_grid.ipp"

@@ -11,8 +11,7 @@
  * <bottomMenuContainer> = Containst the bottom dialog.
  */
 MainWindow::MainWindow()
-    : mainContainer(), gridContainer(), rightMenuContainer(), bottomMenuContainer(), canvasContainer(),
-      puzzleGrid(state::N_ROWS, state::N_COLS) {
+    : rightMenuContainer(), bottomMenuContainer(), canvasContainer(), puzzleGrid(state::N_ROWS, state::N_COLS) {
 
     set_title("MsFit");
     set_default_size(state::window_width, state::window_height);
@@ -21,8 +20,13 @@ MainWindow::MainWindow()
     // orientation, function callbacks, etc.) All the parenting actions are done here, in one place, so that the
     // whole hierarchy (parent-child relationships) can be seen at a glance, as well as all of the signal handling.
 
-    // TODO: It may be overkill to define a separate class for each container widget; the application may end up being
-    // simple enough that we can just declare/define everything here.
+    mainContainer.set_margin(state::margin);
+    mainContainer.set_orientation(Gtk::Orientation::HORIZONTAL);
+    mainContainer.set_position(state::grid_container_width); // intiial position of slider between grid and r.h.s. menu
+
+    gridContainer.set_margin(state::margin);
+    gridContainer.set_orientation(Gtk::Orientation::VERTICAL);
+    gridContainer.set_position(state::grid_container_height);
 
     // Add the paned widget to the top-level window.
     set_child(mainContainer);

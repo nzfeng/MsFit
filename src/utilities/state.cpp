@@ -19,4 +19,8 @@ int grid_width = 0.9 * grid_container_height; // default size of the puzzle grid
 
 } // namespace state
 
-namespace puzzle {} // namespace puzzle
+// namespace theme {
+// Vector3 UNSELECTED = {1.0, 1.0, 1.0};  // white
+// Vector3 SELECTED = {0.0, 0.0, 0.0};    // pale yellow
+// Vector3 HIGHLIGHTED = {0.0, 0.0, 1.0}; // pale blue
+// } // namespace theme

@@ -22,8 +22,14 @@ extern int grid_width;
 
 } // namespace state
 
-namespace puzzle {
+namespace cell {
 
-enum CellState { UNSELECTED, SELECTED, HIGHLIGHTED };
+enum state { UNSELECTED, SELECTED, HIGHLIGHTED };
 
-} // namespace puzzle
+} // namespace cell
+
+// namespace theme {
+// extern Vector3 UNSELECTED;
+// extern Vector3 SELECTED;
+// extern Vector3 HIGHLIGHTED;
+// } // namespace theme

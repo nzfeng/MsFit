@@ -9,9 +9,6 @@ PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     renderedGrid.set_draw_func(sigc::mem_fun(*this, &PuzzleGrid::draw));
 }
 
-size_t PuzzleGrid::nRows() const { return data.size(); }
-size_t PuzzleGrid::nCols() const { return data[0].size(); }
-
 void PuzzleGrid::setSize(size_t rows, size_t cols) {
 
     if ((rows < 1) || (cols < 1)) {
@@ -44,6 +41,43 @@ void PuzzleGrid::draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, in
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
             data[i][j].draw(renderedGrid, cr, squareSize, x + squareSize * i, y + squareSize * j);
+        }
+    }
+}
+
+/*
+ * Get *all* the words in the puzzle from scratch, and assign numbers to squares (if they are at the start of a word)
+ * along the way.
+ */
+void PuzzleGrid::getWords() {
+    acrossWords.clear();
+    downWords.clear();
+    // A square is the start of a new across/down word iff it doesn't have a (white) neighbor to the left/above.
+    size_t nAcross = 0;
+    size_t nDown = 0;
+    int currNum = 1;
+    for (size_t i = 0; i < data.size(); i++) {
+        for (size_t j = 0; j < data[i].size(); j++) {
+            if (data[i][j].isSolid()) {
+                data[i][j].setNumber(-1);
+                continue;
+            }
+            // Start of a new across word
+            if (j == 0 || data[i][j - 1].isSolid()) {
+                data[i][j].setNumber(currNum);
+                acrossWords.push_back(std::vector<Square*>());
+                nAcross++;
+                currNum++;
+            }
+            acrossWords[nAcross - 1].push_back(&data[i][j]);
+            // Start of a new down word
+            if (i == 0 || data[i - 1][j].isSolid()) {
+                data[i][j].setNumber(currNum);
+                downWords.push_back(std::vector<Square*>());
+                nDown++;
+                currNum++;
+            }
+            downWords[nDown - 1].push_back(&data[i][j]);
         }
     }
 }
