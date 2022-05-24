@@ -8,29 +8,25 @@
 
 #include <gtkmm/drawingarea.h>
 
-namespace puzzle {
-
 class Square {
 
   public:
-    Square();
-    Square(int state = puzzle::WHITE, Glib::ustring data = "", int width = 20);
+    Square(int isSolid = false, Glib::ustring data = "", int width = 20);
     ~Square() {}
 
     Glib::ustring getData() const;
     void setData(const Glib::ustring& str);
     void setSize(int width);
     int getSize() const;
+    bool isSolid() const;
 
-    void draw(size_t width);
+    // Render this square with the given side length (<width>) on the canvas <cr>, with its upper left corner at the
+    // specified position on <cr>, which represents the entire puzzle.
+    void draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, size_t size, size_t x, size_t y);
 
   private:
     // State
-    int state = -1;
+    bool solid;
     Glib::ustring data;
     size_t width;
-    Gtk::DrawingArea renderedSquare; // rendered square
-
-    void on_draw(const Cairo::RefPtr<Cairo::Context>& cr, size_t width);
 };
-} // namespace puzzle

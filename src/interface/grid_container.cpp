@@ -1,8 +1,6 @@
 #include "msfit/interface/grid_container.h"
 #include "msfit/utilities/state.h"
 
-namespace interface {
-
 /*
  * Construct grid container. This is another Paned object with two panes:
  *
@@ -14,5 +12,3 @@ GridContainer::GridContainer() {
     set_orientation(Gtk::Orientation::VERTICAL);
     set_position(state::grid_container_height); // initial position of slider between canvas and bottom menu container
 }
-
-} // namespace interface

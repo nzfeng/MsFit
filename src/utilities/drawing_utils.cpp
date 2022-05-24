@@ -1,10 +1,10 @@
-#include "drawing-utils.h"
+#include "msfit/utilities/drawing_utils.h"
 
 /*
  * Draw the given text string in the center of a polygon whose corners' 2D positions are given.
  * https://developer-old.gnome.org/gtkmm-tutorial/stable/sec-drawing-text.html.en
  */
-void draw_text(const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustring& text,
+void draw_text(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustring& text,
                const std::vector<Vector2>& cellCorners) {
 
     // http://developer.gnome.org/pangomm/unstable/classPango_1_1FontDescription.html
@@ -22,14 +22,13 @@ void draw_text(const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustring& tex
     }
 
     // Set the font size so that its width/height don't exceed a certain proportion of the cell.
-    int font_size = std::min(radius, radius / text.size()); // I think font size corresponds to the font height?
+    double font_size = std::min(radius, radius / text.size()); // I think font size corresponds to the font height?
     font.set_family("sans");
     font.set_weight(Pango::Weight::BOLD);
-    font.set_font_size(radius);
-    font.set_source_rgb(0, 0, 0);
+    font.set_size(font_size);
 
     // http://developer.gnome.org/pangomm/unstable/classPango_1_1Layout.html
-    auto layout = create_pango_layout(text);
+    auto layout = drawingArea.create_pango_layout(text);
 
     layout->set_font_description(font);
 

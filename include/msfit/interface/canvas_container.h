@@ -2,11 +2,10 @@
 
 #include <gtkmm/aspectframe.h>
 
-namespace interface {
+#include "msfit/puzzle/puzzle_grid.h"
 
 class CanvasContainer : public Gtk::AspectFrame {
   public:
     CanvasContainer();
-    ~CanvasContainer() {}
+    virtual ~CanvasContainer() {}
 };
-} // namespace interface

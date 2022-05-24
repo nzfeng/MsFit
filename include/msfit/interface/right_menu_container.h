@@ -15,13 +15,11 @@
 // #include <iostream>
 // #include <sstream>
 
-namespace interface {
-
 class RightMenuContainer : public Gtk::Notebook {
 
   public:
     RightMenuContainer();
-    ~RightMenuContainer() {}
+    virtual ~RightMenuContainer() {}
 
     void setUpMenuPage();
     void setUpCluesPage();
@@ -45,4 +43,3 @@ class RightMenuContainer : public Gtk::Notebook {
 
     Gtk::Button saveButton, loadButton;
 };
-} // namespace interface

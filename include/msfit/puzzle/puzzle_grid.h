@@ -15,15 +15,14 @@
 
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/grid.h>
-#include <msfit/engine/square.h>
 
-namespace puzzle {
+#include "msfit/puzzle/square.h"
 
 class PuzzleGrid {
   public:
     PuzzleGrid();
     PuzzleGrid(size_t nRows, size_t nCols);
-    ~PuzzleGrid();
+    ~PuzzleGrid() {}
 
     size_t nRows() const;
     size_t nCols() const;
@@ -32,12 +31,14 @@ class PuzzleGrid {
     void save();
     void load();
 
+    void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
+
+    Gtk::DrawingArea renderedGrid;
+
   private:
     std::vector<std::vector<Square>> data; // row-major order
-    Gtk::Grid renderedGrid;
 
     // Based on the current pattern of white/black squares, determine the words of the puzzle (contiguous blocks of
     // white squares) and their numbers.
     void determineWords();
 };
-} // namespace puzzle

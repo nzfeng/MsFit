@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 
-#include <msfit/interface/msfit-interface.h>
+#include <msfit/interface/msfit_interface.h>
 
 int main(int argc, char** argv) {
 
-    MsFitInterface::init();
+    msfit::init();
     return 0;
 }

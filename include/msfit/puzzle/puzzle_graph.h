@@ -15,12 +15,10 @@
 #include <string>
 #include <vector>
 
-namespace puzzle {
-
 class PuzzleGraph {
   public:
     PuzzleGraph();
-    ~PuzzleGraph();
+    ~PuzzleGraph() {}
 
     void savePuzzle();
     void loadPuzzle();
@@ -33,4 +31,3 @@ class PuzzleGraph {
     // white squares) and their numbers.
     void determineWords();
 };
-} // namespace puzzle

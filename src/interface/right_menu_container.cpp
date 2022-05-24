@@ -1,8 +1,6 @@
 #include "msfit/interface/right_menu_container.h"
 #include "msfit/utilities/state.h"
 
-namespace interface {
-
 /*
  * Construct r.h.s. menu. This menu will have multiple tabs:
  *
@@ -132,5 +130,3 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
 }
 
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
-
-} // namespace interface

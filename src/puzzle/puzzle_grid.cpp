@@ -1,46 +1,39 @@
-#include <msfit/engine/puzzle_grid.h>
-
-namespace puzzle {
+#include "msfit/puzzle/puzzle_grid.h"
+#include "msfit/utilities/state.h"
 
 // Constructors
-PuzzleGrid::PuzzleGrid() { PuzzleGrid(1, 1); }
+PuzzleGrid::PuzzleGrid() { PuzzleGrid(state::N_ROWS, state::N_COLS); }
 
-PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
+PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) { setSize(nRows_, nCols_); }
 
-    setSize(nRows_, nCols_);
-
-    // Set up puzzle grid.
-    renderedGrid.set_row_spacing(0);
-    renderedGrid.set_column_spacing(0);
-    for (size_t i = 0; i < nRows(); i++) {
-        for (size_t j = 0; j < nCols(); j++) {
-            renderedGrid.attach(data[i][j], j, i);
-        }
-    }
-}
-
-inline size_t PuzzleGrid::nRows() const { return nRows; }
-inline size_t PuzzleGrid::nCols() const { return nCols; }
+inline size_t PuzzleGrid::nRows() const { return data.size(); }
+inline size_t PuzzleGrid::nCols() const { return data[0].size(); }
 
 void PuzzleGrid::setSize(size_t rows, size_t cols) {
 
+    if ((rows < 1) || (cols < 1)) {
+        std::cerr << "Number of rows/cols cannot be less than 1." << std::endl;
+        return;
+    }
     // std::vector<T>::resize() either truncates or appends extra elements; have the added elements be blank white
     // squares.
-    Square whiteSquare(puzzle::WHITE, "");
+    Square whiteSquare(false, "");
     data.resize(rows);
     for (size_t i = 0; i < rows; i++) {
         data[i].resize(cols, whiteSquare);
     }
-    nRows = rows;
-    nCols = cols;
 }
 
-void PuzzleGrid::draw(int width, int height) {
+void PuzzleGrid::draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight) {
 
-    cr->scale(width, height);
-    int squareSize = std::min(width / nCols(), height / nRows());
+    size_t squareSize = std::min(gridWidth / nCols(), gridHeight / nRows());
+    size_t x, y; // starting point of upper left corner of the grid in the canvas
+    x = (gridWidth - squareSize * nCols()) / 2;
+    y = (gridHeight - squareSize * nRows()) / 2;
 
-    // Place all the Gtk::DrawingAreas of the squares in a grid. Each Square manages its own signals.
+    for (size_t i = 0; i < data.size(); i++) {
+        for (size_t j = 0; j < data[i].size(); j++) {
+            data[i][j].draw(renderedGrid, cr, squareSize, x + squareSize * i, y + squareSize * j);
+        }
+    }
 }
-
-} // namespace puzzle

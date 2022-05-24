@@ -1,6 +1,6 @@
 #include "msfit/interface/msfit_interface.h"
 
-namespace interface {
+namespace msfit {
 
 void init() {
     // Create a Gtk::Application object, stored in a Glib::RefPtr smartpointer. This is needed in all gtkmm
@@ -11,4 +11,4 @@ void init() {
     app->make_window_and_run<MainWindow>(0, nullptr);
 }
 
-} // namespace interface
+} // namespace msfit

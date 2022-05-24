@@ -1,8 +1,6 @@
 #include "msfit/interface/bottom_menu_container.h"
 #include "msfit/utilities/state.h"
 
-namespace interface {
-
 /*
  * Construct bottom menu. Contained in the grid container.
  */
@@ -35,5 +33,3 @@ void BottomMenuContainer::setUpDialogPanel() {
     // Add the Model's column to the View's columns
     m_TreeView.append_column("Dialog", dialogColumns.m_col_text);
 }
-
-} // namespace interface

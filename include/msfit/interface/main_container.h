@@ -4,12 +4,9 @@
 
 #include "msfit/interface/right_menu_container.h"
 
-namespace interface {
-
 class MainContainer : public Gtk::Paned {
 
   public:
     MainContainer();
-    ~MainContainer() {}
+    virtual ~MainContainer() {}
 };
-} // namespace interface

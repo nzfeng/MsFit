@@ -7,14 +7,13 @@
 #include "msfit/interface/grid_container.h"
 #include "msfit/interface/main_container.h"
 #include "msfit/interface/right_menu_container.h"
-
-namespace interface {
+#include "msfit/puzzle/puzzle_grid.h"
 
 class MainWindow : public Gtk::Window {
 
   public:
     MainWindow();
-    ~MainWindow() {}
+    virtual ~MainWindow() {}
 
   protected:
     // Container widgets:
@@ -38,8 +37,8 @@ class MainWindow : public Gtk::Window {
     BottomMenuContainer bottomMenuContainer;
     // Contains the actual grid.
     CanvasContainer canvasContainer;
+    // The actual Gtk::DrawingArea representing the puzzle.
+    PuzzleGrid puzzleGrid;
 
     // TODO: Signal handlers
 };
-
-} // namespace interface

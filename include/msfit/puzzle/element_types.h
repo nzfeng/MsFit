@@ -10,8 +10,6 @@
 #include <string>
 #include <vector>
 
-namespace puzzle {
-
 class Cell;
 class Edge;
 class Halfedge;
@@ -55,4 +53,3 @@ class Edge {
     // Navigators
     Halfedge halfedge();
 };
-} // namespace puzzle

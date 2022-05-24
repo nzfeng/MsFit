@@ -1,7 +1,6 @@
 #include "msfit/interface/main_window.h"
 #include "msfit/utilities/state.h"
 
-namespace interface {
 /*
  * Construct main window, and auto-initialize its components.
  *
@@ -32,5 +31,6 @@ MainWindow::MainWindow()
 
     gridContainer.set_start_child(canvasContainer);
     gridContainer.set_end_child(bottomMenuContainer);
+
+    canvasContainer.set_child(puzzleGrid.renderedGrid);
 }
-} // namespace interface

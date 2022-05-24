@@ -1,8 +1,6 @@
 #include "msfit/interface/canvas_container.h"
 #include "msfit/utilities/state.h"
 
-namespace interface {
-
 /*
  * Construct canvas container that contains the actual board. Contained in the grid container.
  */
@@ -16,5 +14,3 @@ CanvasContainer::CanvasContainer() {
 
     // Configure actual grid
 }
-
-} // namespace interface
