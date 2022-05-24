@@ -1,6 +1,7 @@
 #include "msfit/puzzle/square.h"
 #include "msfit/utilities/drawing_utils.h"
 #include "msfit/utilities/state.h"
+#include "msfit/utilities/vector2.h"
 
 // Square::Square() { Square(WHITE, ""); }
 
@@ -28,13 +29,13 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
         cr->rectangle(x, y, size, size);
         cr->fill();
     } else {
-        // Draw a white square with a black outline by first drawing a black square, then drawing a slightly smaller
-        // white square on top.
-        cr->set_source_rgb(0.0, 0.0, 0.0);
+        // Draw a white square with a gray outline by first drawing a gray square, then drawing a slightly smaller
+        // white square on top. Have the borders be 1px wide.
+        cr->set_source_rgb(0.8, 0.8, 0.8);
         cr->rectangle(x, y, size, size);
         cr->fill();
         cr->set_source_rgb(1.0, 1.0, 1.0);
-        cr->rectangle(x, y, size * 0.9, size * 0.9);
+        cr->rectangle(x + 0.5, y + 0.5, size - 1, size - 1);
         cr->fill();
 
         // Render text if needed.

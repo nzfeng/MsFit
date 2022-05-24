@@ -11,7 +11,8 @@
  * <bottomMenuContainer> = Containst the bottom dialog.
  */
 MainWindow::MainWindow()
-    : mainContainer(), gridContainer(), rightMenuContainer(), bottomMenuContainer(), canvasContainer() {
+    : mainContainer(), gridContainer(), rightMenuContainer(), bottomMenuContainer(), canvasContainer(),
+      puzzleGrid(state::N_ROWS, state::N_COLS) {
 
     set_title("MsFit");
     set_default_size(state::window_width, state::window_height);

@@ -4,10 +4,13 @@
 // Constructors
 PuzzleGrid::PuzzleGrid() { PuzzleGrid(state::N_ROWS, state::N_COLS); }
 
-PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) { setSize(nRows_, nCols_); }
+PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
+    setSize(nRows_, nCols_);
+    renderedGrid.set_draw_func(sigc::mem_fun(*this, &PuzzleGrid::draw));
+}
 
-inline size_t PuzzleGrid::nRows() const { return data.size(); }
-inline size_t PuzzleGrid::nCols() const { return data[0].size(); }
+size_t PuzzleGrid::nRows() const { return data.size(); }
+size_t PuzzleGrid::nCols() const { return data[0].size(); }
 
 void PuzzleGrid::setSize(size_t rows, size_t cols) {
 
@@ -26,10 +29,17 @@ void PuzzleGrid::setSize(size_t rows, size_t cols) {
 
 void PuzzleGrid::draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight) {
 
-    size_t squareSize = std::min(gridWidth / nCols(), gridHeight / nRows());
+    size_t squareSize = std::min((gridWidth - 2) / nCols(), (gridHeight - 2) / nRows());
     size_t x, y; // starting point of upper left corner of the grid in the canvas
-    x = (gridWidth - squareSize * nCols()) / 2;
-    y = (gridHeight - squareSize * nRows()) / 2;
+    size_t puzzleWidth = squareSize * nCols();
+    size_t puzzleHeight = squareSize * nRows();
+    x = (gridWidth - puzzleWidth) / 2;
+    y = (gridHeight - puzzleHeight) / 2;
+
+    // Draw a black border around the whole grid by first drawing a black rectangle spanning the whole canvas.
+    cr->set_source_rgb(0.0, 0.0, 0.0);
+    cr->rectangle(x - 1, y - 1, puzzleWidth + 2, puzzleHeight + 2);
+    cr->fill();
 
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {

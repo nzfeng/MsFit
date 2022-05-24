@@ -7,6 +7,7 @@
  */
 
 #include <gtkmm/drawingarea.h>
+#include <iostream>
 
 class Square {
 

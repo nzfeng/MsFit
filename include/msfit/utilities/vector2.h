@@ -33,3 +33,5 @@ struct Vector2 {
     double norm() const;
     double norm2() const;
 };
+
+#include "msfit/utilities/vector2.ipp"

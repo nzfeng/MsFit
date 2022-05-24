@@ -9,7 +9,6 @@ endif()
 SET(SRCS
   utilities/state.cpp
   utilities/drawing_utils.cpp
-  utilities/vector2.cpp
 
   interface/msfit_interface.cpp
   interface/main_window.cpp
@@ -28,6 +27,7 @@ SET(HEADERS
   ${INCLUDE_ROOT}/utilities/state.h
   ${INCLUDE_ROOT}/utilities/drawing_utils.h
   ${INCLUDE_ROOT}/utilities/vector2.h
+  ${INCLUDE_ROOT}/utilities/vector2.ipp
 
   ${INCLUDE_ROOT}/interface/msfit_interface.h
   ${INCLUDE_ROOT}/interface/main_window.h

@@ -3,5 +3,4 @@
 class PuzzleInterface {
   public:
     PuzzleInterface();
-    virtual ~PuzzleInterface();
-};
+    ~PuzzleInterface() {}
