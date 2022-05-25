@@ -33,6 +33,8 @@ class Square {
     void setAcrossWord(size_t idx);
     size_t getAcrossWord() const;
 
+    void setSelectionStatus(int status);
+
     // Render this square with the given side length (<width>) on the canvas <cr>, with its upper left corner at the
     // specified position on <cr>, which represents the entire puzzle.
     void draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, size_t size, size_t x, size_t y);

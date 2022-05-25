@@ -6,6 +6,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <fstream>
 #include <iostream>
 #include <random>
@@ -31,12 +32,17 @@ class PuzzleGrid {
     void save();
     void load();
 
-    void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
+    bool isAcrossSelected() const;
 
     Gtk::DrawingArea renderedGrid;
 
   private:
     std::vector<std::vector<Square>> data; // row-major order
+
+    // Rendering info. Variables set in the draw() function.
+    size_t xStart, yStart;      // pixel location of the upper left corner of the grid
+    size_t squareSize;          // side length of each square
+    bool acrossSelected = true; // are we in across mode?
 
     // Based on the current pattern of white/black squares, determine the words of the puzzle (contiguous blocks of
     // white squares) and their numbers.
@@ -45,7 +51,9 @@ class PuzzleGrid {
     void getWords();
 
     // Functions for signal handlers
-    // std::array<size_t, 2> mapClickToSquare(int x, int y); // map cursor click to index of square in the grid
+    void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
+    void on_click(int n_press, double x, double y);
+    std::array<int, 2> mapClickToSquareIndex(double x, double y); // map cursor click to index of square in the grid
 };
 
 #include "msfit/puzzle/puzzle_grid.ipp"

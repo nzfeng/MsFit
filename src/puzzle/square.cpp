@@ -7,6 +7,9 @@
 Square::Square(int isSolid_, Glib::ustring data_, int width_, int selectionStatus_)
     : solid(isSolid_), data(data_), width(width_), selectionStatus(selectionStatus_) {}
 
+/*
+ * Draws directly on the PuzzleGrid drawingArea member.
+ */
 void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, size_t size, size_t x,
                   size_t y) {
 
@@ -22,7 +25,8 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
             cr->fill();
             break;
         case (cell::SELECTED):
-            cr->set_source_rgb(0.0, 0.0, 0.0); // TODO: yellow outline
+            // cr->set_source_rgb(0.98039, 0.50196, 4453125); // salmon outline
+            cr->set_source_rgb(1.0, 0.843137, 0.0); // yellow outline
             cr->rectangle(x, y, size, size);
             cr->fill();
             cr->set_source_rgb(0.0, 0.0, 0.0);
@@ -43,10 +47,10 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
             cr->set_source_rgb(1.0, 1.0, 1.0); // white
             break;
         case (cell::SELECTED):
-            cr->set_source_rgb(1.0, 0.0, 0.0); // pale yellow
+            cr->set_source_rgb(1.0, 0.843137, 0.0); //  yellow
             break;
         case (cell::HIGHLIGHTED):
-            cr->set_source_rgb(0.0, 0.0, 0.5); // pale blue
+            cr->set_source_rgb(0.65, 0.80, 0.98); // pale blue
             break;
         }
         // border is 0.5px wide inside each square, 1px wide when squares are next to each other.

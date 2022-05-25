@@ -15,3 +15,5 @@ inline void Square::setDownWord(size_t idx) { downWord = idx; }
 inline size_t Square::getDownWord() const { return downWord; }
 inline void Square::setAcrossWord(size_t idx) { acrossWord = idx; }
 inline size_t Square::getAcrossWord() const { return acrossWord; }
+
+inline void Square::setSelectionStatus(int status) { selectionStatus = status; }

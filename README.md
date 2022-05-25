@@ -41,6 +41,7 @@ For any box in the grid, black or white:
 * Imagine how cool it would be to make crosswords out of tilings of the hyperbolic plane or the sphere! It may be very hard to find words to fit. (It's already hard enough making ordinary grid crosswords with white squares above a certain %.)
 * Make functions inline to reduce execution time (may not be necessary)
 * 3D crosswords not on my to-do list anytime soon, since I think crosswords are meant to be 2D where they can be played on a piece of paper.
+* Make crossword area scrollable, in case the grid is too large to be displayed in its entirety.
 * Switch from GTK to Qt, which has better cross-platform support, and platform-specific UI.
 
 # License
