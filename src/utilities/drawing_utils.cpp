@@ -7,7 +7,7 @@
 void draw_text(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustring& text,
                const std::vector<Vector2>& cellCorners) {
 
-    // http://developer.gnome.org/pangomm/unstable/classPango_1_1FontDescription.html
+    cr->set_source_rgb(0.0, 0.0, 0.0);
     Pango::FontDescription font;
 
     // Get cell geometry parameters.
@@ -27,13 +27,9 @@ void draw_text(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context
     font.set_weight(Pango::Weight::BOLD);
     font.set_size(font_size);
 
-    // http://developer.gnome.org/pangomm/unstable/classPango_1_1Layout.html
+    int text_width, text_height;
     auto layout = drawingArea.create_pango_layout(text);
-
     layout->set_font_description(font);
-
-    int text_width;
-    int text_height;
 
     // get the text dimensions (it updates the variables -- by reference)
     layout->get_pixel_size(text_width, text_height);
@@ -53,6 +49,7 @@ void draw_number(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Conte
 
     if (number == -1) return;
 
+    cr->set_source_rgb(0.0, 0.0, 0.0); // make sure text is black
     Pango::FontDescription font;
     Glib::ustring text = std::to_string(number);
 
@@ -71,30 +68,29 @@ void draw_number(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Conte
         }
     }
     center /= cellCorners.size();
+
     double radius = 0;
     for (auto corner : cellCorners) {
         radius = std::max(radius, (corner - center).norm());
     }
 
-    double scale = 1.;
-    double font_size = std::min(radius * scale, radius * scale / text.size());
+    double scale = 0.3;
+    double font_size = radius * scale;
     font.set_family("sans");
-    font.set_weight(Pango::Weight::BOLD);
-    font.set_size(font_size);
+    font.set_weight(Pango::Weight::NORMAL);
+    font.set_size(font_size * PANGO_SCALE);
 
+    int text_width, text_height;
     auto layout = drawingArea.create_pango_layout(text);
     layout->set_font_description(font);
-
-    int text_width;
-    int text_height;
     layout->get_pixel_size(text_width, text_height);
-    // TODO: for some reason, text isn't rendering
-    // std::cerr << text_width << " " << text_height << std::endl;
 
     // Position the text roughly in the upper left
-    double t = 0.05;
-    Vector2 pos = (1. - t) * upperLeft + t * center;
-    cr->move_to((pos[0] - text_width) / 2, (pos[1] - text_height) / 2);
+    // double t = 0.05;
+    // Vector2 pos = (1. - t) * upperLeft + t * center;
+    Vector2 pos = upperLeft;
+    cr->move_to(pos[0] + text_width / 4, pos[1] + text_height / 4);
 
+    // This places the text so that its upper left corner is at the position set above.
     layout->show_in_cairo_context(cr);
 }
