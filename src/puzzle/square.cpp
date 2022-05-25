@@ -14,10 +14,23 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
     // cr->scale(size, size);
 
     if (solid) {
-        // Simply draw a black square.
-        cr->set_source_rgb(0.0, 0.0, 0.0);
-        cr->rectangle(x, y, size, size);
-        cr->fill();
+        // Simply draw a black square (possibly with yellow outline, if selected)
+        switch (selectionStatus) {
+        case (cell::UNSELECTED):
+            cr->set_source_rgb(0.0, 0.0, 0.0);
+            cr->rectangle(x, y, size, size);
+            cr->fill();
+            break;
+        case (cell::SELECTED):
+            cr->set_source_rgb(0.0, 0.0, 0.0); // TODO: yellow outline
+            cr->rectangle(x, y, size, size);
+            cr->fill();
+            cr->set_source_rgb(0.0, 0.0, 0.0);
+            float border = theme::black_border_width;
+            cr->rectangle(x + 0.5 * border, y + 0.5 * border, size - border, size - border);
+            cr->fill();
+            break;
+        }
     } else {
         // Draw a colored square with a gray outline by first drawing a gray square, then drawing a slightly smaller
         // colored square on top.
@@ -37,7 +50,8 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
             break;
         }
         // border is 0.5px wide inside each square, 1px wide when squares are next to each other.
-        cr->rectangle(x + 0.5, y + 0.5, size - 1, size - 1);
+        float border = theme::white_border_width;
+        cr->rectangle(x + 0.5 * border, y + 0.5 * border, size - border, size - border);
         cr->fill();
 
         // Render text if needed.

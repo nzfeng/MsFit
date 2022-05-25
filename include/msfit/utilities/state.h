@@ -28,8 +28,8 @@ enum state { UNSELECTED, SELECTED, HIGHLIGHTED };
 
 } // namespace cell
 
-// namespace theme {
-// extern Vector3 UNSELECTED;
-// extern Vector3 SELECTED;
-// extern Vector3 HIGHLIGHTED;
-// } // namespace theme
+namespace theme {
+extern float black_border_width;  // total width of the yellow border around a selected black square
+extern float white_border_width;  // total width of the gray border around a white square
+extern float puzzle_border_width; // width of border around the puzzle board
+} // namespace theme

@@ -28,6 +28,11 @@ class Square {
     void setNumber(int num);
     int getNumber() const;
 
+    void setDownWord(size_t idx);
+    size_t getDownWord() const;
+    void setAcrossWord(size_t idx);
+    size_t getAcrossWord() const;
+
     // Render this square with the given side length (<width>) on the canvas <cr>, with its upper left corner at the
     // specified position on <cr>, which represents the entire puzzle.
     void draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, size_t size, size_t x, size_t y);
@@ -39,6 +44,15 @@ class Square {
     size_t width;
     int selectionStatus;
     int number = -1;
+
+    // Info about this square within the grid
+    // Square& left;
+    // Square& right;
+    // Square& above;
+    // Square& below;
+    // words that this square belongs to -- the indices in the corresponding array of words in the PuzzleGrid object,
+    // *not* the actual puzzle numbering
+    size_t downWord, acrossWord;
 };
 
 #include "msfit/puzzle/square.ipp"

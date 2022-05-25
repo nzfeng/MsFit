@@ -76,20 +76,20 @@ void draw_number(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Conte
         radius = std::max(radius, (corner - center).norm());
     }
 
-    double scale = 0.1;
+    double scale = 1.;
     double font_size = std::min(radius * scale, radius * scale / text.size());
     font.set_family("sans");
-    font.set_weight(Pango::Weight::NORMAL);
+    font.set_weight(Pango::Weight::BOLD);
     font.set_size(font_size);
 
     auto layout = drawingArea.create_pango_layout(text);
-
     layout->set_font_description(font);
 
-    // get the text dimensions (it updates the variables -- by reference)
     int text_width;
     int text_height;
     layout->get_pixel_size(text_width, text_height);
+    // TODO: for some reason, text isn't rendering
+    // std::cerr << text_width << " " << text_height << std::endl;
 
     // Position the text roughly in the upper left
     double t = 0.05;

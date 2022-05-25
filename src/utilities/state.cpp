@@ -13,14 +13,14 @@ int minButtonWidth = 40;
 int minButtonHeight = 20;
 int minRows = 1;
 int maxRows = 1000;
-int N_ROWS = 15;                              // the initial # of rows
+int N_ROWS = 10;                              // the initial # of rows
 int N_COLS = 15;                              // the initial # of cols
 int grid_width = 0.9 * grid_container_height; // default size of the puzzle grid
 
 } // namespace state
 
-// namespace theme {
-// Vector3 UNSELECTED = {1.0, 1.0, 1.0};  // white
-// Vector3 SELECTED = {0.0, 0.0, 0.0};    // pale yellow
-// Vector3 HIGHLIGHTED = {0.0, 0.0, 1.0}; // pale blue
-// } // namespace theme
+namespace theme {
+float black_border_width = 2; // total width of the yellow border around a selected black square
+float white_border_width = 1; // total width of the gray border around a white square
+float puzzle_border_width = 2;
+} // namespace theme

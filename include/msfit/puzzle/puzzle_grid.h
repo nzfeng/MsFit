@@ -43,6 +43,9 @@ class PuzzleGrid {
     std::vector<std::vector<Square*>> acrossWords;
     std::vector<std::vector<Square*>> downWords;
     void getWords();
+
+    // Functions for signal handlers
+    // std::array<size_t, 2> mapClickToSquare(int x, int y); // map cursor click to index of square in the grid
 };
 
 #include "msfit/puzzle/puzzle_grid.ipp"
