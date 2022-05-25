@@ -22,10 +22,10 @@ void draw_text(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context
     }
 
     // Set the font size so that its width/height don't exceed a certain proportion of the cell.
-    double font_size = std::min(radius, radius / text.size()); // I think font size corresponds to the font height?
+    double font_size = std::min(radius, 2 * radius * 0.9 / text.size());
     font.set_family("sans");
-    font.set_weight(Pango::Weight::BOLD);
-    font.set_size(font_size);
+    font.set_weight(Pango::Weight::NORMAL);
+    font.set_size(font_size * PANGO_SCALE);
 
     int text_width, text_height;
     auto layout = drawingArea.create_pango_layout(text);
@@ -34,8 +34,8 @@ void draw_text(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context
     // get the text dimensions (it updates the variables -- by reference)
     layout->get_pixel_size(text_width, text_height);
 
-    // Position the text in the middle
-    cr->move_to((center[0] - text_width) / 2, (center[1] - text_height) / 2);
+    // Position the text just below middle
+    cr->move_to(center[0] - text_width / 2, center[1] + radius * 0.3 - text_height / 2);
 
     layout->show_in_cairo_context(cr);
 }
@@ -74,7 +74,7 @@ void draw_number(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Conte
         radius = std::max(radius, (corner - center).norm());
     }
 
-    double scale = 0.3;
+    double scale = 0.4;
     double font_size = radius * scale;
     font.set_family("sans");
     font.set_weight(Pango::Weight::NORMAL);
@@ -86,8 +86,6 @@ void draw_number(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Conte
     layout->get_pixel_size(text_width, text_height);
 
     // Position the text roughly in the upper left
-    // double t = 0.05;
-    // Vector2 pos = (1. - t) * upperLeft + t * center;
     Vector2 pos = upperLeft;
     cr->move_to(pos[0] + text_width / 4, pos[1] + text_height / 4);
 
