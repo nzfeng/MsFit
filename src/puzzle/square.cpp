@@ -15,6 +15,7 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
 
     // Scale the user-space coordinate system s.t. the width and height of the widget are both equal to 1.0 units.
     // cr->scale(size, size);
+    std::array<float, 3> color;
 
     if (solid) {
         // Simply draw a black square (possibly with yellow outline, if selected)
@@ -25,8 +26,8 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
             cr->fill();
             break;
         case (cell::SELECTED):
-            // cr->set_source_rgb(0.98039, 0.50196, 4453125); // salmon outline
-            cr->set_source_rgb(1.0, 0.843137, 0.0); // yellow outline
+            color = theme::color_selected;
+            cr->set_source_rgb(color[0], color[1], color[2]); // yellow outline
             cr->rectangle(x, y, size, size);
             cr->fill();
             cr->set_source_rgb(0.0, 0.0, 0.0);
@@ -44,13 +45,16 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
 
         switch (selectionStatus) {
         case (cell::UNSELECTED):
-            cr->set_source_rgb(1.0, 1.0, 1.0); // white
+            color = theme::color_unselected;
+            cr->set_source_rgb(color[0], color[1], color[2]); // white
             break;
         case (cell::SELECTED):
-            cr->set_source_rgb(1.0, 0.843137, 0.0); //  yellow
+            color = theme::color_selected;
+            cr->set_source_rgb(color[0], color[1], color[2]); //  yellow
             break;
         case (cell::HIGHLIGHTED):
-            cr->set_source_rgb(0.65, 0.80, 0.98); // pale blue
+            color = theme::color_highlighted;
+            cr->set_source_rgb(color[0], color[1], color[2]); // pale blue
             break;
         }
         // border is 0.5px wide inside each square, 1px wide when squares are next to each other.

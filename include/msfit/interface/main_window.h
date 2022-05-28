@@ -1,10 +1,10 @@
 #pragma once
 
+#include <gtkmm/aspectframe.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/window.h>
 
 #include "msfit/interface/bottom_menu_container.h"
-#include "msfit/interface/canvas_container.h"
 #include "msfit/interface/right_menu_container.h"
 #include "msfit/puzzle/puzzle_grid.h"
 
@@ -35,7 +35,7 @@ class MainWindow : public Gtk::Window {
     // Contains the bottom menu/dialog.
     BottomMenuContainer bottomMenuContainer;
     // Contains the actual grid.
-    CanvasContainer canvasContainer;
+    Gtk::AspectFrame canvasContainer;
     // The actual Gtk::DrawingArea representing the puzzle.
     PuzzleGrid puzzleGrid;
 

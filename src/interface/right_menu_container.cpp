@@ -8,7 +8,7 @@
  *	(2) Clues
  */
 RightMenuContainer::RightMenuContainer() {
-    set_margin(state::margin);
+    set_margin(interface::params::margin);
     // set_expand();
 
     setUpMenuPage();
@@ -21,15 +21,15 @@ void RightMenuContainer::setUpMenuPage() {
     int nSeps = 2;
     Gtk::Separator seps[2];
     for (int i = 0; i < nSeps; i++) {
-        seps[i].set_margin_top(state::separator_margin);
+        seps[i].set_margin_top(interface::params::separator_margin);
     }
 
-    userCallbacksFrame.set_margin(state::margin);
+    userCallbacksFrame.set_margin(interface::params::margin);
     userCallbacksFrame.set_label("User callbacks");
     userCallbacksBox.set_orientation(Gtk::Orientation::VERTICAL);
     userCallbacksBox.append(seps[0]);
 
-    settingsFrame.set_margin(state::margin);
+    settingsFrame.set_margin(interface::params::margin);
     settingsFrame.set_label("Settings");
     settingsBox.set_orientation(Gtk::Orientation::VERTICAL);
 
@@ -46,7 +46,7 @@ void RightMenuContainer::setUpMenuPage() {
 
     // A page of the Notebook can only be 1 item; let it be <menuBox>.
     menuBox.set_orientation(Gtk::Orientation::VERTICAL);
-    menuBox.set_spacing(state::margin); // min number of pixels between each widget
+    menuBox.set_spacing(interface::params::margin); // min number of pixels between each widget
     menuBox.append(userCallbacksFrame);
     menuBox.append(settingsFrame);
     append_page(menuBox, "Menu");
@@ -55,10 +55,14 @@ void RightMenuContainer::setUpMenuPage() {
 Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
 
     Gtk::Grid gridSymmetryBox;
-    gridSymmetryBox.set_margin(state::margin);
+    gridSymmetryBox.set_margin(interface::params::margin);
     Gtk::Label gridSymmetryLabel("Grid symmetry: ");
     gridSymmetryLabel.set_halign(Gtk::Align::START);
     gridSymmetryBox.attach(gridSymmetryLabel, 0, 0);
+
+    makeSymmetricButton.set_label("Symmetry on");
+    makeSymmetricButton.set_halign(Gtk::Align::END);
+    gridSymmetryBox.attach(makeSymmetricButton, 1, 0);
 
     int nGridSymmetries = *(&gridSymmetryButtons + 1) - gridSymmetryButtons;
     int nRows = 2;
@@ -79,7 +83,7 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
     Gtk::Grid gridSizeBox;
     gridSizeBox.set_column_homogeneous(true);
     // gridSizeBox.set_column_spacing(20);
-    gridSizeBox.set_margin(state::margin);
+    gridSizeBox.set_margin(interface::params::margin);
     Gtk::Label gridSizeLabel("Grid dimensions: ");
     gridSizeLabel.set_halign(Gtk::Align::START);
     gridSizeBox.attach(gridSizeLabel, 0, 0);
@@ -88,15 +92,15 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
     int nDims = *(&gridDimLabels + 1) - gridDimLabels;
     for (int i = 0; i < nDims; i++) {
         gridDimSpin[i].set_numeric(false);
-        gridDimSpin[i].set_range(state::minRows, state::maxRows);
+        gridDimSpin[i].set_range(grid::params::minRows, grid::params::maxRows);
         gridDimSpin[i].set_increments(1, 1); // step, page (left/right mouse clicks)
         // gridDimSpin[i].set_climb_rate(); // accleration rate when button is held down
         gridDimSpin[i].set_snap_to_ticks(true);
-        gridDimSpin[i].set_size_request(state::minButtonWidth, state::minButtonHeight);
+        gridDimSpin[i].set_size_request(interface::params::minButtonWidth, interface::params::minButtonHeight);
         gridSizeBox.attach(gridDimSpin[i], i, 1);
     }
-    gridDimSpin[0].set_value(state::N_ROWS);
-    gridDimSpin[1].set_value(state::N_COLS);
+    gridDimSpin[0].set_value(grid::params::N_ROWS);
+    gridDimSpin[1].set_value(grid::params::N_COLS);
 
     // preset sizes
     int nGridSizes = *(&gridSizePresetButtons + 1) - gridSizePresetButtons;
@@ -118,9 +122,9 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
     // TODO: Add icons. See https://developer-old.gnome.org/gtkmm-tutorial/stable/sec-pushbuttons.html.en
     Gtk::Box saveBox;
     saveBox.set_orientation(Gtk::Orientation::HORIZONTAL);
-    saveBox.set_margin(state::margin);
+    saveBox.set_margin(interface::params::margin);
     saveBox.set_homogeneous(true);
-    saveBox.set_spacing(state::margin);
+    saveBox.set_spacing(interface::params::margin);
     saveButton.set_label("Save");
     // saveButton.set_image_from_icon_name("info");
     loadButton.set_label("Load");

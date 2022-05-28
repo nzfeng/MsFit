@@ -11,22 +11,23 @@
  * <bottomMenuContainer> = Containst the bottom dialog.
  */
 MainWindow::MainWindow()
-    : rightMenuContainer(), bottomMenuContainer(), canvasContainer(), puzzleGrid(state::N_ROWS, state::N_COLS) {
+    : rightMenuContainer(), bottomMenuContainer(), canvasContainer(),
+      puzzleGrid(grid::params::N_ROWS, grid::params::N_COLS) {
 
     set_title("MsFit");
-    set_default_size(state::window_width, state::window_height);
+    set_default_size(interface::params::window_width, interface::params::window_height);
 
     // Paradigm: Each individual constructor handles all the settings (margin size, default size,
     // orientation, function callbacks, etc.) All the parenting actions are done here, in one place, so that the
     // whole hierarchy (parent-child relationships) can be seen at a glance, as well as all of the signal handling.
 
-    mainContainer.set_margin(state::margin);
+    mainContainer.set_margin(interface::params::margin);
     mainContainer.set_orientation(Gtk::Orientation::HORIZONTAL);
-    mainContainer.set_position(state::grid_container_width); // intiial position of slider between grid and r.h.s. menu
+    mainContainer.set_position(interface::params::grid_container_width); // intial position of slider
 
-    gridContainer.set_margin(state::margin);
+    gridContainer.set_margin(interface::params::margin);
     gridContainer.set_orientation(Gtk::Orientation::VERTICAL);
-    gridContainer.set_position(state::grid_container_height);
+    gridContainer.set_position(interface::params::grid_container_height);
 
     // Add the paned widget to the top-level window.
     set_child(mainContainer);
@@ -37,5 +38,10 @@ MainWindow::MainWindow()
     gridContainer.set_start_child(canvasContainer);
     gridContainer.set_end_child(bottomMenuContainer);
 
+    canvasContainer.set_margin(interface::params::margin);
+    canvasContainer.set_xalign(Gtk::Align::CENTER);
+    canvasContainer.set_yalign(Gtk::Align::CENTER);
+    canvasContainer.set_obey_child(false);
+    canvasContainer.set_ratio(1.0); // aspect ratio of grid is maintained
     canvasContainer.set_child(puzzleGrid.renderedGrid);
 }

@@ -5,7 +5,7 @@
  * Construct bottom menu. Contained in the grid container.
  */
 BottomMenuContainer::BottomMenuContainer() {
-    // set_margin(state::margin);
+    // set_margin(interface::params::margin);
     setUpDialogPanel();
 }
 

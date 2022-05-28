@@ -1,10 +1,11 @@
+#include <gtkmm/eventcontrollerkey.h>
 #include <gtkmm/gestureclick.h>
 
 #include "msfit/puzzle/puzzle_grid.h"
 #include "msfit/utilities/state.h"
 
 // Constructors
-PuzzleGrid::PuzzleGrid() { PuzzleGrid(state::N_ROWS, state::N_COLS); }
+PuzzleGrid::PuzzleGrid() { PuzzleGrid(grid::params::N_ROWS, grid::params::N_COLS); }
 
 PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     setSize(nRows_, nCols_);
@@ -15,11 +16,22 @@ PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     renderedGrid.set_focus_on_click(true); // DrawingArea will be "focused" when clicked
     renderedGrid.set_can_target(true);     // DrawingArea can be the target of pointer events
 
-    // Apparently gtkmm4 moved all signal-handling functionality to "Gesture*" objects.
-    auto clickHandler = Gtk::GestureClick::create();
-    clickHandler->set_button(GDK_BUTTON_PRIMARY); // the left mouse button
-    clickHandler->signal_pressed().connect(sigc::mem_fun(*this, &PuzzleGrid::on_click));
-    renderedGrid.add_controller(clickHandler);
+    // gtkmm4 moved all signal-handling functionality to "Gesture*" objects (clicks) and EventController
+    // objects (keys.)
+    auto leftClickHandler = Gtk::GestureClick::create();
+    leftClickHandler->set_button(GDK_BUTTON_PRIMARY); // the left mouse button
+    leftClickHandler->signal_pressed().connect(sigc::mem_fun(*this, &PuzzleGrid::on_left_click));
+    renderedGrid.add_controller(leftClickHandler);
+
+    auto rightClickHandler = Gtk::GestureClick::create();
+    rightClickHandler->set_button(GDK_BUTTON_SECONDARY); // the right mouse button
+    rightClickHandler->signal_pressed().connect(sigc::mem_fun(*this, &PuzzleGrid::on_right_click));
+    renderedGrid.add_controller(rightClickHandler);
+
+
+    // auto keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->signal_key_pressed().connect(sigc::mem_fun(*this, &ExampleWindow::on_key_pressed), false);
+    // add_controller(keyHandler);
 }
 
 void PuzzleGrid::setSize(size_t rows, size_t cols) {
@@ -33,6 +45,25 @@ void PuzzleGrid::setSize(size_t rows, size_t cols) {
     Square whiteSquare(false, "");
     data.resize(rows);
     for (size_t i = 0; i < rows; i++) {
+        data[i].resize(cols, whiteSquare);
+    }
+}
+
+void PuzzleGrid::setRows(size_t rows) {
+    if (rows < 1) {
+        std::cerr << "Number of rows cannot be less than 1." << std::endl;
+        return;
+    }
+    Square whiteSquare(false, "");
+    data.resize(rows);
+}
+void PuzzleGrid::setCols(size_t cols) {
+    if (cols < 1) {
+        std::cerr << "Number of cols cannot be less than 1." << std::endl;
+        return;
+    }
+    Square whiteSquare(false, "");
+    for (size_t i = 0; i < nRows(); i++) {
         data[i].resize(cols, whiteSquare);
     }
 }
@@ -67,6 +98,7 @@ void PuzzleGrid::draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, in
  * along the way.
  */
 void PuzzleGrid::getWords() {
+
     acrossWords.clear();
     downWords.clear();
     // A square is the start of a new across/down word iff it doesn't have a (white) neighbor to the left/above.
@@ -105,13 +137,89 @@ void PuzzleGrid::getWords() {
     }
 }
 
-void PuzzleGrid::on_click(int n_press, double x, double y) {
+// =================================== SYMMETRY CHECKERS ===================================
+
+bool PuzzleGrid::isTwoTurnSymmetric() const {
+    size_t rows = nRows();
+    size_t cols = nCols();
+    if (rows != cols) return false;
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            if (data[i][j].isSolid() != data[rows - i - 1][cols - j - 1].isSolid()) return false;
+        }
+    }
+    return true;
+}
+
+bool PuzzleGrid::isOneTurnSymmetric() const {
+    size_t rows = nRows();
+    size_t cols = nCols();
+    if (rows != cols) return false;
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            if (data[i][j].isSolid() != data[i][cols - j - 1].isSolid()) return false;
+        }
+    }
+    return true;
+}
+
+bool PuzzleGrid::isMirroredUpDown() const {
+    size_t rows = nRows();
+    size_t cols = nCols();
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            if (data[i][j].isSolid() != data[rows - i - 1][j].isSolid()) return false;
+        }
+    }
+    return true;
+}
+
+bool PuzzleGrid::isMirroredLeftRight() const {
+    size_t rows = nRows();
+    size_t cols = nCols();
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            if (data[i][j].isSolid() != data[i][cols - j - 1].isSolid()) return false;
+        }
+    }
+    return true;
+}
+
+// =================================== SIGNAL HANDLERS ===================================
+
+void PuzzleGrid::on_left_click(int n_press, double x, double y) {
 
     // Determine which square was clicked.
     std::array<int, 2> indices = mapClickToSquareIndex(x, y);
     // If outside the grid, don't do anything.
     int ind_i = indices[0];
     int ind_j = indices[1];
+    if (ind_i < 0 || ind_j < 0 || ind_i >= nRows() || ind_j >= nCols()) return;
+
+    setSelectedSquare(indices);
+
+    renderSelectedSquare();
+
+    // Request redraw.
+    renderedGrid.queue_draw();
+}
+
+void PuzzleGrid::on_right_click(int n_press, double x, double y) {
+
+    // TODO: Toggle selected square white/black; re-number words; if "Make symmetric" is toggled, make sure that the
+    // puzzle remains symmetric.
+
+    // Request redraw.
+    renderedGrid.queue_draw();
+}
+
+/*
+ * Based on which square is selected, render the square appropriately, along with the word it's contained in.
+ */
+void PuzzleGrid::renderSelectedSquare() {
+
+    int ind_i = selectedSquare[0];
+    int ind_j = selectedSquare[1];
     if (ind_i < 0 || ind_j < 0 || ind_i >= nRows() || ind_j >= nCols()) return;
 
     // De-select all squares first.
@@ -134,21 +242,38 @@ void PuzzleGrid::on_click(int n_press, double x, double y) {
     }
     // Mark this square as selected.
     data[ind_i][ind_j].setSelectionStatus(cell::state::SELECTED);
-
-    // Request redraw.
-    renderedGrid.queue_draw();
 }
 
 /*
  * Given the pixel locations of a click, determine which square was clicked.
- * TODO: For some reason, this mapping only works properly after window gets resized, idk why.
+ *
+ * WARNING: The mapping only works if the initial window size is not larger than what can fit on the current device
+ * screen. Otherwise, some implicit resizing goes on behind the scenes in a way that I don't quite understand yet, and
+ * this mapping only works properly after window gets resized.
  */
 std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
 
     // Negative numbers get rounded up, positive numbers get rounded down; just return -1 or a number greater than the
     // max index if click is outside the grid.
-    // std::cerr << x << " " << xStart << " " << y << " " << yStart << std::endl;
     int i = (y - yStart) < 0 ? -1 : std::floor((y - yStart) / squareSize);
     int j = (x - xStart) < 0 ? -1 : std::floor((x - xStart) / squareSize);
     return {i, j};
 }
+
+// If not a supported key, do nothing and return.
+// Right-click: Toggle squares black/white.
+// If "Make symmetric" is toggled, mirror selected black/white squares appropriately.
+// `Space`: Toggle across/down.
+// `Tab`: Skip to the next uncompleted word.
+// `Esc`: Enter more than one letter in a box. Hit Esc again or `Enter' to exit this mode.
+// `Enter': Search fills according to user-defined criteria. Generate and display a list of top 10 fills.
+// Arrow keys: move one box in the corrresponding direction (skipping black squares.) This moves in the direction you'd
+// expect in the grid, not necessarily to the next word, in order.
+// Any letter key: Enter the capital letter in the currently
+// selected box (if any); render in gray if the pencil icon is selected.
+//
+// +/- new column: complete re-number (getWords())
+// +/- new row: complete re-number (getWords())
+// resize: complete re-number (getWords())
+//
+// redraw after all operations

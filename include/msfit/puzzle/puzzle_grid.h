@@ -20,6 +20,7 @@
 #include "msfit/puzzle/square.h"
 
 class PuzzleGrid {
+
   public:
     PuzzleGrid();
     PuzzleGrid(size_t nRows, size_t nCols);
@@ -27,14 +28,27 @@ class PuzzleGrid {
 
     size_t nRows() const;
     size_t nCols() const;
+    void setRows(size_t rows);
+    void setCols(size_t cols);
     void setSize(size_t rows, size_t cols);
 
     void save();
     void load();
 
-    bool isAcrossSelected() const;
+    bool isTwoTurnSymmetric() const;
+    bool isOneTurnSymmetric() const;
+    bool isMirroredUpDown() const;
+    bool isMirroredLeftRight() const;
 
     Gtk::DrawingArea renderedGrid;
+
+    // Which menu/selection buttons are toggled?
+    bool isAcrossSelected() const;
+    void setSelectedSquare(const std::array<int, 2>& indices);
+    void renderSelectedSquare();
+    // bool isMakeSymmetric() const;
+    // bool isPencilSelected() const;
+    // bool isEnteringMultipleLetters() const;
 
   private:
     std::vector<std::vector<Square>> data; // row-major order
@@ -52,8 +66,16 @@ class PuzzleGrid {
 
     // Functions for signal handlers
     void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
-    void on_click(int n_press, double x, double y);
+    void on_left_click(int n_press, double x, double y);
+    void on_right_click(int n_press, double x, double y);
     std::array<int, 2> mapClickToSquareIndex(double x, double y); // map cursor click to index of square in the grid
+
+    // Interactive state variables (Which menu/selection buttons are selected? Etc.)
+    // TODO: Perhaps move these to the state.cpp file.
+    std::array<int, 2> selectedSquare; // indices of the currently selected square in <data>
+    bool makeSymmetric;
+    bool enteringMultipleLetters;
+    bool pencilSelected;
 };
 
 #include "msfit/puzzle/puzzle_grid.ipp"

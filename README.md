@@ -44,6 +44,13 @@ For any box in the grid, black or white:
 * Make crossword area scrollable, in case the grid is too large to be displayed in its entirety.
 * Switch from GTK to Qt, which has better cross-platform support, and platform-specific UI.
 
+# Puzzle ideas
+* Include hexagonal cells as 3-way intersections
+* Other tilings
+* Tilings of the sphere/hyperbolic disk?
+* Full 15x15 block (or at least n x n)
+* All clues are questions (something clever); puzzle design is a question mark; entries are themed to be question-related
+
 # License
 Currently MsFit is a private project.
 
