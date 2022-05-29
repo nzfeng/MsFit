@@ -20,6 +20,17 @@ extern int minButtonHeight;
 } // namespace params
 } // namespace interface
 
+namespace theme {
+extern std::array<float, 3> color_unselected;
+extern std::array<float, 3> color_selected;
+extern std::array<float, 3> color_highlighted;
+extern std::array<float, 3> color_salmon;
+
+extern float black_border_width;  // total width of the yellow border around a selected black square
+extern float white_border_width;  // total width of the gray border around a white square
+extern float puzzle_border_width; // width of border around the puzzle board
+} // namespace theme
+
 namespace cell {
 
 enum state { UNSELECTED, SELECTED, HIGHLIGHTED };
@@ -41,13 +52,9 @@ extern int N_COLS; // initial # of cols
 
 } // namespace grid
 
-namespace theme {
-extern std::array<float, 3> color_unselected;
-extern std::array<float, 3> color_selected;
-extern std::array<float, 3> color_highlighted;
-extern std::array<float, 3> color_salmon;
-
-extern float black_border_width;  // total width of the yellow border around a selected black square
-extern float white_border_width;  // total width of the gray border around a white square
-extern float puzzle_border_width; // width of border around the puzzle board
-} // namespace theme
+namespace state {
+extern bool makeSymmetric;
+extern int symmetryMode;
+extern bool enteringMultipleLetters;
+extern bool pencilSelected;
+} // namespace state

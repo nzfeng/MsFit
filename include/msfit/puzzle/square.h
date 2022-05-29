@@ -9,6 +9,7 @@
 #include <gtkmm/drawingarea.h>
 #include <iostream>
 
+#include "msfit/puzzle/grid_word.h"
 #include "msfit/utilities/state.h"
 
 class Square {
@@ -24,14 +25,15 @@ class Square {
     int getSize() const;
 
     bool isSolid() const;
+    bool toggleSolid();
 
     void setNumber(int num);
     int getNumber() const;
 
-    void setDownWord(size_t idx);
-    size_t getDownWord() const;
-    void setAcrossWord(size_t idx);
-    size_t getAcrossWord() const;
+    void setDownWord(GridWord* word);
+    GridWord* getDownWord() const;
+    void setAcrossWord(GridWord* word);
+    GridWord* getAcrossWord() const;
 
     void setSelectionStatus(int status);
 
@@ -45,16 +47,17 @@ class Square {
     Glib::ustring data;
     size_t width;
     int selectionStatus;
-    int number = -1;
+    int number = -1; // only positive if this square is the start of a new word
 
     // Info about this square within the grid
     // Square& left;
     // Square& right;
     // Square& above;
     // Square& below;
-    // words that this square belongs to -- the indices in the corresponding array of words in the PuzzleGrid object,
-    // *not* the actual puzzle numbering
-    size_t downWord, acrossWord;
+
+    // Words that this square belongs to
+    GridWord* acrossWord;
+    GridWord* downWord;
 };
 
 #include "msfit/puzzle/square.ipp"

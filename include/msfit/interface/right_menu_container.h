@@ -42,6 +42,7 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::SpinButton gridDimSpin[2];
     Glib::ustring gridDimLabels[2] = {"Rows: ", "Cols: "};
     Gtk::CheckButton gridSizePresetButtons[4];
+    int presetSizes[4] = {15, 21, 23, 25};
     Glib::ustring gridSizePresetLabels[4] = {"15 x 15", "21 x 21", "23 x 23", "25 x 25"};
 
     Gtk::Button saveButton, loadButton;

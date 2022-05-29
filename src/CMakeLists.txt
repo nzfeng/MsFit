@@ -35,6 +35,7 @@ SET(HEADERS
   ${INCLUDE_ROOT}/puzzle/square.ipp
   ${INCLUDE_ROOT}/puzzle/puzzle_grid.h
   ${INCLUDE_ROOT}/puzzle/puzzle_grid.ipp
+  ${INCLUDE_ROOT}/puzzle/grid_word.h
 )
 
 

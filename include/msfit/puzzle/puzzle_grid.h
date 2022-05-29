@@ -17,6 +17,7 @@
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/grid.h>
 
+#include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/square.h"
 
 class PuzzleGrid {
@@ -42,13 +43,17 @@ class PuzzleGrid {
 
     Gtk::DrawingArea renderedGrid;
 
-    // Which menu/selection buttons are toggled?
+    // Rendering help
     bool isAcrossSelected() const;
+    bool areSquareIndicesValid(const std::array<int, 2>& indices) const;
+    std::array<int, 2> getSelectedSquare() const;
     void setSelectedSquare(const std::array<int, 2>& indices);
     void renderSelectedSquare();
-    // bool isMakeSymmetric() const;
-    // bool isPencilSelected() const;
-    // bool isEnteringMultipleLetters() const;
+
+    // Get the next white square in the across/down direction, possibly the start of the next word.
+    std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const;
+    // Get the next white square in the given direction.
+    // std::array<int,2> getNextGeometricSquare(const std::array<int,2> &indices) const;
 
   private:
     std::vector<std::vector<Square>> data; // row-major order
@@ -60,8 +65,7 @@ class PuzzleGrid {
 
     // Based on the current pattern of white/black squares, determine the words of the puzzle (contiguous blocks of
     // white squares) and their numbers.
-    std::vector<std::vector<Square*>> acrossWords;
-    std::vector<std::vector<Square*>> downWords;
+    std::vector<GridWord> gridWords;
     void getWords();
 
     // Functions for signal handlers
@@ -70,12 +74,8 @@ class PuzzleGrid {
     void on_right_click(int n_press, double x, double y);
     std::array<int, 2> mapClickToSquareIndex(double x, double y); // map cursor click to index of square in the grid
 
-    // Interactive state variables (Which menu/selection buttons are selected? Etc.)
-    // TODO: Perhaps move these to the state.cpp file.
+    // Interactive state variables particular to the grid.
     std::array<int, 2> selectedSquare; // indices of the currently selected square in <data>
-    bool makeSymmetric;
-    bool enteringMultipleLetters;
-    bool pencilSelected;
 };
 
 #include "msfit/puzzle/puzzle_grid.ipp"

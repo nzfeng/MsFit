@@ -62,6 +62,7 @@ Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
 
     makeSymmetricButton.set_label("Symmetry on");
     makeSymmetricButton.set_halign(Gtk::Align::END);
+    makeSymmetricButton.set_active(state::makeSymmetric);
     gridSymmetryBox.attach(makeSymmetricButton, 1, 0);
 
     int nGridSymmetries = *(&gridSymmetryButtons + 1) - gridSymmetryButtons;
@@ -73,8 +74,8 @@ Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
         gridSymmetryButtons[i].set_label(gridSymmetryLabels[i]);
         gridSymmetryBox.attach(gridSymmetryButtons[i], col, row + 1);
         if (i > 0) gridSymmetryButtons[i].set_group(gridSymmetryButtons[0]);
+        gridSymmetryButtons[i].set_active(i == state::symmetryMode);
     }
-    gridSymmetryButtons[0].set_active(true);
     return gridSymmetryBox;
 }
 
@@ -112,8 +113,10 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
         gridSizePresetButtons[i].set_label(gridSizePresetLabels[i]);
         gridSizeBox.attach(gridSizePresetButtons[i], col, row + 2);
         if (i > 0) gridSizePresetButtons[i].set_group(gridSizePresetButtons[0]);
+        if (grid::params::N_ROWS == presetSizes[i] && grid::params::N_COLS == presetSizes[i]) {
+            gridSizePresetButtons[i].set_active(true);
+        }
     }
-    gridSizePresetButtons[0].set_active(true);
     return gridSizeBox;
 }
 

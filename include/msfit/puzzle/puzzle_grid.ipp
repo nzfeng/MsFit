@@ -3,3 +3,4 @@ inline size_t PuzzleGrid::nCols() const { return data[0].size(); }
 
 inline bool PuzzleGrid::isAcrossSelected() const { return acrossSelected; }
 inline void PuzzleGrid::setSelectedSquare(const std::array<int, 2>& indices) { selectedSquare = indices; }
+inline std::array<int, 2> getSelectedSquare() const { return selectedSquare; }

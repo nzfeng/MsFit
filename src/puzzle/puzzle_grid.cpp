@@ -99,12 +99,10 @@ void PuzzleGrid::draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, in
  */
 void PuzzleGrid::getWords() {
 
-    acrossWords.clear();
-    downWords.clear();
+    gridWords.clear();
     // A square is the start of a new across/down word iff it doesn't have a (white) neighbor to the left/above.
-    size_t nAcross = 0;
-    size_t nDown = 0;
     int currNum = 1;
+    size_t nWords = 0;
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
             if (data[i][j].isSolid()) {
@@ -116,28 +114,31 @@ void PuzzleGrid::getWords() {
             if (j == 0 || data[i][j - 1].isSolid()) {
                 data[i][j].setNumber(currNum);
                 isNumberSet = true;
-                acrossWords.push_back(std::vector<Square*>());
-                nAcross++;
+                GridWord newWord = {true, std::vector<Square*>()};
+                gridWords.push_back(newWord);
                 currNum++;
             }
-            data[i][j].setAcrossWord(nAcross - 1);
-            acrossWords[nAcross - 1].push_back(&data[i][j]);
+            size_t nWords = gridWords.size();
+            data[i][j].setWord(&gridWords[nWords - 1]);
+            gridWords[nWords - 1].squares.push_back(&data[i][j]);
             // Start of a new down word
             if (i == 0 || data[i - 1][j].isSolid()) {
                 if (!isNumberSet) {
                     data[i][j].setNumber(currNum);
                     currNum++;
                 }
-                downWords.push_back(std::vector<Square*>());
-                nDown++;
+                GridWord newWord = {false, std::vector<Square*>()};
+                gridWords.push_back(newWord);
             }
-            data[i][j].setDownWord(nDown - 1);
-            downWords[nDown - 1].push_back(&data[i][j]);
+            data[i][j].setWord(&gridWords[nWords - 1]);
+            downWords[nWords - 1].push_back(&data[i][j]);
         }
     }
 }
 
 // =================================== SYMMETRY CHECKERS ===================================
+
+// TODO: Maybe write a function "getSymmetricEquivalent(int mode)" to get the equivalent square to (i,j).
 
 bool PuzzleGrid::isTwoTurnSymmetric() const {
     size_t rows = nRows();
@@ -185,6 +186,28 @@ bool PuzzleGrid::isMirroredLeftRight() const {
     return true;
 }
 
+// =================================== EVENT HELPER FUNCS ===================================
+
+bool PuzzleGrid::areSquareIndicesValid(const std::array<int, 2>& indices) const {
+    int ind_i = indices[0];
+    int ind_j = indices[1];
+    if (ind_i < 0 || ind_j < 0 || ind_i >= nRows() || ind_j >= nCols()) return false;
+    return true;
+}
+
+// size_t PuzzleGrid::getIndexOfSquareInWord() const {}
+
+std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const {
+
+    if (!areSquareIndicesValid(indices)) return {-1, -1};
+
+    int ind_i = indices[0];
+    int ind_j = indices[1];
+    GridWord* word;
+    word = isAcross ? data[ind_i][ind_j].getAcrossWord() : data[ind_i][ind_j].getDownWord();
+    // TODO
+}
+
 // =================================== SIGNAL HANDLERS ===================================
 
 void PuzzleGrid::on_left_click(int n_press, double x, double y) {
@@ -192,9 +215,7 @@ void PuzzleGrid::on_left_click(int n_press, double x, double y) {
     // Determine which square was clicked.
     std::array<int, 2> indices = mapClickToSquareIndex(x, y);
     // If outside the grid, don't do anything.
-    int ind_i = indices[0];
-    int ind_j = indices[1];
-    if (ind_i < 0 || ind_j < 0 || ind_i >= nRows() || ind_j >= nCols()) return;
+    if (!areSquareIndicesValid(indices)) return;
 
     setSelectedSquare(indices);
 
@@ -206,8 +227,42 @@ void PuzzleGrid::on_left_click(int n_press, double x, double y) {
 
 void PuzzleGrid::on_right_click(int n_press, double x, double y) {
 
-    // TODO: Toggle selected square white/black; re-number words; if "Make symmetric" is toggled, make sure that the
+    // Determine which square was clicked.
+    std::array<int, 2> indices = mapClickToSquareIndex(x, y);
+    // If outside the grid, don't do anything.
+    if (!areSquareIndicesValid(indices)) return;
+
+    // Toggle selected square white/black; re-number words; if "Make symmetric" is toggled, make sure that the
     // puzzle remains symmetric.
+    data[ind_i][ind_j].toggleSolid();
+    if (state::makeSymmetric) {
+        size_t rows = nRows();
+        size_t cols = nCols();
+        switch (state::symmetryMode) {
+        case (grid::symmetry::TWO_TURN):
+            data[rows - ind_i - 1][cols - ind_j - 1].toggleSolid();
+            break;
+        case (grid::symmetry::ONE_TURN):
+            data[ind_i][cols - ind_j - 1].toggleSolid();
+            break;
+        case (grid::symmetry::MIRROR_UD):
+            data[rows - ind_i - 1][ind_j].toggleSolid();
+            break;
+        case (grid::symmetry::MIRROR_LR):
+            data[ind_i][cols - ind_j - 1].toggleSolid();
+            break;
+        }
+    }
+
+    // If we toggled the currently selected square, change the selected square to the next logical square.
+    std::array<int, 2> currentSquare = getSelectedSquare();
+    if (indices == currentSquare) {
+        indices = getNextLogicalSquare(indices, isAcrossSelected());
+    }
+
+    getWords(); // there may have been unexpected global changes
+    setSelectedSquare(indices);
+    renderSelectedSquare();
 
     // Request redraw.
     renderedGrid.queue_draw();
@@ -218,9 +273,7 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
  */
 void PuzzleGrid::renderSelectedSquare() {
 
-    int ind_i = selectedSquare[0];
-    int ind_j = selectedSquare[1];
-    if (ind_i < 0 || ind_j < 0 || ind_i >= nRows() || ind_j >= nCols()) return;
+    if (!areSquareIndicesValid(selectedSquare)) return;
 
     // De-select all squares first.
     for (size_t i = 0; i < data.size(); i++) {
@@ -229,16 +282,15 @@ void PuzzleGrid::renderSelectedSquare() {
         }
     }
     // Mark the squares in the current word (either across or down.)
+    GridWord* word;
     if (isAcrossSelected()) {
-        size_t word = data[ind_i][ind_j].getAcrossWord();
-        for (auto sq : acrossWords[word]) {
-            sq->setSelectionStatus(cell::state::HIGHLIGHTED);
-        }
+        word = data[ind_i][ind_j].getAcrossWord();
+
     } else {
-        size_t word = data[ind_i][ind_j].getDownWord();
-        for (auto sq : downWords[word]) {
-            sq->setSelectionStatus(cell::state::HIGHLIGHTED);
-        }
+        word = data[ind_i][ind_j].getDownWord();
+    }
+    for (auto sq : word->squares) {
+        sq->setSelectionStatus(cell::state::HIGHLIGHTED);
     }
     // Mark this square as selected.
     data[ind_i][ind_j].setSelectionStatus(cell::state::SELECTED);
@@ -248,13 +300,13 @@ void PuzzleGrid::renderSelectedSquare() {
  * Given the pixel locations of a click, determine which square was clicked.
  *
  * WARNING: The mapping only works if the initial window size is not larger than what can fit on the current device
- * screen. Otherwise, some implicit resizing goes on behind the scenes in a way that I don't quite understand yet, and
- * this mapping only works properly after window gets resized.
+ * screen. Otherwise, some implicit resizing goes on behind the scenes in a way that I don't quite understand yet,
+ * and this mapping only works properly after window gets resized.
  */
 std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
 
-    // Negative numbers get rounded up, positive numbers get rounded down; just return -1 or a number greater than the
-    // max index if click is outside the grid.
+    // Negative numbers get rounded up, positive numbers get rounded down; just return -1 or a number greater than
+    // the max index if click is outside the grid.
     int i = (y - yStart) < 0 ? -1 : std::floor((y - yStart) / squareSize);
     int j = (x - xStart) < 0 ? -1 : std::floor((x - xStart) / squareSize);
     return {i, j};
@@ -267,10 +319,9 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
 // `Tab`: Skip to the next uncompleted word.
 // `Esc`: Enter more than one letter in a box. Hit Esc again or `Enter' to exit this mode.
 // `Enter': Search fills according to user-defined criteria. Generate and display a list of top 10 fills.
-// Arrow keys: move one box in the corrresponding direction (skipping black squares.) This moves in the direction you'd
-// expect in the grid, not necessarily to the next word, in order.
-// Any letter key: Enter the capital letter in the currently
-// selected box (if any); render in gray if the pencil icon is selected.
+// Arrow keys: move one box in the corrresponding direction (skipping black squares.) This moves in the direction
+// you'd expect in the grid, not necessarily to the next word, in order. Any letter key: Enter the capital letter in
+// the currently selected box (if any); render in gray if the pencil icon is selected.
 //
 // +/- new column: complete re-number (getWords())
 // +/- new row: complete re-number (getWords())

@@ -19,18 +19,15 @@ int minButtonHeight = 20;
 } // namespace interface
 
 namespace grid {
-
 namespace params {
 int minRows = 1;
 int maxRows = 1000;
 int N_ROWS = 10; // the initial # of rows
 int N_COLS = 15; // the initial # of cols
 } // namespace params
-
 } // namespace grid
 
 namespace theme {
-
 std::array<float, 3> color_unselected = {1.0, 1.0, 1.0};                 // white
 std::array<float, 3> color_selected = {1.0, 0.843137, 0.0};              // gold
 std::array<float, 3> color_highlighted = {0.690196, 0.866667, 0.984314}; // light sky blue, desaturated
@@ -40,3 +37,10 @@ float black_border_width = 2; // total width of the yellow border around a selec
 float white_border_width = 1; // total width of the gray border around a white square
 float puzzle_border_width = 2;
 } // namespace theme
+
+namespace state {
+bool makeSymmetric = true;
+int symmetryMode = grid::symmetry::TWO_TURN;
+bool enteringMultipleLetters = false;
+bool pencilSelected = false;
+} // namespace state
