@@ -11,28 +11,41 @@ PuzzleGrid::PuzzleGrid() { PuzzleGrid(grid::params::N_ROWS, grid::params::N_COLS
 
 PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     setSize(nRows_, nCols_);
-    renderedGrid.set_draw_func(sigc::mem_fun(*this, &PuzzleGrid::draw));
+    set_draw_func(sigc::mem_fun(*this, &PuzzleGrid::draw));
 
     // Set up non-default event handlers for Gtk::DrawingArea.
-    renderedGrid.set_focus_on_click(true); // DrawingArea will be "focused" when clicked
-    renderedGrid.set_can_target(true);     // DrawingArea can be the target of pointer events
+    // can_focus(true);
+    set_focus_on_click(true); // DrawingArea will be "focused" when clicked
+    set_can_target(true);     // DrawingArea can be the target of pointer events
 
     // gtkmm4 moved all signal-handling functionality to "Gesture*" objects (clicks) and EventController
     // objects (keys.)
     auto leftClickHandler = Gtk::GestureClick::create();
     leftClickHandler->set_button(GDK_BUTTON_PRIMARY); // the left mouse button
     leftClickHandler->signal_pressed().connect(sigc::mem_fun(*this, &PuzzleGrid::on_left_click));
-    renderedGrid.add_controller(leftClickHandler);
+    add_controller(leftClickHandler);
 
     auto rightClickHandler = Gtk::GestureClick::create();
     rightClickHandler->set_button(GDK_BUTTON_SECONDARY); // the right mouse button
     rightClickHandler->signal_pressed().connect(sigc::mem_fun(*this, &PuzzleGrid::on_right_click));
-    renderedGrid.add_controller(rightClickHandler);
+    add_controller(rightClickHandler);
 
     auto keyHandler = Gtk::EventControllerKey::create();
-    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "target"),
+    keyHandler->set_propagation_phase(Gtk::PropagationPhase::BUBBLE);
+    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "bubble"),
                                              false);
-    renderedGrid.add_controller(keyHandler);
+    add_controller(keyHandler);
+
+    // keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::TARGET);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "target"),
+    //                                          false);
+    // add_controller(keyHandler);
+
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::CAPTURE);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "capture"),
+    //                                          false);
+    // add_controller(keyHandler);
 }
 
 void PuzzleGrid::setSize(size_t rows, size_t cols) {
@@ -80,7 +93,7 @@ void PuzzleGrid::draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, in
 
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
-            data[i][j].draw(renderedGrid, cr, squareSize, x + squareSize * j, y + squareSize * i);
+            data[i][j].draw(*this, cr, squareSize, x + squareSize * j, y + squareSize * i);
         }
     }
 }
@@ -338,7 +351,7 @@ void PuzzleGrid::on_left_click(int n_press, double x, double y) {
     setSelectedSquare(indices);
 
     // Request redraw.
-    renderedGrid.queue_draw();
+    queue_draw();
 }
 
 void PuzzleGrid::on_right_click(int n_press, double x, double y) {
@@ -381,7 +394,7 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
     setSelectedSquare(indices);
 
     // Request redraw.
-    renderedGrid.queue_draw();
+    queue_draw();
 }
 
 /*
@@ -446,8 +459,11 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
  */
 bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase) {
 
+    std::cerr << phase << std::endl;
     // Ignore key releases.
     if (keycode != GDK_KEY_PRESS) return true;
+    // If we press keys in any other part of the window.
+    if (!has_focus()) return true;
 
     switch (keyval) {
     case (GDK_KEY_Tab):
@@ -471,7 +487,7 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
         break;
     case (GDK_KEY_uparrow):
         // Arrow keys: move one box in the corrresponding direction (skipping black squares.) This moves in
-        // the direction you'd expect in the grid, not necessarily to the next word, in order.
+        // the direction you'd expect in the grid, not necessarily to the next logical square.
         setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_uparrow));
         break;
     case (GDK_KEY_downarrow):
@@ -488,10 +504,12 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
     // Else, assume the user meant to enter a character in the current square.
     // https://developer-old.gnome.org/gtkmm/stable/namespaceGtk_1_1Accelerator.html#details
     Glib::ustring character = Gtk::Accelerator::get_label(keyval, Gdk::ModifierType::SHIFT_MASK);
+    // const gunichar unichar = gdk_keyval_to_unicode(keyval);
+    std::cerr << character << std::endl;
     // TODO: Any letter key: Enter the capital letter in the currently selected box (if any); render in gray if the
     // pencil icon is selected.
 
-    renderedGrid.queue_draw();
+    queue_draw();
 
-    return true;
+    return false;
 }

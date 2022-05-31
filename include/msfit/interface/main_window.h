@@ -40,4 +40,5 @@ class MainWindow : public Gtk::Window {
     PuzzleGrid puzzleGrid;
 
     // TODO: Signal handlers
+    bool on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase);
 };

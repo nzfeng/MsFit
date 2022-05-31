@@ -1,5 +1,6 @@
 #include "msfit/interface/main_window.h"
 #include "msfit/utilities/state.h"
+#include <gtkmm/eventcontrollerkey.h>
 
 /*
  * Construct main window, and auto-initialize its components.
@@ -43,5 +44,62 @@ MainWindow::MainWindow()
     canvasContainer.set_yalign(Gtk::Align::CENTER);
     canvasContainer.set_obey_child(false);
     canvasContainer.set_ratio(1.0); // aspect ratio of grid is maintained
-    canvasContainer.set_child(puzzleGrid.renderedGrid);
+    canvasContainer.set_child(puzzleGrid);
+
+    auto keyHandler = Gtk::EventControllerKey::create();
+    keyHandler->set_propagation_phase(Gtk::PropagationPhase::BUBBLE);
+    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "bubble"),
+                                             false);
+    add_controller(keyHandler);
+
+    keyHandler = Gtk::EventControllerKey::create();
+    keyHandler->set_propagation_phase(Gtk::PropagationPhase::TARGET);
+    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "target"),
+                                             false);
+    add_controller(keyHandler);
+
+    keyHandler = Gtk::EventControllerKey::create();
+    keyHandler->set_propagation_phase(Gtk::PropagationPhase::CAPTURE);
+    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "capture"),
+                                             false);
+    add_controller(keyHandler);
+
+    // keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::BUBBLE);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "bubble"),
+    //                                          false);
+    // puzzleGrid.add_controller(keyHandler);
+
+    // keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::TARGET);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "target"),
+    //                                          false);
+    // puzzleGrid.add_controller(keyHandler);
+
+    // keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::CAPTURE);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "capture"),
+    //                                          false);
+    // puzzleGrid.add_controller(keyHandler);
+}
+
+/*
+ * Overwrite default window key handler.
+ */
+bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase) {
+
+    std::cerr << "Phase: " << phase << std::endl;
+
+    std::cerr << has_focus() << std::endl;
+    std::cerr << "mainContainer " << mainContainer.has_focus() << std::endl;
+    std::cerr << "gridContainer " << gridContainer.has_focus() << std::endl;
+    std::cerr << "rhs menu " << rightMenuContainer.has_focus() << std::endl;
+    std::cerr << "bottom menu " << bottomMenuContainer.has_focus() << std::endl;
+    std::cerr << "canvasContainer " << canvasContainer.has_focus() << std::endl;
+    std::cerr << "puzzleGrid " << puzzleGrid.has_focus() << std::endl;
+
+    // if (phase == "capture" && !puzzleGrid.has_focus()) {
+    //     return true;
+    // }
+    return false;
 }

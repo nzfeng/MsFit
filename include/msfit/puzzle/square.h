@@ -12,6 +12,7 @@
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/utilities/state.h"
 
+// TODO: inherit from Gtk::Entry?
 class Square {
 
   public:

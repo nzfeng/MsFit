@@ -20,7 +20,7 @@
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/square.h"
 
-class PuzzleGrid {
+class PuzzleGrid : public Gtk::DrawingArea {
 
   public:
     PuzzleGrid();
@@ -40,8 +40,6 @@ class PuzzleGrid {
     bool isOneTurnSymmetric() const;
     bool isMirroredUpDown() const;
     bool isMirroredLeftRight() const;
-
-    Gtk::DrawingArea renderedGrid;
 
     // Rendering help
     bool isAcrossSelected() const;
