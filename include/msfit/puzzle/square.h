@@ -25,15 +25,37 @@ class Square {
     int getSize() const;
 
     bool isSolid() const;
-    bool toggleSolid();
+    void toggleSolid();
 
     void setNumber(int num);
     int getNumber() const;
 
-    void setDownWord(GridWord* word);
-    GridWord* getDownWord() const;
-    void setAcrossWord(GridWord* word);
-    GridWord* getAcrossWord() const;
+    void setLeft(Square* neighbor);
+    void setRight(Square* neighbor);
+    void setAbove(Square* neighbor);
+    void setBelow(Square* neighbor);
+    Square* getLeft() const;
+    Square* getRight() const;
+    Square* getAbove() const;
+    Square* getBelow() const;
+
+    void setPosition(int i, int j);
+    std::array<int, 2> getPosition() const;
+
+    // void setDownWord(GridWord* word);
+    // GridWord* getDownWord() const;
+    // void setAcrossWord(GridWord* word);
+    // GridWord* getAcrossWord() const;
+
+    void setDownWord(size_t index);
+    size_t getDownWord() const;
+    void setAcrossWord(size_t index);
+    size_t getAcrossWord() const;
+
+    void setDownWordIndex(size_t index);
+    void setAcrossWordIndex(size_t index);
+    size_t getAcrossWordIndex() const;
+    size_t getDownWordIndex() const;
 
     void setSelectionStatus(int status);
 
@@ -50,14 +72,16 @@ class Square {
     int number = -1; // only positive if this square is the start of a new word
 
     // Info about this square within the grid
-    // Square& left;
-    // Square& right;
-    // Square& above;
-    // Square& below;
+    Square* left;
+    Square* right;
+    Square* above;
+    Square* below;
+    std::array<int, 2> position;
 
     // Words that this square belongs to
-    GridWord* acrossWord;
-    GridWord* downWord;
+    size_t acrossWord, downWord;
+    // The index of this square within each word.
+    size_t acrossWordIndex, downWordIndex;
 };
 
 #include "msfit/puzzle/square.ipp"

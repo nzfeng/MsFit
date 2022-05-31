@@ -1,6 +1,6 @@
 #pragma once
 
-#include "msfit/puzzle/square.h"
+class Square; // forward declaration, since square.h also includes grid_word.h
 
 struct GridWord {
     bool isAcross;

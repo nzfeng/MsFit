@@ -52,10 +52,14 @@ class PuzzleGrid {
 
     // Get the next white square in the across/down direction, possibly the start of the next word.
     std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const;
+    std::array<int, 2> getPreviousLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const;
     // Get the next white square in the given direction.
-    // std::array<int,2> getNextGeometricSquare(const std::array<int,2> &indices) const;
+    std::array<int, 2> getNextGeometricSquare(const std::array<int, 2>& indices, guint keyval);
 
   private:
+    // A bunch of variables/functions in PuzzleGrid, GridWord, and Square depend on pointers to elements in <data>;
+    // these pointers will remain valid as long as <data> is not resized. Whenever the grid is resized (i.e. setSize()
+    // is called), all pointers in these objects should be reset in getWords().
     std::vector<std::vector<Square>> data; // row-major order
 
     // Rendering info. Variables set in the draw() function.
@@ -65,13 +69,15 @@ class PuzzleGrid {
 
     // Based on the current pattern of white/black squares, determine the words of the puzzle (contiguous blocks of
     // white squares) and their numbers.
-    std::vector<GridWord> gridWords;
+    std::vector<GridWord> acrossWords, downWords;
+    void setSquareNeighbors();
     void getWords();
 
     // Functions for signal handlers
     void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
     void on_left_click(int n_press, double x, double y);
     void on_right_click(int n_press, double x, double y);
+    bool on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase);
     std::array<int, 2> mapClickToSquareIndex(double x, double y); // map cursor click to index of square in the grid
 
     // Interactive state variables particular to the grid.

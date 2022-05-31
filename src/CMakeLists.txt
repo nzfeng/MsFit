@@ -7,6 +7,7 @@ endif()
 
 # List of .cpp files to be compiled
 SET(SRCS
+  utilities/utils.cpp
   utilities/state.cpp
   utilities/drawing_utils.cpp
 
@@ -21,6 +22,7 @@ SET(SRCS
 
 SET(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../include/msfit/")
 SET(HEADERS
+  ${INCLUDE_ROOT}/utilities/utils.h
   ${INCLUDE_ROOT}/utilities/state.h
   ${INCLUDE_ROOT}/utilities/drawing_utils.h
   ${INCLUDE_ROOT}/utilities/vector2.h

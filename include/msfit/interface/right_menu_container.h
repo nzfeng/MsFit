@@ -24,12 +24,14 @@ class RightMenuContainer : public Gtk::Notebook {
 
     void setUpMenuPage();
     void setUpCluesPage();
+    void setUpSummaryPage();
+
     Gtk::Grid setUpGridSymmetrySettings();
     Gtk::Grid setUpGridDimensionSettings();
     Gtk::Box setUpPuzzleIOSettings();
 
     // Frames containing user-defined callbacks, general crossword settings
-    Gtk::Box menuBox, clueBox;
+    Gtk::Box menuBox, clueBox, summaryBox;
     Gtk::Frame userCallbacksFrame, settingsFrame;
     Gtk::Box userCallbacksBox, settingsBox;
 

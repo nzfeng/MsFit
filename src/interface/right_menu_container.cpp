@@ -13,6 +13,7 @@ RightMenuContainer::RightMenuContainer() {
 
     setUpMenuPage();
     setUpCluesPage();
+    setUpSummaryPage();
 }
 
 void RightMenuContainer::setUpMenuPage() {
@@ -137,3 +138,5 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
 }
 
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
+
+void RightMenuContainer::setUpSummaryPage() { append_page(summaryBox, "Summary"); }
