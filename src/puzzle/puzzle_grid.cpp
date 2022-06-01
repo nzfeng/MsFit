@@ -17,7 +17,7 @@ PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     set_can_focus(true); // whether the input focus can enter the widget or any of its children
     set_focusable(true); // Specifies whether widget can own the input focus
     // has_visible_focus();
-    // grab_focus(true); // Causes widget (or one of its descendents) to have the focus for the Gtk::Window it's inside
+    // grab_focus(); // Causes widget (or one of its descendents) to have the focus for the Gtk::Window it's inside
     set_focus_on_click(true); // DrawingArea will be "focused" when clicked
     set_can_target(true);     // DrawingArea can be the target of pointer events
 

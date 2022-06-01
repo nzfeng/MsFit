@@ -43,6 +43,7 @@ class MainWindow : public Gtk::Window {
 
     // TODO: Signal handlers
     bool on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase);
+    void on_left_click(int n_press, double x, double y);
 
     void on_size_button_clicked(int buttonIndex);
     void on_sizeSpinner_clicked(int buttonIndex);

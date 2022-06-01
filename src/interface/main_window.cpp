@@ -1,6 +1,8 @@
 #include "msfit/interface/main_window.h"
 #include "msfit/utilities/state.h"
+
 #include <gtkmm/eventcontrollerkey.h>
+#include <gtkmm/gestureclick.h>
 
 /*
  * Construct main window, and auto-initialize its components.
@@ -41,12 +43,21 @@ MainWindow::MainWindow()
 
     connectMenuButtons();
 
+    rightMenuContainer.set_can_focus(false);
+    bottomMenuContainer.set_can_focus(false);
+
     canvasContainer.set_margin(interface::params::margin);
     canvasContainer.set_xalign(Gtk::Align::CENTER);
     canvasContainer.set_yalign(Gtk::Align::CENTER);
     canvasContainer.set_obey_child(false);
     canvasContainer.set_ratio(1.0); // aspect ratio of grid is maintained
     canvasContainer.set_child(puzzleGrid);
+
+    // Event handlers
+    auto leftClickHandler = Gtk::GestureClick::create();
+    leftClickHandler->set_button(GDK_BUTTON_PRIMARY); // the left mouse button
+    leftClickHandler->signal_pressed().connect(sigc::mem_fun(*this, &MainWindow::on_left_click));
+    add_controller(leftClickHandler);
 
     auto keyHandler = Gtk::EventControllerKey::create();
     keyHandler->set_propagation_phase(Gtk::PropagationPhase::BUBBLE);
@@ -110,6 +121,8 @@ bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
     }
     return false;
 }
+
+void MainWindow::on_left_click(int n_press, double x, double y) {}
 
 /*
  * On of the preset grid sizes in the RHS menu was clicked. Ideally, this would have remained in the RightMenuContainer
