@@ -7,16 +7,16 @@
 namespace interface {
 namespace params {
 
-extern int margin;
-extern int window_width;
-extern int window_height;
-extern int grid_container_width;
-extern int grid_container_height;
-extern int right_menu_width;
-extern int bottom_menu_height;
-extern int separator_margin;
-extern int minButtonWidth;
-extern int minButtonHeight;
+    extern int margin;
+    extern int window_width;
+    extern int window_height;
+    extern int grid_container_width;
+    extern int grid_container_height;
+    extern int right_menu_width;
+    extern int bottom_menu_height;
+    extern int separator_margin;
+    extern int minButtonWidth;
+    extern int minButtonHeight;
 } // namespace params
 } // namespace interface
 
@@ -40,14 +40,18 @@ enum state { UNSELECTED, SELECTED, HIGHLIGHTED };
 namespace grid {
 
 namespace symmetry {
-enum state { ASYMMETRIC, TWO_TURN, ONE_TURN, MIRROR_UD, MIRROR_LR };
+    enum state { ASYMMETRIC, TWO_TURN, ONE_TURN, MIRROR_UD, MIRROR_LR };
 } // namespace symmetry
 
+namespace wordtype {
+    enum state { ACROSS, DOWN };
+}
+
 namespace params {
-extern int minRows;
-extern int maxRows;
-extern int N_ROWS; // initial # of rows
-extern int N_COLS; // initial # of cols
+    extern int minRows;
+    extern int maxRows;
+    extern int N_ROWS; // initial # of rows
+    extern int N_COLS; // initial # of cols
 } // namespace params
 
 } // namespace grid

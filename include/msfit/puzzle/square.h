@@ -48,17 +48,15 @@ class Square {
     // void setAcrossWord(GridWord* word);
     // GridWord* getAcrossWord() const;
 
-    void setDownWord(size_t index);
-    size_t getDownWord() const;
-    void setAcrossWord(size_t index);
-    size_t getAcrossWord() const;
+    void setWord(size_t index, int wordtype);
+    size_t getWord(int wordtype) const;
 
-    void setDownWordIndex(size_t index);
-    void setAcrossWordIndex(size_t index);
-    size_t getAcrossWordIndex() const;
-    size_t getDownWordIndex() const;
+    void setIndexOfCharInWord(size_t index, int wordtype);
+    size_t getIndexOfCharInWord(int wordtype) const;
 
     void setSelectionStatus(int status);
+
+    bool isEmpty() const;
 
     // Render this square with the given side length (<width>) on the canvas <cr>, with its upper left corner at the
     // specified position on <cr>, which represents the entire puzzle.
@@ -80,9 +78,9 @@ class Square {
     std::array<int, 2> position;
 
     // Words that this square belongs to
-    size_t acrossWord, downWord;
+    size_t wordIndex[2];
     // The index of this square within each word.
-    size_t acrossWordIndex, downWordIndex;
+    size_t charIndex[2];
 };
 
 #include "msfit/puzzle/square.ipp"

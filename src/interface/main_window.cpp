@@ -88,18 +88,18 @@ MainWindow::MainWindow()
  */
 bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase) {
 
-    std::cerr << "Phase: " << phase << std::endl;
+    // std::cerr << "Phase: " << phase << std::endl;
 
-    std::cerr << has_focus() << std::endl;
-    std::cerr << "mainContainer " << mainContainer.has_focus() << std::endl;
-    std::cerr << "gridContainer " << gridContainer.has_focus() << std::endl;
-    std::cerr << "rhs menu " << rightMenuContainer.has_focus() << std::endl;
-    std::cerr << "bottom menu " << bottomMenuContainer.has_focus() << std::endl;
-    std::cerr << "canvasContainer " << canvasContainer.has_focus() << std::endl;
-    std::cerr << "puzzleGrid " << puzzleGrid.has_focus() << std::endl;
+    // std::cerr << has_focus() << std::endl;
+    // std::cerr << "mainContainer " << mainContainer.has_focus() << std::endl;
+    // std::cerr << "gridContainer " << gridContainer.has_focus() << std::endl;
+    // std::cerr << "rhs menu " << rightMenuContainer.has_focus() << std::endl;
+    // std::cerr << "bottom menu " << bottomMenuContainer.has_focus() << std::endl;
+    // std::cerr << "canvasContainer " << canvasContainer.has_focus() << std::endl;
+    // std::cerr << "puzzleGrid " << puzzleGrid.has_focus() << std::endl;
 
-    // if (phase == "capture" && !puzzleGrid.has_focus()) {
-    //     return true;
-    // }
+    if (phase == "capture" && !puzzleGrid.has_focus()) {
+        return true;
+    }
     return false;
 }

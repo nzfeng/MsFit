@@ -42,15 +42,17 @@ class PuzzleGrid : public Gtk::DrawingArea {
     bool isMirroredLeftRight() const;
 
     // Rendering help
-    bool isAcrossSelected() const;
+    bool getWordMode() const;
+    void setWordMode(int wordtype);
     bool areSquareIndicesValid(const std::array<int, 2>& indices) const;
     std::array<int, 2> getSelectedSquare() const;
     void setSelectedSquare(const std::array<int, 2>& indices);
     void renderSelectedSquare();
 
     // Get the next white square in the across/down direction, possibly the start of the next word.
-    std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const;
-    std::array<int, 2> getPreviousLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const;
+    std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const;
+    std::array<int, 2> getPreviousLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const;
+    std::array<int, 2> getNextLogicalEmptySquare(const std::array<int, 2>& indices, const int wordtype) const;
     // Get the next white square in the given direction.
     std::array<int, 2> getNextGeometricSquare(const std::array<int, 2>& indices, guint keyval);
 
@@ -61,13 +63,13 @@ class PuzzleGrid : public Gtk::DrawingArea {
     std::vector<std::vector<Square>> data; // row-major order
 
     // Rendering info. Variables set in the draw() function.
-    size_t xStart, yStart;      // pixel location of the upper left corner of the grid
-    size_t squareSize;          // side length of each square
-    bool acrossSelected = true; // are we in across mode?
+    size_t xStart, yStart; // pixel location of the upper left corner of the grid
+    size_t squareSize;     // side length of each square
+    int wordtypeMode = 0;  // Are we in across mode or down mode?
 
     // Based on the current pattern of white/black squares, determine the words of the puzzle (contiguous blocks of
     // white squares) and their numbers.
-    std::vector<GridWord> acrossWords, downWords;
+    std::vector<std::vector<GridWord>> gridWords;
     void setSquareNeighbors();
     void getWords();
 

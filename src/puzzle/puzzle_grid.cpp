@@ -14,7 +14,10 @@ PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     set_draw_func(sigc::mem_fun(*this, &PuzzleGrid::draw));
 
     // Set up non-default event handlers for Gtk::DrawingArea.
-    // can_focus(true);
+    set_can_focus(true); // whether the input focus can enter the widget or any of its children
+    set_focusable(true); // Specifies whether widget can own the input focus
+    // has_visible_focus();
+    // grab_focus(true); // Causes widget (or one of its descendents) to have the focus for the Gtk::Window it's inside
     set_focus_on_click(true); // DrawingArea will be "focused" when clicked
     set_can_target(true);     // DrawingArea can be the target of pointer events
 
@@ -122,8 +125,10 @@ void PuzzleGrid::setSquareNeighbors() {
  */
 void PuzzleGrid::getWords() {
 
-    acrossWords.clear();
-    downWords.clear();
+    gridWords.resize(2);
+    gridWords[grid::wordtype::ACROSS].clear();
+    gridWords[grid::wordtype::DOWN].clear();
+
     // A square is the start of a new across/down word iff it doesn't have a (white) neighbor to the left/above.
     int currNum = 1;
     for (size_t i = 0; i < data.size(); i++) {
@@ -138,7 +143,7 @@ void PuzzleGrid::getWords() {
                 data[i][j].setNumber(currNum);
                 isNumberSet = true;
                 GridWord newWord = {true, {&data[i][j]}};
-                acrossWords.push_back(newWord);
+                gridWords[grid::wordtype::ACROSS].push_back(newWord);
                 currNum++;
             }
             // Start of a new down word
@@ -148,32 +153,34 @@ void PuzzleGrid::getWords() {
                     currNum++;
                 }
                 GridWord newWord = {false, {&data[i][j]}};
-                downWords.push_back(newWord);
+                gridWords[grid::wordtype::DOWN].push_back(newWord);
             }
         }
     }
 
     // Set the <word> member variables in each Square.
-    for (size_t i = 0; i < acrossWords.size(); i++) {
-        Square* curr = acrossWords[i].squares[0];
+    int wordtype = grid::wordtype::ACROSS;
+    for (size_t i = 0; i < gridWords[wordtype].size(); i++) {
+        Square* curr = gridWords[wordtype][i].squares[0];
         while (true) {
-            curr->setAcrossWord(i);
-            curr->setAcrossWordIndex(acrossWords[i].squares.size() - 1);
+            curr->setWord(i, wordtype);
+            curr->setIndexOfCharInWord(gridWords[wordtype][i].squares.size() - 1, wordtype);
             curr = curr->getRight();
             if (curr == NULL) break;
             if (curr->isSolid()) break;
-            acrossWords[i].squares.push_back(curr);
+            gridWords[wordtype][i].squares.push_back(curr);
         }
     }
-    for (size_t i = 0; i < downWords.size(); i++) {
-        Square* curr = downWords[i].squares[0];
+    wordtype = grid::wordtype::DOWN;
+    for (size_t i = 0; i < gridWords[wordtype].size(); i++) {
+        Square* curr = gridWords[wordtype][i].squares[0];
         while (true) {
-            curr->setDownWord(i);
-            curr->setDownWordIndex(downWords[i].squares.size() - 1);
+            curr->setWord(i, wordtype);
+            curr->setIndexOfCharInWord(gridWords[wordtype][i].squares.size() - 1, wordtype);
             curr = curr->getBelow();
             if (curr == NULL) break;
             if (curr->isSolid()) break;
-            downWords[i].squares.push_back(curr);
+            gridWords[wordtype][i].squares.push_back(curr);
         }
     }
 }
@@ -241,69 +248,86 @@ bool PuzzleGrid::areSquareIndicesValid(const std::array<int, 2>& indices) const 
 /*
  * Could also just return a Square*.
  */
-std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const {
+std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const {
 
     if (!areSquareIndicesValid(indices)) return {-1, -1};
 
     // Determine which word this square belongs to.
     auto [ind_i, ind_j] = indices;
 
-    if (isAcross) {
-        size_t wordIndex = data[ind_i][ind_j].getAcrossWord();
-        size_t charIndex = data[ind_i][ind_j].getAcrossWordIndex();
-        assert(wordIndex >= 0 && wordIndex < acrossWords.size());
-        assert(charIndex >= 0 && charIndex < acrossWords[wordIndex].squares.size());
-        GridWord word = acrossWords[wordIndex];
-        if (charIndex < word.squares.size() - 1) {
-            return {ind_i, ind_j + 1};
-        }
-        // Get beginning of next word.
-        GridWord nextWord = acrossWords[mod(wordIndex + 1, acrossWords.size())];
-        return nextWord.squares[0]->getPosition();
-    } else {
-        size_t wordIndex = data[ind_i][ind_j].getDownWord();
-        size_t charIndex = data[ind_i][ind_j].getDownWordIndex();
-        assert(wordIndex >= 0 && wordIndex < downWords.size());
-        assert(charIndex >= 0 && charIndex < downWords[wordIndex].squares.size());
-        GridWord word = downWords[wordIndex];
-        if (charIndex < word.squares.size() - 1) {
-            return {ind_i + 1, ind_j};
-        }
-        // Get beginning of next word.
-        GridWord nextWord = downWords[mod(wordIndex + 1, downWords.size())];
-        return nextWord.squares[0]->getPosition();
+    if (data[ind_i][ind_j].isSolid()) return {-1, -1};
+
+
+    size_t wordIndex = data[ind_i][ind_j].getWord(wordtype);
+    size_t charIndex = data[ind_i][ind_j].getIndexOfCharInWord(wordtype);
+    GridWord word = gridWords[wordtype][wordIndex];
+    if (charIndex < word.squares.size() - 1) {
+        return {ind_i, ind_j + 1};
     }
+    // Get beginning of next word.
+    GridWord nextWord = gridWords[wordtype][mod(wordIndex + 1, gridWords[wordtype].size())];
+    return nextWord.squares[0]->getPosition();
+
     return {-1, -1}; // shouldn't get here
 }
 
-std::array<int, 2> PuzzleGrid::getPreviousLogicalSquare(const std::array<int, 2>& indices, bool isAcross) const {
+std::array<int, 2> PuzzleGrid::getPreviousLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const {
 
     if (!areSquareIndicesValid(indices)) return {-1, -1};
 
     // Determine which word this square belongs to.
     auto [ind_i, ind_j] = indices;
 
-    if (isAcross) {
-        int wordIndex = data[ind_i][ind_j].getAcrossWord();
-        int charIndex = data[ind_i][ind_j].getAcrossWordIndex();
-        GridWord word = acrossWords[wordIndex];
-        if (charIndex > 0) {
-            return {ind_i, ind_j - 1};
-        }
-        // Get last of previous word.
-        GridWord prevWord = acrossWords[mod(wordIndex - 1, acrossWords.size())];
-        return prevWord.squares[prevWord.squares.size() - 1]->getPosition();
-    } else {
-        int wordIndex = data[ind_i][ind_j].getDownWord();
-        int charIndex = data[ind_i][ind_j].getDownWordIndex();
-        GridWord word = downWords[wordIndex];
-        if (charIndex > 0) {
-            return {ind_i - 1, ind_j};
-        }
-        // Get last of previous word.
-        GridWord prevWord = downWords[mod(wordIndex - 1, downWords.size())];
-        return prevWord.squares[prevWord.squares.size() - 1]->getPosition();
+    if (data[ind_i][ind_j].isSolid()) return {-1, -1};
+
+    int wordIndex = data[ind_i][ind_j].getWord(wordtype);
+    int charIndex = data[ind_i][ind_j].getIndexOfCharInWord(wordtype);
+    GridWord word = gridWords[wordtype][wordIndex];
+    if (charIndex > 0) {
+        return {ind_i, ind_j - 1};
     }
+    // Get last of previous word.
+    GridWord prevWord = gridWords[wordtype][mod(wordIndex - 1, gridWords[wordtype].size())];
+    return prevWord.squares[prevWord.squares.size() - 1]->getPosition();
+
+    return {-1, -1}; // shouldn't get here
+}
+
+std::array<int, 2> PuzzleGrid::getNextLogicalEmptySquare(const std::array<int, 2>& indices, const int wordtype) const {
+
+    if (!areSquareIndicesValid(indices)) return {-1, -1};
+
+    // Determine which word this square belongs to.
+    auto [ind_i, ind_j] = indices;
+
+    if (data[ind_i][ind_j].isSolid()) return {-1, -1};
+
+    size_t wordIndex = data[ind_i][ind_j].getWord(wordtype);
+    size_t charIndex = data[ind_i][ind_j].getIndexOfCharInWord(wordtype);
+    Square* sq;
+    for (size_t i = charIndex + 1; i < gridWords[wordtype][wordIndex].squares.size(); i++) {
+        sq = gridWords[wordtype][wordIndex].squares[i];
+        if (sq->isEmpty()) {
+            return sq->getPosition();
+        }
+    }
+
+    size_t currWord = wordIndex;
+    size_t nWords = gridWords[wordtype].size();
+    size_t nChars;
+    while (true) {
+        currWord = mod(currWord + 1, nWords);
+        size_t nChars = gridWords[wordtype][currWord].squares.size();
+        for (size_t i = 0; i < nChars; i++) {
+            sq = gridWords[wordtype][currWord].squares[i];
+            if (sq->isEmpty()) {
+                return sq->getPosition();
+            }
+            // if we're back where we started (i.e. the puzzle is completely filled)
+            if (currWord == wordIndex && i == charIndex) return indices;
+        }
+    }
+
     return {-1, -1}; // shouldn't get here
 }
 
@@ -312,29 +336,31 @@ std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& 
     auto [i, j] = indices;
     int N = nRows();
     int M = nCols();
+
+    // If there are no white squares in the current row/col, just return the original square so we don't accidentally
+    // loop forever in one of the while loops below.
     Square sq;
     switch (keyval) {
-        // TODO: need to implement wrap-around
-    case (GDK_KEY_uparrow):
-        do {
-            sq = data[mod(i - 1, N)][j];
-        } while (!sq.isSolid());
-        break;
-    case (GDK_KEY_downarrow):
-        do {
-            sq = data[mod(i + 1, N)][j];
-        } while (!sq.isSolid());
-        break;
-    case (GDK_KEY_leftarrow):
-        do {
-            sq = data[i][mod(j - 1, M)];
-        } while (!sq.isSolid());
-        break;
-    case (GDK_KEY_rightarrow):
-        do {
-            sq = data[i][mod(j + 1, M)];
-        } while (!sq.isSolid());
-        break;
+        case (GDK_KEY_Up):
+            do {
+                sq = data[mod(i - 1, N)][j];
+            } while (sq.isSolid() && sq.getPosition()[0] != i);
+            break;
+        case (GDK_KEY_Down):
+            do {
+                sq = data[mod(i + 1, N)][j];
+            } while (sq.isSolid() && sq.getPosition()[0] != i);
+            break;
+        case (GDK_KEY_Left):
+            do {
+                sq = data[i][mod(j - 1, M)];
+            } while (sq.isSolid() && sq.getPosition()[1] != j);
+            break;
+        case (GDK_KEY_Right):
+            do {
+                sq = data[i][mod(j + 1, M)];
+            } while (sq.isSolid() && sq.getPosition()[1] != j);
+            break;
     }
     return sq.getPosition();
 }
@@ -347,6 +373,10 @@ void PuzzleGrid::on_left_click(int n_press, double x, double y) {
     std::array<int, 2> indices = mapClickToSquareIndex(x, y);
     // If outside the grid, don't do anything.
     if (!areSquareIndicesValid(indices)) return;
+
+    // Don't allow selection of black squares with left click.
+    auto [i, j] = indices;
+    if (data[i][j].isSolid()) return;
 
     setSelectedSquare(indices);
 
@@ -369,25 +399,25 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
         size_t rows = nRows();
         size_t cols = nCols();
         switch (state::symmetryMode) {
-        case (grid::symmetry::TWO_TURN):
-            data[rows - ind_i - 1][cols - ind_j - 1].toggleSolid();
-            break;
-        case (grid::symmetry::ONE_TURN):
-            data[ind_i][cols - ind_j - 1].toggleSolid();
-            break;
-        case (grid::symmetry::MIRROR_UD):
-            data[rows - ind_i - 1][ind_j].toggleSolid();
-            break;
-        case (grid::symmetry::MIRROR_LR):
-            data[ind_i][cols - ind_j - 1].toggleSolid();
-            break;
+            case (grid::symmetry::TWO_TURN):
+                data[rows - ind_i - 1][cols - ind_j - 1].toggleSolid();
+                break;
+            case (grid::symmetry::ONE_TURN):
+                data[ind_i][cols - ind_j - 1].toggleSolid();
+                break;
+            case (grid::symmetry::MIRROR_UD):
+                data[rows - ind_i - 1][ind_j].toggleSolid();
+                break;
+            case (grid::symmetry::MIRROR_LR):
+                data[ind_i][cols - ind_j - 1].toggleSolid();
+                break;
         }
     }
 
     // If we toggled the currently selected square, change the selected square to the next logical square.
     std::array<int, 2> currentSquare = getSelectedSquare();
     if (indices == currentSquare) {
-        indices = getNextLogicalSquare(indices, isAcrossSelected());
+        indices = getNextLogicalSquare(indices, getWordMode());
     }
 
     getWords(); // there may have been unexpected global changes
@@ -403,23 +433,21 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
  */
 void PuzzleGrid::renderSelectedSquare() {
 
-    if (!areSquareIndicesValid(selectedSquare)) return;
-
     // De-select all squares first.
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
             data[i][j].setSelectionStatus(cell::state::UNSELECTED);
         }
     }
+
+    if (!areSquareIndicesValid(getSelectedSquare())) return;
+
     // Mark the squares in the current word (either across or down.)
     GridWord* word;
     auto [ind_i, ind_j] = getSelectedSquare();
-    if (isAcrossSelected()) {
-        word = &acrossWords[data[ind_i][ind_j].getAcrossWord()];
+    int wordtype = getWordMode();
+    word = &gridWords[wordtype][data[ind_i][ind_j].getWord(wordtype)];
 
-    } else {
-        word = &downWords[data[ind_i][ind_j].getDownWord()];
-    }
     for (auto sq : word->squares) {
         sq->setSelectionStatus(cell::state::HIGHLIGHTED);
     }
@@ -459,57 +487,59 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
  */
 bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase) {
 
-    std::cerr << phase << std::endl;
-    // Ignore key releases.
-    if (keycode != GDK_KEY_PRESS) return true;
+    // std::cerr << phase << std::endl;
+    if (phase != "bubble") return false;
     // If we press keys in any other part of the window.
     if (!has_focus()) return true;
 
+    // Could also use gdk_keyval_name(keyval)
     switch (keyval) {
-    case (GDK_KEY_Tab):
-        // TODO: Skip to the next unfilled square; do nothing if puzzle is full.
-        break;
-    case (GDK_KEY_space):
-        // TODO: `Space`: Toggle across/down.
-        break;
-    case (GDK_KEY_BackSpace):
-        // TODO: Backspace: clear the current square, or go back a square if the current one is empty. TODO: Upon
-        // multiple backspaces, continually clear the current square and go backward.
-        break;
-    case (GDK_KEY_Delete):
-        // TODO: same as backspace
-        break;
-    case (GDK_KEY_Escape):
-        // TODO: `Esc`: Enter more than one letter in a box. Hit Esc again or `Enter' to exit this mode.
-        break;
-    case (GDK_KEY_Return):
-        // TODO: Search fills according to user-defined criteria. Generate and display a list of top 10 fills.
-        break;
-    case (GDK_KEY_uparrow):
-        // Arrow keys: move one box in the corrresponding direction (skipping black squares.) This moves in
-        // the direction you'd expect in the grid, not necessarily to the next logical square.
-        setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_uparrow));
-        break;
-    case (GDK_KEY_downarrow):
-        setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_downarrow));
-        break;
-    case (GDK_KEY_leftarrow):
-        setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_leftarrow));
-        break;
-    case (GDK_KEY_rightarrow):
-        setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_rightarrow));
-        break;
+        case (GDK_KEY_Tab):
+            // Skip to the next unfilled (text-less) square; do nothing if puzzle is full.
+            setSelectedSquare(getNextLogicalEmptySquare(getSelectedSquare(), getWordMode()));
+            break;
+        case (GDK_KEY_space):
+            // `Space`: Toggle across/down.
+            setWordMode(mod(getWordMode() + 1, 2)); // replace 2 with number of wordtypes if necessary
+            break;
+        case (GDK_KEY_BackSpace):
+            // TODO: Backspace: clear the current square, or go back a square if the current one is empty. TODO: Upon
+            // multiple backspaces, continually clear the current square and go backward.
+            break;
+        case (GDK_KEY_Delete):
+            // TODO: same as backspace
+            break;
+        case (GDK_KEY_Escape):
+            // TODO: `Esc`: Enter more than one letter in a box. Hit Esc again or `Enter' to exit this mode.
+            break;
+        case (GDK_KEY_Return):
+            // TODO: Search fills according to user-defined criteria. Generate and display a list of top 10 fills.
+            break;
+        case (GDK_KEY_Up):
+            // Arrow keys: move one box in the corrresponding direction (skipping black squares.) This moves in
+            // the direction you'd expect in the grid, not necessarily to the next logical square.
+            setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_Up));
+            break;
+        case (GDK_KEY_Down):
+            setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_Down));
+            break;
+        case (GDK_KEY_Left):
+            setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_Left));
+            break;
+        case (GDK_KEY_Right):
+            setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_Right));
+            break;
     }
 
     // Else, assume the user meant to enter a character in the current square.
     // https://developer-old.gnome.org/gtkmm/stable/namespaceGtk_1_1Accelerator.html#details
     Glib::ustring character = Gtk::Accelerator::get_label(keyval, Gdk::ModifierType::SHIFT_MASK);
-    // const gunichar unichar = gdk_keyval_to_unicode(keyval);
-    std::cerr << character << std::endl;
+    // const gunichar character = gdk_keyval_to_unicode(keyval);
+    // std::cerr << character << std::endl;
     // TODO: Any letter key: Enter the capital letter in the currently selected box (if any); render in gray if the
     // pencil icon is selected.
 
     queue_draw();
 
-    return false;
+    return true;
 }
