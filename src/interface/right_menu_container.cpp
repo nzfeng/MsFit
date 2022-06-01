@@ -64,7 +64,10 @@ Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
     makeSymmetricButton.set_name("Symmetry toggle");
     makeSymmetricButton.set_halign(Gtk::Align::END);
     makeSymmetricButton.set_active(state::makeSymmetric);
+    makeSymmetricButton.property_active().signal_changed().connect(
+        sigc::mem_fun(*this, &RightMenuContainer::on_makeSymmetric_button_toggled));
     gridSymmetryBox.attach(makeSymmetricButton, 1, 0);
+
     // TODO: Idk how to label a switch
 
     int nGridSymmetries = *(&gridSymmetryButtons + 1) - gridSymmetryButtons;
@@ -74,6 +77,8 @@ Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
         int row = i / nCols;
         int col = i - row * nCols;
         gridSymmetryButtons[i].set_label(gridSymmetryLabels[i]);
+        gridSymmetryButtons[i].signal_toggled().connect(
+            sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_symmetry_button_clicked), i));
         gridSymmetryBox.attach(gridSymmetryButtons[i], col, row + 1);
         if (i > 0) gridSymmetryButtons[i].set_group(gridSymmetryButtons[0]);
         gridSymmetryButtons[i].set_active(i == state::symmetryMode);
@@ -147,3 +152,18 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
 
 void RightMenuContainer::setUpSummaryPage() { append_page(summaryBox, "Summary"); }
+
+
+// =================================== SIGNAL HANDLERS ===================================
+
+
+void RightMenuContainer::on_makeSymmetric_button_toggled() const {
+    state::makeSymmetric = makeSymmetricButton.get_active();
+}
+
+void RightMenuContainer::on_symmetry_button_clicked(int buttonIndex) const {
+    // selected button = gridSymmetryButtons[buttonIndex]
+    state::symmetryMode = buttonIndex; // assuming buttonIndex == symmetryMode
+}
+
+void RightMenuContainer::on_lockGrid_button_toggled() const {}

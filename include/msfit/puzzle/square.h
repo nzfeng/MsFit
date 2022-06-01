@@ -21,11 +21,13 @@ class Square {
 
     Glib::ustring getData() const;
     void setData(const Glib::ustring& str);
+    void clearData();
 
     void setSize(int width);
     int getSize() const;
 
     bool isSolid() const;
+    void setSolid(bool state);
     void toggleSolid();
 
     void setNumber(int num);

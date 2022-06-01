@@ -40,7 +40,6 @@ class RightMenuContainer : public Gtk::Notebook {
     // Gtk::CheckButton and Gtk::ToggleButton act as radio buttons, if they are included in a group.
     Gtk::CheckButton gridSymmetryButtons[4];
     Glib::ustring gridSymmetryLabels[4] = {"180°", "90°", "Mirror up-down", "Mirror left-right"};
-    // Gtk::ToggleButton makeSymmetricButton;
     Gtk::Switch makeSymmetricButton, lockGridSize;
 
     Gtk::SpinButton gridDimSpin[2];
@@ -50,4 +49,10 @@ class RightMenuContainer : public Gtk::Notebook {
     Glib::ustring gridSizePresetLabels[4] = {"15 x 15", "21 x 21", "23 x 23", "25 x 25"};
 
     Gtk::Button saveButton, loadButton;
+
+  private:
+    // Signal handlers
+    void on_makeSymmetric_button_toggled() const;
+    void on_symmetry_button_clicked(int buttonIndex) const;
+    void on_lockGrid_button_toggled() const;
 };

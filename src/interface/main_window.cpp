@@ -79,9 +79,9 @@ bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
     // std::cerr << "bottom menu " << bottomMenuContainer.has_focus() << std::endl;
     // std::cerr << "canvasContainer " << canvasContainer.has_focus() << std::endl;
     // std::cerr << "puzzleGrid " << puzzleGrid.has_focus() << std::endl;
-    state::lastCommandIsBackspace = false; // TODO: set this variable upon any mouse click as well
 
     if (phase == "capture" && !puzzleGrid.has_focus()) {
+        state::lastCommandIsBackspace = false; // TODO: set this variable upon any mouse click as well
         return true;
     }
     return false;

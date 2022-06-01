@@ -133,10 +133,11 @@ void PuzzleGrid::getWords() {
     int currNum = 1;
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
-            if (data[i][j].isSolid()) {
-                data[i][j].setNumber(-1);
-                continue;
-            }
+            // Reset all the numbers.
+            data[i][j].setNumber(-1);
+
+            if (data[i][j].isSolid()) continue;
+
             bool isNumberSet = false;
             // Start of a new across word
             if (j == 0 || data[i][j - 1].isSolid()) {
@@ -256,6 +257,7 @@ std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& in
     // Determine which word this square belongs to.
     auto [ind_i, ind_j] = indices;
 
+    // TODO: Even if the input is a black square, get the next white square.
     if (data[ind_i][ind_j].isSolid()) return {-1, -1};
 
     size_t wordIndex = data[ind_i][ind_j].getWord(wordtype);
@@ -353,33 +355,39 @@ std::array<int, 2> PuzzleGrid::getNextLogicalEmptySquare(const std::array<int, 2
 
 std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& indices, guint keyval) {
 
-    auto [i, j] = indices;
+    auto [ind_i, ind_j] = indices;
     int N = nRows();
     int M = nCols();
 
     // If there are no white squares in the current row/col, just return the original square so we don't accidentally
     // loop forever in one of the while loops below.
     Square sq;
+    int i = ind_i;
+    int j = ind_j;
     switch (keyval) {
         case (GDK_KEY_Up):
             do {
-                sq = data[mod(i - 1, N)][j];
-            } while (sq.isSolid() && sq.getPosition()[0] != i);
+                i = mod(i - 1, N);
+                sq = data[i][j];
+            } while (sq.isSolid() && i != ind_i);
             break;
         case (GDK_KEY_Down):
             do {
-                sq = data[mod(i + 1, N)][j];
-            } while (sq.isSolid() && sq.getPosition()[0] != i);
+                i = mod(i + 1, N);
+                sq = data[i][j];
+            } while (sq.isSolid() && i != ind_i);
             break;
         case (GDK_KEY_Left):
             do {
-                sq = data[i][mod(j - 1, M)];
-            } while (sq.isSolid() && sq.getPosition()[1] != j);
+                j = mod(j - 1, M);
+                sq = data[i][j];
+            } while (sq.isSolid() && j != ind_j);
             break;
         case (GDK_KEY_Right):
             do {
-                sq = data[i][mod(j + 1, M)];
-            } while (sq.isSolid() && sq.getPosition()[1] != j);
+                j = mod(j + 1, M);
+                sq = data[i][j];
+            } while (sq.isSolid() && j != ind_j);
             break;
     }
     return sq.getPosition();
@@ -430,37 +438,42 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
     // If outside the grid, don't do anything.
     if (!areSquareIndicesValid(indices)) return;
 
-    // Toggle selected square white/black; re-number words; if "Make symmetric" is toggled, make sure that the
-    // puzzle remains symmetric.
+    // Toggle selected square white/black.
     auto [ind_i, ind_j] = indices;
     data[ind_i][ind_j].toggleSolid();
+    bool solidState = data[ind_i][ind_j].isSolid();
+    // If "Make symmetric" is toggled, make sure that the puzzle remains symmetric.
     if (state::makeSymmetric) {
         size_t rows = nRows();
         size_t cols = nCols();
         switch (state::symmetryMode) {
+            // Comparing an int and size_t is safe as long as the int is zero or positive.
             case (grid::symmetry::TWO_TURN):
-                data[rows - ind_i - 1][cols - ind_j - 1].toggleSolid();
+                if (rows - ind_i - 1 != (size_t)ind_i || cols - ind_j - 1 != (size_t)ind_j)
+                    data[rows - ind_i - 1][cols - ind_j - 1].setSolid(solidState);
                 break;
             case (grid::symmetry::ONE_TURN):
-                data[ind_i][cols - ind_j - 1].toggleSolid();
+                if (cols - ind_j - 1 != (size_t)ind_j) data[ind_i][cols - ind_j - 1].setSolid(solidState);
                 break;
             case (grid::symmetry::MIRROR_UD):
-                data[rows - ind_i - 1][ind_j].toggleSolid();
+                if (rows - ind_i - 1 != (size_t)ind_i) data[rows - ind_i - 1][ind_j].setSolid(solidState);
                 break;
             case (grid::symmetry::MIRROR_LR):
-                data[ind_i][cols - ind_j - 1].toggleSolid();
+                if (cols - ind_j - 1 != (size_t)ind_j) data[ind_i][cols - ind_j - 1].setSolid(solidState);
                 break;
         }
     }
 
+    getWords(); // there may have been unexpected global changes
+
     // If we toggled the currently selected square, change the selected square to the next logical square.
+    // TODO: Have yet to amend getNextLogicalSquare() appropriately. Currently, the puzzle just deselects (no square is
+    // selected.)
     std::array<int, 2> currentSquare = getSelectedSquare();
     if (indices == currentSquare) {
         indices = getNextLogicalSquare(indices, getWordMode());
+        setSelectedSquare(indices);
     }
-
-    getWords(); // there may have been unexpected global changes
-    setSelectedSquare(indices);
 
     // Request redraw.
     queue_draw();
@@ -514,7 +527,8 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
  * "Keyboard events are first sent to the top-level window (Gtk::Window), where it will be checked for any keyboard
  * shortcuts that may be set. Then it is sent to the widget which has focus; the event will propagate to the parent
  * until it reaches the top-level widget, or until you stop the propagation by returning true from an event handler.
- * Returning true indicates that the signal has been fully handled."
+ * Returning true indicates that the signal has been fully handled." Returning true also possibly prevents the default
+ * handler from running.
  *
  * <keyval> = GDK_KEY_1, GDK_KEY_Escape, etc. See [https://gitlab.gnome.org/GNOME/gtk/-/blob/main/gdk/gdkkeysyms.h].
  * <keycode> = the hardware keycode; an identifying number for a physical key (i.e. "1" and "!" have the same keycode)
@@ -546,12 +560,13 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
             break;
         case (GDK_KEY_Delete):
         case (GDK_KEY_BackSpace): {
-            // TODO: Backspace: clear the current square, and stay in the current square. If the previous command was
+            // Backspace: clear the current square, and stay in the current square. If the previous command was
             // also a backspace, clear the current square *and* go back a square. The idea is to allow the user to
             // continually clear the current square and go backward upon multiple backspaces.
             auto [i, j] = getSelectedSquare();
-            data[i][j].setData("");
-            if (state::lastCommandIsBackspace)
+            Glib::ustring currData = data[i][j].getData();
+            data[i][j].clearData();
+            if (state::lastCommandIsBackspace || currData == "")
                 setSelectedSquare(getPreviousLogicalSquare(getSelectedSquare(), getWordMode(), true));
             state::lastCommandIsBackspace = true;
         } break;
@@ -577,6 +592,7 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
             break;
         default: {
             // Otherwise, assume that the user has entered a symbol that is allowed to be in a cell.
+            // https://developer-old.gnome.org/glibmm/unstable/classGlib_1_1ustring.html
             gunichar character = gdk_keyval_to_unicode(keyval);
             auto [i, j] = getSelectedSquare();
             if (!areSquareIndicesValid({i, j})) return true;
