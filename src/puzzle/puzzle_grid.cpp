@@ -580,8 +580,10 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
             auto [i, j] = getSelectedSquare();
             if (!areSquareIndicesValid({i, j})) return true;
             Glib::ustring text(1, character); // args = number of characters, ucUCS-4 code point
+            if (text == "") return true;      // if the key pressed doesn't result in a char, like shift, ctrl, etc.
             text = text.uppercase();
             data[i][j].setData(text);
+            data[i][j].setUtensil(state::pencilSelected ? theme::PENCIL : theme::PEN);
 
             // TODO: Render in gray if the pencil icon is selected.
 

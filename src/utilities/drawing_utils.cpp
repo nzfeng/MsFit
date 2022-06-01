@@ -1,13 +1,27 @@
 #include "msfit/utilities/drawing_utils.h"
+#include "msfit/utilities/state.h"
 
 /*
  * Draw the given text string in the center of a polygon whose corners' 2D positions (vertices) are given.
  * https://developer-old.gnome.org/gtkmm-tutorial/stable/sec-drawing-text.html.en
  */
 void draw_text(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context>& cr, const Glib::ustring& text,
-               const std::vector<Vector2>& cellCorners) {
+               const std::vector<Vector2>& cellCorners, int utensil) {
 
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    std::array<float, 3> pen_color;
+    switch (utensil) {
+        case theme::PENCIL:
+            pen_color = theme::color_pencil;
+            break;
+        case theme::AUTOFILL:
+            pen_color = theme::color_autofill;
+            break;
+        case theme::PEN:
+        default:
+            pen_color = theme::color_pen;
+            break;
+    }
+    cr->set_source_rgb(pen_color[0], pen_color[1], pen_color[2]);
     Pango::FontDescription font;
 
     // Get cell geometry parameters.

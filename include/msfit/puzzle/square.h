@@ -16,12 +16,16 @@
 class Square {
 
   public:
-    Square(int isSolid = false, Glib::ustring data = "", int width = 20, int selectionStatus = cell::UNSELECTED);
+    Square(int isSolid = false, Glib::ustring data = "", int width = 20, int selectionStatus = cell::UNSELECTED,
+           int utensil = theme::PEN);
     ~Square() {}
 
     Glib::ustring getData() const;
     void setData(const Glib::ustring& str);
     void clearData();
+
+    int getUtensil() const;
+    void setUtensil(int utensil);
 
     void setSize(int width);
     int getSize() const;
@@ -45,11 +49,6 @@ class Square {
     void setPosition(int i, int j);
     std::array<int, 2> getPosition() const;
 
-    // void setDownWord(GridWord* word);
-    // GridWord* getDownWord() const;
-    // void setAcrossWord(GridWord* word);
-    // GridWord* getAcrossWord() const;
-
     void setWord(size_t index, int wordtype);
     size_t getWord(int wordtype) const;
 
@@ -71,6 +70,7 @@ class Square {
     size_t width;
     int selectionStatus;
     int number = -1; // only positive if this square is the start of a new word
+    int utensil;
 
     // Info about this square within the grid
     Square* left;

@@ -28,7 +28,12 @@ void RightMenuContainer::setUpMenuPage() {
     userCallbacksFrame.set_margin(interface::params::margin);
     userCallbacksFrame.set_label("User callbacks");
     userCallbacksBox.set_orientation(Gtk::Orientation::VERTICAL);
+
+    Gtk::Grid pencilBox = setUpWritingUtensilMenu();
+
     userCallbacksBox.append(seps[0]);
+    userCallbacksBox.append(pencilBox);
+    userCallbacksFrame.set_child(userCallbacksBox);
 
     settingsFrame.set_margin(interface::params::margin);
     settingsFrame.set_label("Settings");
@@ -99,6 +104,8 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
     lockGridSize.set_name("Lock size");
     lockGridSize.set_halign(Gtk::Align::END);
     lockGridSize.set_active(false);
+    lockGridSize.property_active().signal_changed().connect(
+        sigc::mem_fun(*this, &RightMenuContainer::on_lockGrid_button_toggled));
     gridSizeBox.attach(lockGridSize, 1, 0);
     // TODO: Idk how to label a switch
 
@@ -150,9 +157,48 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
     return saveBox;
 }
 
+Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
+    // TODO: Display pencil symbol
+    Gtk::Grid pencilBox;
+    pencilBox.set_orientation(Gtk::Orientation::HORIZONTAL);
+    pencilBox.set_row_homogeneous(true);
+    pencilBox.set_row_spacing(0);
+    pencilToggle.set_label("Pencil");
+    pencilToggle.set_halign(Gtk::Align::END);
+    pencilToggle.signal_toggled().connect(sigc::mem_fun(*this, &RightMenuContainer::on_pencil_button_clicked));
+    pencilBox.attach(pencilToggle, 0, 0);
+    return pencilBox;
+}
+
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
 
-void RightMenuContainer::setUpSummaryPage() { append_page(summaryBox, "Summary"); }
+void RightMenuContainer::setUpSummaryPage() {
+
+    // TODO
+    Gtk::Grid summaryGrid;
+    summaryGrid.set_row_spacing(5);
+    summaryGrid.set_margin(interface::params::margin);
+
+    auto numWhiteSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of white squares: ");
+    auto numBlackSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of black squares: ");
+    auto numBlocksLabel = Gtk::make_managed<Gtk::Label>("Number of blocks: ");
+
+    auto numWhiteSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
+    auto numBlackSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
+    auto numBlocks = Gtk::make_managed<Gtk::Label>(std::to_string(0));
+
+    std::vector<Gtk::Label*> labels = {numWhiteSquaresLabel, numBlackSquaresLabel, numBlocksLabel};
+    std::vector<Gtk::Label*> values = {numWhiteSquares, numBlackSquares, numBlocks};
+    for (size_t i = 0; i < labels.size(); i++) {
+        labels[i]->set_halign(Gtk::Align::START);
+        values[i]->set_halign(Gtk::Align::END);
+        summaryGrid.attach(*labels[i], 0, i);
+        summaryGrid.attach(*values[i], 1, i);
+    }
+
+    summaryBox.append(summaryGrid);
+    append_page(summaryBox, "Summary");
+}
 
 
 // =================================== SIGNAL HANDLERS ===================================
@@ -173,4 +219,19 @@ void RightMenuContainer::on_symmetry_button_clicked(int buttonIndex) const {
 /*
  * Grey-out the size buttons, indicating that current grid size is locked.
  */
-void RightMenuContainer::on_lockGrid_button_toggled() const {}
+void RightMenuContainer::on_lockGrid_button_toggled() {
+
+    // spin buttons
+    int nDims = *(&gridDimLabels + 1) - gridDimLabels;
+    for (int i = 0; i < nDims; i++) {
+        gridDimSpin[i].set_sensitive(!lockGridSize.get_active());
+    }
+
+    // preset sizes
+    int nGridSizes = *(&gridSizePresetButtons + 1) - gridSizePresetButtons;
+    for (int i = 0; i < nGridSizes; i++) {
+        gridSizePresetButtons[i].set_sensitive(!lockGridSize.get_active());
+    }
+}
+
+void RightMenuContainer::on_pencil_button_clicked() const { state::pencilSelected = pencilToggle.get_active(); }

@@ -4,8 +4,8 @@
 
 // Square::Square() { Square(WHITE, ""); }
 
-Square::Square(int isSolid_, Glib::ustring data_, int width_, int selectionStatus_)
-    : solid(isSolid_), data(data_), width(width_), selectionStatus(selectionStatus_) {}
+Square::Square(int isSolid_, Glib::ustring data_, int width_, int selectionStatus_, int utensil_)
+    : solid(isSolid_), data(data_), width(width_), selectionStatus(selectionStatus_), utensil(utensil_) {}
 
 /*
  * Draws directly on the PuzzleGrid drawingArea member.
@@ -20,21 +20,21 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
     if (solid) {
         // Simply draw a black square (possibly with yellow outline, if selected)
         switch (selectionStatus) {
-        case (cell::UNSELECTED):
-            cr->set_source_rgb(0.0, 0.0, 0.0);
-            cr->rectangle(x, y, size, size);
-            cr->fill();
-            break;
-        case (cell::SELECTED):
-            color = theme::color_selected;
-            cr->set_source_rgb(color[0], color[1], color[2]); // yellow outline
-            cr->rectangle(x, y, size, size);
-            cr->fill();
-            cr->set_source_rgb(0.0, 0.0, 0.0);
-            float border = theme::black_border_width;
-            cr->rectangle(x + 0.5 * border, y + 0.5 * border, size - border, size - border);
-            cr->fill();
-            break;
+            case (cell::UNSELECTED):
+                cr->set_source_rgb(0.0, 0.0, 0.0);
+                cr->rectangle(x, y, size, size);
+                cr->fill();
+                break;
+            case (cell::SELECTED):
+                color = theme::color_selected;
+                cr->set_source_rgb(color[0], color[1], color[2]); // yellow outline
+                cr->rectangle(x, y, size, size);
+                cr->fill();
+                cr->set_source_rgb(0.0, 0.0, 0.0);
+                float border = theme::black_border_width;
+                cr->rectangle(x + 0.5 * border, y + 0.5 * border, size - border, size - border);
+                cr->fill();
+                break;
         }
     } else {
         // Draw a colored square with a gray outline by first drawing a gray square, then drawing a slightly smaller
@@ -44,18 +44,18 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
         cr->fill();
 
         switch (selectionStatus) {
-        case (cell::UNSELECTED):
-            color = theme::color_unselected;
-            cr->set_source_rgb(color[0], color[1], color[2]); // white
-            break;
-        case (cell::SELECTED):
-            color = theme::color_selected;
-            cr->set_source_rgb(color[0], color[1], color[2]); //  yellow
-            break;
-        case (cell::HIGHLIGHTED):
-            color = theme::color_highlighted;
-            cr->set_source_rgb(color[0], color[1], color[2]); // pale blue
-            break;
+            case (cell::UNSELECTED):
+                color = theme::color_unselected;
+                cr->set_source_rgb(color[0], color[1], color[2]); // white
+                break;
+            case (cell::SELECTED):
+                color = theme::color_selected;
+                cr->set_source_rgb(color[0], color[1], color[2]); //  yellow
+                break;
+            case (cell::HIGHLIGHTED):
+                color = theme::color_highlighted;
+                cr->set_source_rgb(color[0], color[1], color[2]); // pale blue
+                break;
         }
         // border is 0.5px wide inside each square, 1px wide when squares are next to each other.
         float border = theme::white_border_width;
@@ -68,7 +68,7 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
                                         {static_cast<double>(x + size), static_cast<double>(y)},
                                         {static_cast<double>(x + size), static_cast<double>(y + size)},
                                         {static_cast<double>(x), static_cast<double>(y + size)}};
-        draw_text(drawingArea, cr, data, corners);
+        draw_text(drawingArea, cr, data, corners, getUtensil());
         draw_number(drawingArea, cr, number, corners);
     }
 }

@@ -21,9 +21,14 @@ namespace params {
 } // namespace interface
 
 namespace theme {
+enum utensil { PEN, PENCIL, AUTOFILL };
+
 extern std::array<float, 3> color_unselected;
 extern std::array<float, 3> color_selected;
 extern std::array<float, 3> color_highlighted;
+extern std::array<float, 3> color_pencil;
+extern std::array<float, 3> color_pen;
+extern std::array<float, 3> color_autofill;
 extern std::array<float, 3> color_salmon;
 
 extern float black_border_width;  // total width of the yellow border around a selected black square

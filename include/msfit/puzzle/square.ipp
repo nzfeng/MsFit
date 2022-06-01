@@ -3,6 +3,9 @@ inline Glib::ustring Square::getData() const { return data; }
 inline void Square::setData(const Glib::ustring& str) { data = str; }
 inline void Square::clearData() { data = ""; }
 
+inline int Square::getUtensil() const { return utensil; }
+inline void Square::setUtensil(int utensil_) { utensil = utensil_; }
+
 inline void Square::setSize(int width_) { width = width_; }
 
 inline int Square::getSize() const { return width; }

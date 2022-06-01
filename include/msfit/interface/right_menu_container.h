@@ -13,9 +13,11 @@
 #include <gtkmm/switch.h>
 #include <gtkmm/togglebutton.h>
 
-// #include <fstream>
-// #include <iostream>
-// #include <sstream>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
+#include "msfit/puzzle/puzzle_grid.h"
 
 class RightMenuContainer : public Gtk::Notebook {
 
@@ -27,16 +29,13 @@ class RightMenuContainer : public Gtk::Notebook {
     void setUpCluesPage();
     void setUpSummaryPage();
 
-    Gtk::Grid setUpGridSymmetrySettings();
-    Gtk::Grid setUpGridDimensionSettings();
-    Gtk::Box setUpPuzzleIOSettings();
-
     // Frames containing user-defined callbacks, general crossword settings
     Gtk::Box menuBox, clueBox, summaryBox;
     Gtk::Frame userCallbacksFrame, settingsFrame;
     Gtk::Box userCallbacksBox, settingsBox;
 
     // Buttons
+    Gtk::ToggleButton pencilToggle;
     // Gtk::CheckButton and Gtk::ToggleButton act as radio buttons, if they are included in a group.
     Gtk::CheckButton gridSymmetryButtons[4];
     Glib::ustring gridSymmetryLabels[4] = {"180°", "90°", "Mirror up-down", "Mirror left-right"};
@@ -51,9 +50,18 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::Button saveButton, loadButton;
 
   private:
+    // For Menu page -- grid settings
+    Gtk::Grid setUpGridSymmetrySettings();
+    Gtk::Grid setUpGridDimensionSettings();
+    Gtk::Box setUpPuzzleIOSettings();
+    // For Menu page -- user settings
+    Gtk::Grid setUpWritingUtensilMenu();
+
     // Signal handlers
     void on_makeSymmetric_button_toggled() const;
     void on_symmetry_button_clicked(int buttonIndex) const;
 
-    void on_lockGrid_button_toggled() const;
+    void on_lockGrid_button_toggled();
+
+    void on_pencil_button_clicked() const;
 };
