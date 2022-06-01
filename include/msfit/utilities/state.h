@@ -40,7 +40,7 @@ enum state { UNSELECTED, SELECTED, HIGHLIGHTED };
 namespace grid {
 
 namespace symmetry {
-    enum state { ASYMMETRIC, TWO_TURN, ONE_TURN, MIRROR_UD, MIRROR_LR };
+    enum state { TWO_TURN, ONE_TURN, MIRROR_UD, MIRROR_LR, ASYMMETRIC };
 } // namespace symmetry
 
 namespace wordtype {

@@ -24,11 +24,6 @@ inline Square* Square::getBelow() const { return below; }
 inline void Square::setPosition(int i, int j) { position = {i, j}; }
 inline std::array<int, 2> Square::getPosition() const { return position; }
 
-// inline void Square::setDownWord(GridWord* word_) { downWord = word_; }
-// inline GridWord* Square::getDownWord() const { return downWord; }
-// inline void Square::setAcrossWord(GridWord* word_) { acrossWord = word_; }
-// inline GridWord* Square::getAcrossWord() const { return acrossWord; }
-
 inline void Square::setWord(size_t index, int wordtype) { wordIndex[wordtype] = index; }
 inline size_t Square::getWord(int wordtype) const { return wordIndex[wordtype]; }
 

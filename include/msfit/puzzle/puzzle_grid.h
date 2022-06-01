@@ -52,7 +52,8 @@ class PuzzleGrid : public Gtk::DrawingArea {
     // Get the next white square in the across/down direction, possibly the start of the next word.
     std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const;
     std::array<int, 2> getPreviousLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const;
-    std::array<int, 2> getNextLogicalEmptySquare(const std::array<int, 2>& indices, const int wordtype) const;
+    std::array<int, 2> getNextLogicalEmptySquare(const std::array<int, 2>& indices, const int wordtype,
+                                                 bool stayWithinWord = false) const;
     // Get the next white square in the given direction.
     std::array<int, 2> getNextGeometricSquare(const std::array<int, 2>& indices, guint keyval);
 
@@ -77,6 +78,7 @@ class PuzzleGrid : public Gtk::DrawingArea {
     void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
     void on_left_click(int n_press, double x, double y);
     void on_right_click(int n_press, double x, double y);
+    bool isEnterableCharacter(guint keyval) const;
     bool on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase);
     std::array<int, 2> mapClickToSquareIndex(double x, double y); // map cursor click to index of square in the grid
 

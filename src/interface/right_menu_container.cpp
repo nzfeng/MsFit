@@ -61,10 +61,11 @@ Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
     gridSymmetryLabel.set_halign(Gtk::Align::START);
     gridSymmetryBox.attach(gridSymmetryLabel, 0, 0);
 
-    makeSymmetricButton.set_label("Symmetry on");
+    makeSymmetricButton.set_name("Symmetry toggle");
     makeSymmetricButton.set_halign(Gtk::Align::END);
     makeSymmetricButton.set_active(state::makeSymmetric);
     gridSymmetryBox.attach(makeSymmetricButton, 1, 0);
+    // TODO: Idk how to label a switch
 
     int nGridSymmetries = *(&gridSymmetryButtons + 1) - gridSymmetryButtons;
     int nRows = 2;
@@ -89,6 +90,12 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
     Gtk::Label gridSizeLabel("Grid dimensions: ");
     gridSizeLabel.set_halign(Gtk::Align::START);
     gridSizeBox.attach(gridSizeLabel, 0, 0);
+
+    lockGridSize.set_name("Lock size");
+    lockGridSize.set_halign(Gtk::Align::END);
+    lockGridSize.set_active(false);
+    gridSizeBox.attach(lockGridSize, 1, 0);
+    // TODO: Idk how to label a switch
 
     // spin buttons
     int nDims = *(&gridDimLabels + 1) - gridDimLabels;

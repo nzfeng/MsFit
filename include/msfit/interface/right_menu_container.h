@@ -10,6 +10,7 @@
 #include <gtkmm/notebook.h>
 #include <gtkmm/separator.h>
 #include <gtkmm/spinbutton.h>
+#include <gtkmm/switch.h>
 #include <gtkmm/togglebutton.h>
 
 // #include <fstream>
@@ -39,7 +40,8 @@ class RightMenuContainer : public Gtk::Notebook {
     // Gtk::CheckButton and Gtk::ToggleButton act as radio buttons, if they are included in a group.
     Gtk::CheckButton gridSymmetryButtons[4];
     Glib::ustring gridSymmetryLabels[4] = {"180°", "90°", "Mirror up-down", "Mirror left-right"};
-    Gtk::ToggleButton makeSymmetricButton;
+    // Gtk::ToggleButton makeSymmetricButton;
+    Gtk::Switch makeSymmetricButton, lockGridSize;
 
     Gtk::SpinButton gridDimSpin[2];
     Glib::ustring gridDimLabels[2] = {"Rows: ", "Cols: "};

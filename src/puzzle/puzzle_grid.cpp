@@ -257,7 +257,6 @@ std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& in
 
     if (data[ind_i][ind_j].isSolid()) return {-1, -1};
 
-
     size_t wordIndex = data[ind_i][ind_j].getWord(wordtype);
     size_t charIndex = data[ind_i][ind_j].getIndexOfCharInWord(wordtype);
     GridWord word = gridWords[wordtype][wordIndex];
@@ -293,7 +292,8 @@ std::array<int, 2> PuzzleGrid::getPreviousLogicalSquare(const std::array<int, 2>
     return {-1, -1}; // shouldn't get here
 }
 
-std::array<int, 2> PuzzleGrid::getNextLogicalEmptySquare(const std::array<int, 2>& indices, const int wordtype) const {
+std::array<int, 2> PuzzleGrid::getNextLogicalEmptySquare(const std::array<int, 2>& indices, const int wordtype,
+                                                         bool stayWithinWord) const {
 
     if (!areSquareIndicesValid(indices)) return {-1, -1};
 
@@ -305,6 +305,19 @@ std::array<int, 2> PuzzleGrid::getNextLogicalEmptySquare(const std::array<int, 2
     size_t wordIndex = data[ind_i][ind_j].getWord(wordtype);
     size_t charIndex = data[ind_i][ind_j].getIndexOfCharInWord(wordtype);
     Square* sq;
+
+    if (stayWithinWord) {
+        int nChars = gridWords[wordtype][wordIndex].squares.size();
+        for (int i = 1; i < nChars - 1; i++) {
+            // (charIndex + i) gets implicitly converted to an int, but this shouldn't be a problem since it's > 0
+            sq = gridWords[wordtype][wordIndex].squares[mod(charIndex + i, nChars)];
+            if (sq->isEmpty()) {
+                return sq->getPosition();
+            }
+        }
+        return indices;
+    }
+
     for (size_t i = charIndex + 1; i < gridWords[wordtype][wordIndex].squares.size(); i++) {
         sq = gridWords[wordtype][wordIndex].squares[i];
         if (sq->isEmpty()) {
@@ -364,6 +377,25 @@ std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& 
     }
     return sq.getPosition();
 }
+
+/*
+ * Define the list of allowable symbols explicitly, since there doesn't seem to be a good way of detecting "non-symbol"
+ * keys (i.e. Shift_L, bracketright, etc.) and getting their corresponding symbols (not keyval code or name) (at least
+ * without using something like a Gtk::Entry widget.)
+ */
+// bool PuzzleGrid::isEnterableCharacter(guint keyval) const {
+
+//     // https://code.woboq.org/gtk/gtk/gdk/gdkkeysyms.h.html
+//     // https://docs.gtk.org/gdk4/keys.html
+
+//     // Key values can be converted to upper or lower case using gdk_keyval_to_upper()
+//     // The case of key values can be determined using gdk_keyval_is_upper() and gdk_keyval_is_lower()
+
+//     // There are faster ways to determine if a char belongs in a set
+//     //
+//     [https://stackoverflow.com/questions/29068130/fastest-way-to-determine-if-character-belongs-to-a-set-of-known-characters-c]
+//     // but this one is readable, and I don't expect that crosswords will have working sets of more than 100 chars.
+// }
 
 // =================================== SIGNAL HANDLERS ===================================
 
@@ -472,12 +504,13 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
 }
 
 /*
- * Keyboard events are first sent to the top-level window (Gtk::Window), where it will be checked for any keyboard
+ * "Keyboard events are first sent to the top-level window (Gtk::Window), where it will be checked for any keyboard
  * shortcuts that may be set. Then it is sent to the widget which has focus; the event will propagate to the parent
  * until it reaches the top-level widget, or until you stop the propagation by returning true from an event handler.
- * Returning true indicates that the signal has been fully handled.
+ * Returning true indicates that the signal has been fully handled."
  *
  * <keyval> = GDK_KEY_1, GDK_KEY_Escape, etc. See [https://gitlab.gnome.org/GNOME/gtk/-/blob/main/gdk/gdkkeysyms.h].
+ * <keycode> = the hardware keycode; an identifying number for a physical key (i.e. "1" and "!" have the same keycode)
  * <state> = Gdk::ModifierType::SHIFT_MASK, etc.
  * <phase> = refers to the phase of event handling in which handler is called; Gtk::PropagationPhase::CAPTURE, etc.
  * See [https://stackoverflow.com/a/4616720].
@@ -491,6 +524,7 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
     if (phase != "bubble") return false;
     // If we press keys in any other part of the window.
     if (!has_focus()) return true;
+    // TODO: If a modifier key alone (shift, alt, etc.), do nothing.
 
     // Could also use gdk_keyval_name(keyval)
     switch (keyval) {
@@ -502,12 +536,11 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
             // `Space`: Toggle across/down.
             setWordMode(mod(getWordMode() + 1, 2)); // replace 2 with number of wordtypes if necessary
             break;
-        case (GDK_KEY_BackSpace):
-            // TODO: Backspace: clear the current square, or go back a square if the current one is empty. TODO: Upon
-            // multiple backspaces, continually clear the current square and go backward.
-            break;
         case (GDK_KEY_Delete):
-            // TODO: same as backspace
+        case (GDK_KEY_BackSpace):
+            // TODO: Backspace: clear the current square, and stay in the current square. If the previous command was
+            // also a backspace, clear the current square *and* go back a square. The idea is to allow the user to
+            // continually clear the current square and go backward upon multiple backspaces.
             break;
         case (GDK_KEY_Escape):
             // TODO: `Esc`: Enter more than one letter in a box. Hit Esc again or `Enter' to exit this mode.
@@ -529,7 +562,21 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
         case (GDK_KEY_Right):
             setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_Right));
             break;
+        default:
+            // Otherwise, assume that the user has entered a symbol that is allowed to be in a cell.
+            // Define the list of allowable symbols explicitly?
+            gunichar character = gdk_keyval_to_unicode(keyval);
+            auto [i, j] = getSelectedSquare();
+            Glib::ustring text(1, character); // args = number of characters, ucUCS-4 code point
+            text = text.uppercase();
+            data[i][j].setData(text);
+
+            // Go to the next unfilled square in the current word, staying at the current square if the word is
+            // completely filled.
+            setSelectedSquare(getNextLogicalEmptySquare(getSelectedSquare(), getWordMode(), true)); // stay within word
+            break;
     }
+
 
     // Else, assume the user meant to enter a character in the current square.
     // https://developer-old.gnome.org/gtkmm/stable/namespaceGtk_1_1Accelerator.html#details

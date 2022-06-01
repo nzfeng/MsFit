@@ -63,24 +63,6 @@ MainWindow::MainWindow()
     keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "capture"),
                                              false);
     add_controller(keyHandler);
-
-    // keyHandler = Gtk::EventControllerKey::create();
-    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::BUBBLE);
-    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "bubble"),
-    //                                          false);
-    // puzzleGrid.add_controller(keyHandler);
-
-    // keyHandler = Gtk::EventControllerKey::create();
-    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::TARGET);
-    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "target"),
-    //                                          false);
-    // puzzleGrid.add_controller(keyHandler);
-
-    // keyHandler = Gtk::EventControllerKey::create();
-    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::CAPTURE);
-    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "capture"),
-    //                                          false);
-    // puzzleGrid.add_controller(keyHandler);
 }
 
 /*
