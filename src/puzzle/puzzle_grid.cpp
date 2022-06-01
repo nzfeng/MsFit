@@ -248,7 +248,8 @@ bool PuzzleGrid::areSquareIndicesValid(const std::array<int, 2>& indices) const 
 /*
  * Could also just return a Square*.
  */
-std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const {
+std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype,
+                                                    bool stayWithinWord) const {
 
     if (!areSquareIndicesValid(indices)) return {-1, -1};
 
@@ -261,8 +262,10 @@ std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& in
     size_t charIndex = data[ind_i][ind_j].getIndexOfCharInWord(wordtype);
     GridWord word = gridWords[wordtype][wordIndex];
     if (charIndex < word.squares.size() - 1) {
-        return {ind_i, ind_j + 1};
+        return word.squares[charIndex + 1]->getPosition();
     }
+    if (stayWithinWord) return word.squares[word.squares.size() - 1]->getPosition();
+
     // Get beginning of next word.
     GridWord nextWord = gridWords[wordtype][mod(wordIndex + 1, gridWords[wordtype].size())];
     return nextWord.squares[0]->getPosition();
@@ -270,7 +273,8 @@ std::array<int, 2> PuzzleGrid::getNextLogicalSquare(const std::array<int, 2>& in
     return {-1, -1}; // shouldn't get here
 }
 
-std::array<int, 2> PuzzleGrid::getPreviousLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const {
+std::array<int, 2> PuzzleGrid::getPreviousLogicalSquare(const std::array<int, 2>& indices, const int wordtype,
+                                                        bool stayWithinWord) const {
 
     if (!areSquareIndicesValid(indices)) return {-1, -1};
 
@@ -282,9 +286,12 @@ std::array<int, 2> PuzzleGrid::getPreviousLogicalSquare(const std::array<int, 2>
     int wordIndex = data[ind_i][ind_j].getWord(wordtype);
     int charIndex = data[ind_i][ind_j].getIndexOfCharInWord(wordtype);
     GridWord word = gridWords[wordtype][wordIndex];
+
     if (charIndex > 0) {
-        return {ind_i, ind_j - 1};
+        return word.squares[charIndex - 1]->getPosition();
     }
+    if (stayWithinWord) return word.squares[0]->getPosition();
+
     // Get last of previous word.
     GridWord prevWord = gridWords[wordtype][mod(wordIndex - 1, gridWords[wordtype].size())];
     return prevWord.squares[prevWord.squares.size() - 1]->getPosition();
@@ -521,6 +528,7 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
 bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase) {
 
     // std::cerr << phase << std::endl;
+
     if (phase != "bubble") return false;
     // If we press keys in any other part of the window.
     if (!has_focus()) return true;
@@ -537,11 +545,16 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
             setWordMode(mod(getWordMode() + 1, 2)); // replace 2 with number of wordtypes if necessary
             break;
         case (GDK_KEY_Delete):
-        case (GDK_KEY_BackSpace):
+        case (GDK_KEY_BackSpace): {
             // TODO: Backspace: clear the current square, and stay in the current square. If the previous command was
             // also a backspace, clear the current square *and* go back a square. The idea is to allow the user to
             // continually clear the current square and go backward upon multiple backspaces.
-            break;
+            auto [i, j] = getSelectedSquare();
+            data[i][j].setData("");
+            if (state::lastCommandIsBackspace)
+                setSelectedSquare(getPreviousLogicalSquare(getSelectedSquare(), getWordMode(), true));
+            state::lastCommandIsBackspace = true;
+        } break;
         case (GDK_KEY_Escape):
             // TODO: `Esc`: Enter more than one letter in a box. Hit Esc again or `Enter' to exit this mode.
             break;
@@ -562,29 +575,22 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
         case (GDK_KEY_Right):
             setSelectedSquare(getNextGeometricSquare(getSelectedSquare(), GDK_KEY_Right));
             break;
-        default:
+        default: {
             // Otherwise, assume that the user has entered a symbol that is allowed to be in a cell.
-            // Define the list of allowable symbols explicitly?
             gunichar character = gdk_keyval_to_unicode(keyval);
             auto [i, j] = getSelectedSquare();
+            if (!areSquareIndicesValid({i, j})) return true;
             Glib::ustring text(1, character); // args = number of characters, ucUCS-4 code point
             text = text.uppercase();
             data[i][j].setData(text);
 
+            // TODO: Render in gray if the pencil icon is selected.
+
             // Go to the next unfilled square in the current word, staying at the current square if the word is
             // completely filled.
             setSelectedSquare(getNextLogicalEmptySquare(getSelectedSquare(), getWordMode(), true)); // stay within word
-            break;
+        } break;
     }
-
-
-    // Else, assume the user meant to enter a character in the current square.
-    // https://developer-old.gnome.org/gtkmm/stable/namespaceGtk_1_1Accelerator.html#details
-    Glib::ustring character = Gtk::Accelerator::get_label(keyval, Gdk::ModifierType::SHIFT_MASK);
-    // const gunichar character = gdk_keyval_to_unicode(keyval);
-    // std::cerr << character << std::endl;
-    // TODO: Any letter key: Enter the capital letter in the currently selected box (if any); render in gray if the
-    // pencil icon is selected.
 
     queue_draw();
 

@@ -50,8 +50,10 @@ class PuzzleGrid : public Gtk::DrawingArea {
     void renderSelectedSquare();
 
     // Get the next white square in the across/down direction, possibly the start of the next word.
-    std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const;
-    std::array<int, 2> getPreviousLogicalSquare(const std::array<int, 2>& indices, const int wordtype) const;
+    std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype,
+                                            bool stayWithinWord = false) const;
+    std::array<int, 2> getPreviousLogicalSquare(const std::array<int, 2>& indices, const int wordtype,
+                                                bool stayWithinWord = false) const;
     std::array<int, 2> getNextLogicalEmptySquare(const std::array<int, 2>& indices, const int wordtype,
                                                  bool stayWithinWord = false) const;
     // Get the next white square in the given direction.

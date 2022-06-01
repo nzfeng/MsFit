@@ -61,4 +61,5 @@ extern bool makeSymmetric;
 extern int symmetryMode;
 extern bool enteringMultipleLetters;
 extern bool pencilSelected;
+extern bool lastCommandIsBackspace;
 } // namespace state

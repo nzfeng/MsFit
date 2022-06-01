@@ -3,27 +3,27 @@
 
 namespace interface {
 namespace params {
-// Default parameters for the interface (window sizes, etc.)
-int margin = 10;
-int window_width = 1200;
-int window_height = 800;
-int grid_container_width = 3 * window_width / 4;
-int grid_container_height = 3 * window_height / 4;
-int right_menu_width = window_width - grid_container_width;
-int bottom_menu_height = window_height - grid_container_height;
-int separator_margin = 5;
-int minButtonWidth = 40;
-int minButtonHeight = 20;
-// int grid_width = 0.9 * grid_container_height; // default size of the puzzle grid
+    // Default parameters for the interface (window sizes, etc.)
+    int margin = 10;
+    int window_width = 1200;
+    int window_height = 800;
+    int grid_container_width = 3 * window_width / 4;
+    int grid_container_height = 3 * window_height / 4;
+    int right_menu_width = window_width - grid_container_width;
+    int bottom_menu_height = window_height - grid_container_height;
+    int separator_margin = 5;
+    int minButtonWidth = 40;
+    int minButtonHeight = 20;
+    // int grid_width = 0.9 * grid_container_height; // default size of the puzzle grid
 } // namespace params
 } // namespace interface
 
 namespace grid {
 namespace params {
-int minRows = 1;
-int maxRows = 1000;
-int N_ROWS = 10; // the initial # of rows
-int N_COLS = 15; // the initial # of cols
+    int minRows = 1;
+    int maxRows = 1000;
+    int N_ROWS = 10; // the initial # of rows
+    int N_COLS = 15; // the initial # of cols
 } // namespace params
 } // namespace grid
 
@@ -43,4 +43,5 @@ bool makeSymmetric = true;
 int symmetryMode = grid::symmetry::TWO_TURN;
 bool enteringMultipleLetters = false;
 bool pencilSelected = false;
+bool lastCommandIsBackspace = false;
 } // namespace state
