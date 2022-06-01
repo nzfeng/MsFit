@@ -54,5 +54,6 @@ class RightMenuContainer : public Gtk::Notebook {
     // Signal handlers
     void on_makeSymmetric_button_toggled() const;
     void on_symmetry_button_clicked(int buttonIndex) const;
+
     void on_lockGrid_button_toggled() const;
 };

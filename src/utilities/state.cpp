@@ -22,8 +22,8 @@ namespace grid {
 namespace params {
     int minRows = 1;
     int maxRows = 1000;
-    int N_ROWS = 10; // the initial # of rows
-    int N_COLS = 15; // the initial # of cols
+    int initRows = 10; // the initial # of rows
+    int initCols = 15; // the initial # of cols
 } // namespace params
 } // namespace grid
 

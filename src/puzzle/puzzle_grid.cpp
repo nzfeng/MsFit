@@ -7,7 +7,7 @@
 #include "msfit/utilities/utils.h"
 
 // Constructors
-PuzzleGrid::PuzzleGrid() { PuzzleGrid(grid::params::N_ROWS, grid::params::N_COLS); }
+PuzzleGrid::PuzzleGrid() { PuzzleGrid(grid::params::initRows, grid::params::initCols); }
 
 PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     setSize(nRows_, nCols_);
@@ -69,6 +69,8 @@ void PuzzleGrid::setSize(size_t rows, size_t cols) {
 
     // Always re-compute words & reset pointers to squares in Square, GridWord objects.
     getWords();
+
+    queue_draw();
 }
 
 void PuzzleGrid::setRows(size_t rows) { setSize(rows, nCols()); }
@@ -392,25 +394,6 @@ std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& 
     }
     return sq.getPosition();
 }
-
-/*
- * Define the list of allowable symbols explicitly, since there doesn't seem to be a good way of detecting "non-symbol"
- * keys (i.e. Shift_L, bracketright, etc.) and getting their corresponding symbols (not keyval code or name) (at least
- * without using something like a Gtk::Entry widget.)
- */
-// bool PuzzleGrid::isEnterableCharacter(guint keyval) const {
-
-//     // https://code.woboq.org/gtk/gtk/gdk/gdkkeysyms.h.html
-//     // https://docs.gtk.org/gdk4/keys.html
-
-//     // Key values can be converted to upper or lower case using gdk_keyval_to_upper()
-//     // The case of key values can be determined using gdk_keyval_is_upper() and gdk_keyval_is_lower()
-
-//     // There are faster ways to determine if a char belongs in a set
-//     //
-//     [https://stackoverflow.com/questions/29068130/fastest-way-to-determine-if-character-belongs-to-a-set-of-known-characters-c]
-//     // but this one is readable, and I don't expect that crosswords will have working sets of more than 100 chars.
-// }
 
 // =================================== SIGNAL HANDLERS ===================================
 

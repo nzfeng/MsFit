@@ -13,7 +13,7 @@
  */
 MainWindow::MainWindow()
     : rightMenuContainer(), bottomMenuContainer(), canvasContainer(),
-      puzzleGrid(grid::params::N_ROWS, grid::params::N_COLS) {
+      puzzleGrid(grid::params::initRows, grid::params::initCols) {
 
     set_title("MsFit");
     set_default_size(interface::params::window_width, interface::params::window_height);
@@ -38,6 +38,8 @@ MainWindow::MainWindow()
 
     gridContainer.set_start_child(canvasContainer);
     gridContainer.set_end_child(bottomMenuContainer);
+
+    connectMenuButtons();
 
     canvasContainer.set_margin(interface::params::margin);
     canvasContainer.set_xalign(Gtk::Align::CENTER);
@@ -65,6 +67,28 @@ MainWindow::MainWindow()
     add_controller(keyHandler);
 }
 
+
+/*
+ * Set up all the buttons in the RHS menu that need access to the other members of the MainWindow.
+ */
+void MainWindow::connectMenuButtons() {
+
+    // Attach the size buttons in RHS menu here (ideally would be entirely contained within RightMenuContainer class,
+    // but we need access to PuzzleGrid to dynamically update the grid size.)
+    int nGridSizes = *(&rightMenuContainer.gridSizePresetButtons + 1) - rightMenuContainer.gridSizePresetButtons;
+    for (int i = 0; i < nGridSizes; i++) {
+        rightMenuContainer.gridSizePresetButtons[i].signal_toggled().connect(
+            sigc::bind(sigc::mem_fun(*this, &MainWindow::on_size_button_clicked), i));
+    }
+    int nDims = *(&rightMenuContainer.gridDimLabels + 1) - rightMenuContainer.gridDimLabels;
+    for (int i = 0; i < nDims; i++) {
+        rightMenuContainer.gridDimSpin[i].signal_value_changed().connect(
+            sigc::bind(sigc::mem_fun(*this, &MainWindow::on_sizeSpinner_clicked), i));
+    }
+}
+
+// =================================== SIGNAL HANDLERS ===================================
+
 /*
  * Overwrite default window key handler.
  */
@@ -85,4 +109,32 @@ bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
         return true;
     }
     return false;
+}
+
+/*
+ * On of the preset grid sizes in the RHS menu was clicked. Ideally, this would have remained in the RightMenuContainer
+ * class, but we need access to puzzleGrid.
+ */
+void MainWindow::on_size_button_clicked(int buttonIndex) {
+
+    size_t nRows = rightMenuContainer.presetSizes[buttonIndex];
+    size_t nCols = nRows;
+    // Update values in the spin buttons to reflect the change
+    rightMenuContainer.gridDimSpin[0].set_value(nRows);
+    rightMenuContainer.gridDimSpin[1].set_value(nCols);
+
+    puzzleGrid.setSize(nRows, nCols);
+}
+
+/*
+ * On of the grid size spinners in the RHS menu was clicked. Ideally, this would have remained in the RightMenuContainer
+ * class, but we need access to puzzleGrid.
+ */
+void MainWindow::on_sizeSpinner_clicked(int buttonIndex) {
+    // Assume there are only 2 dimensions.
+    if (buttonIndex == 0) {
+        puzzleGrid.setRows(rightMenuContainer.gridDimSpin[buttonIndex].get_value_as_int());
+        return;
+    }
+    puzzleGrid.setCols(rightMenuContainer.gridDimSpin[buttonIndex].get_value_as_int());
 }

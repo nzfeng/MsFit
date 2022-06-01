@@ -50,8 +50,8 @@ namespace wordtype {
 namespace params {
     extern int minRows;
     extern int maxRows;
-    extern int N_ROWS; // initial # of rows
-    extern int N_COLS; // initial # of cols
+    extern int initRows; // initial # of rows, *not* necesssarily the current #
+    extern int initCols; // initial # of cols, *not* necesssarily the current #
 } // namespace params
 
 } // namespace grid

@@ -108,13 +108,14 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
         gridDimSpin[i].set_numeric(false);
         gridDimSpin[i].set_range(grid::params::minRows, grid::params::maxRows);
         gridDimSpin[i].set_increments(1, 1); // step, page (left/right mouse clicks)
+        gridDimSpin[i].set_wrap();
         // gridDimSpin[i].set_climb_rate(); // accleration rate when button is held down
         gridDimSpin[i].set_snap_to_ticks(true);
         gridDimSpin[i].set_size_request(interface::params::minButtonWidth, interface::params::minButtonHeight);
         gridSizeBox.attach(gridDimSpin[i], i, 1);
     }
-    gridDimSpin[0].set_value(grid::params::N_ROWS);
-    gridDimSpin[1].set_value(grid::params::N_COLS);
+    gridDimSpin[0].set_value(grid::params::initRows);
+    gridDimSpin[1].set_value(grid::params::initCols);
 
     // preset sizes
     int nGridSizes = *(&gridSizePresetButtons + 1) - gridSizePresetButtons;
@@ -126,7 +127,7 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
         gridSizePresetButtons[i].set_label(gridSizePresetLabels[i]);
         gridSizeBox.attach(gridSizePresetButtons[i], col, row + 2);
         if (i > 0) gridSizePresetButtons[i].set_group(gridSizePresetButtons[0]);
-        if (grid::params::N_ROWS == presetSizes[i] && grid::params::N_COLS == presetSizes[i]) {
+        if (grid::params::initRows == presetSizes[i] && grid::params::initCols == presetSizes[i]) {
             gridSizePresetButtons[i].set_active(true);
         }
     }
@@ -161,9 +162,15 @@ void RightMenuContainer::on_makeSymmetric_button_toggled() const {
     state::makeSymmetric = makeSymmetricButton.get_active();
 }
 
+/*
+ * On of the preset symmetry options was clicked.
+ */
 void RightMenuContainer::on_symmetry_button_clicked(int buttonIndex) const {
     // selected button = gridSymmetryButtons[buttonIndex]
     state::symmetryMode = buttonIndex; // assuming buttonIndex == symmetryMode
 }
 
+/*
+ * Grey-out the size buttons, indicating that current grid size is locked.
+ */
 void RightMenuContainer::on_lockGrid_button_toggled() const {}

@@ -39,6 +39,11 @@ class MainWindow : public Gtk::Window {
     // The actual Gtk::DrawingArea representing the puzzle.
     PuzzleGrid puzzleGrid;
 
+    void connectMenuButtons();
+
     // TODO: Signal handlers
     bool on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase);
+
+    void on_size_button_clicked(int buttonIndex);
+    void on_sizeSpinner_clicked(int buttonIndex);
 };
