@@ -8,7 +8,7 @@ class DatasetManager {
 
     // Load in datasets
 
-    // Sort datasets
+    // Sort datasets -- split into groups based on word length.
 
     // Compute stats on the dataset (distribution of word lengths, letter placement, # of occurences, etc.)
 };

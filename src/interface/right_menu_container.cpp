@@ -148,6 +148,7 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
 Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
 
     // TODO: Add icons. See https://developer-old.gnome.org/gtkmm-tutorial/stable/sec-pushbuttons.html.en
+    // TODO: Add option to export to .puz
     Gtk::Box saveBox;
     saveBox.set_orientation(Gtk::Orientation::HORIZONTAL);
     saveBox.set_margin(interface::params::margin);

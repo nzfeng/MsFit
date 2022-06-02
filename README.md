@@ -16,8 +16,12 @@ brew install gtkmm4
 gtkmm documentation is [here](https://developer-old.gnome.org/gtkmm-tutorial/stable/index.html.en).
 Better documentation (more up-to-date with gtkmm4) is [here](https://developer-old.gnome.org/gtkmm-tutorial/unstable/gtkmm-tutorial.html).
 
+Possibly [RE2](https://github.com/google/re2).
+
 # Interface controls
-Controls for navigating the crossword:
+
+## Grid crossword
+Controls for navigating a grid crossword:
 
 * `Space`: Toggle across/down.
 * `Tab`: Skip to the next open square in the next uncompleted word.
@@ -28,13 +32,38 @@ For any box in the grid, black or white:
 
 * Right-click: Toggle black/white.
 
+## Graph crossword
+* `Space`: Toggle the current word. Aims to go roughly in CCW order around the currently selected square.
+* `Tab`:
+* `Esc`: Enter more than one letter in a cell.
+* Right-click: Toggle black/white cell.
+
 # Organization
 * The `interface` directory contains code that pertains purely to building the GUI to the screen. Specifically, this means building and laying out the container widgets for the panels, menus, etc. However, objects in the `puzzle` directory still have their own functions defining how they are rendered. I don't envision there being enough demand for flexibility & precise control of rendering crossword puzzles that it calls for de-coupling the core puzzle engine from rendering (at least not yet.)
 * The `puzzle` directory contains code for the `PuzzleGrid` object, which represents an ordinary crossword puzzle grid. There is also the `PuzzleGraph` object, which is used when the puzzle has non-square cells and thus requires more navigation overhead. Basically, a `PuzzleGraph` is represented as a graph that can be traversed a manner similar to a halfedge mesh (the cells being faces.)
 * A `PuzzleGrid` is represented as single `Gtk::DrawingArea`, rather than as a `Gtk::Grid` comprised of many individual widgets representing the squares. I figured that although I would have to write many functions myself relating to square selection, etc., at least I would be able to exactly control how mouse/key commands behave, and how the grid is rendered, rather than having to deal with dozens of widgets and the interaction between their signal handlers.
-* The `utilities` directory contains utility functions like importing datasets.
+* The `engine` directory contains code that helps the user fill the puzzle.
+* The `utilities` directory contains generally useful functions, like ones to assist in drawing things to screen.
+
+# Regex
+* `std::regex`: uses BT (backtracking), flexible but possibly slow, especially with the `|` character
+* `RE2` uses FSA (finite state machine), seems to be consistently one of the fastest libraries in benchmarks
+* `Glib`: a choice since we're already using `Glib::ustring`s
+* `PCRE`: for `C`, would need wrappers
+
+# Datasets
+<!-- * [Broda](https://peterbroda.me/crosswords/wordlist/) -->
+* Dictionary, American idiom dictionary, Wikipedia entries (try to scrape POS, tags)
+* Ranking of parts of speech: noun > verb > adjective > adverb > prepositions > article > conjunction > pronouns
+* Conjugation: plural (if noun); root, past, gerund (if verb)
+* I will probably manually curate my own dataset. A decently sized wordlist would be around 10^6 words, which is at least feasible to manually curate and tag. Dataset will also only take a few MB saved as a text file with UTF-8 chars. A little more overhead if storing in a database (which I will probably do.)
+* Word tags: part of speech, conjugation, topic (a list of tags), foreign, idiom, proper
+* To determine semantic content (like "grid" relating to the topic "crossword"), will likely leverage others' NLP tools to generate topic tags. Copy Wikipedia tags?
+* [WordNet](https://wordnet.princeton.edu/). Useful structure/classifications, also doesn't seem to have pop culture, etc. Has a C API.
+* The more I research, the more I'm leaning towards just compiling a wordlist (no structure or tags.) (Only sorting is done by word length)
 
 # TODO
+* Export `.puz` file format
 * Support other major crossword types, such as British style, Japanese style, diagramless, etc.
 * Enable cell shapes besides squares
 * Cell shapes with curved sides (not anytime soon)
@@ -49,8 +78,10 @@ For any box in the grid, black or white:
 * Include hexagonal cells as 3-way intersections
 * Other tilings
 * Tilings of the sphere/hyperbolic disk?
-* Full 15x15 block (or at least n x n)
-* All clues are questions (something clever); puzzle design is a question mark; entries are themed to be question-related
+* I liked this puzzle: https://crosshare.org/crosswords/oC5KN16iBGMncNxU4ie5/2x3x4-3. TODO: Option for multiple chars per cell (i.e. use `.*` in regex.)
+
+# Limitations
+* Only English is supported.
 
 # License
 Currently MsFit is a private project.

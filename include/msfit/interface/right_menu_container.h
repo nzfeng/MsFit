@@ -39,7 +39,7 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::ToggleButton pencilToggle;
     Gtk::Switch softConstraintToggle;
     Gtk::CheckButton constraintButtons[6];
-    Glib::ustring constraintLabels[6] = {"No pop culture", "No names",           "No punctuation",
+    Glib::ustring constraintLabels[6] = {"No pop culture", "No proper nouns",    "No punctuation",
                                          "English-only",   "No partial phrases", "Root words"};
 
     Gtk::CheckButton gridSymmetryButtons[4];
