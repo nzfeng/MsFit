@@ -30,9 +30,13 @@ void RightMenuContainer::setUpMenuPage() {
     userCallbacksBox.set_orientation(Gtk::Orientation::VERTICAL);
 
     Gtk::Grid pencilBox = setUpWritingUtensilMenu();
+    Gtk::Grid criteriaBox = setUpWordCriteriaOptions();
+
+    // TODO: A button that evaluates the quality of the current highlighted word.
 
     userCallbacksBox.append(seps[0]);
     userCallbacksBox.append(pencilBox);
+    userCallbacksBox.append(criteriaBox);
     userCallbacksFrame.set_child(userCallbacksBox);
 
     settingsFrame.set_margin(interface::params::margin);
@@ -170,6 +174,38 @@ Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     return pencilBox;
 }
 
+Gtk::Grid RightMenuContainer::setUpWordCriteriaOptions() {
+    Gtk::Grid criteriaBox;
+    criteriaBox.set_margin(interface::params::margin);
+    criteriaBox.set_column_homogeneous(false);
+    Gtk::Label criteriaLabel("Word criteria: ");
+    criteriaLabel.set_halign(Gtk::Align::START);
+    criteriaBox.attach(criteriaLabel, 0, 0);
+
+    softConstraintToggle.set_name("Soft constraints");
+    softConstraintToggle.set_halign(Gtk::Align::END);
+    softConstraintToggle.set_active(false);
+    // softConstraintToggle.property_active().signal_changed().connect(
+    //     sigc::mem_fun(*this, &RightMenuContainer::on_constraint_button_toggled));
+    criteriaBox.attach(softConstraintToggle, 1, 0);
+
+    int nConstraints = *(&constraintButtons + 1) - constraintButtons;
+    int nRows = 2;
+    int nCols = 2;
+    // int width = right_menu_width / 3; // int height;
+    for (int i = 0; i < nConstraints; i++) {
+        int row = i / nCols;
+        int col = i - row * nCols;
+        constraintButtons[i].set_label(constraintLabels[i]);
+        // constraintButtons[i].signal_toggled().connect(
+        //     sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_criterion_button_clicked), i));
+        criteriaBox.attach(constraintButtons[i], col, row + 1);
+        constraintButtons[i].set_active(true);
+    }
+
+    return criteriaBox;
+}
+
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
 
 void RightMenuContainer::setUpSummaryPage() {
@@ -181,14 +217,16 @@ void RightMenuContainer::setUpSummaryPage() {
 
     auto numWhiteSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of white squares: ");
     auto numBlackSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of black squares: ");
+    auto numWordsLabel = Gtk::make_managed<Gtk::Label>("Number of words: ");
     auto numBlocksLabel = Gtk::make_managed<Gtk::Label>("Number of blocks: ");
 
     auto numWhiteSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
     auto numBlackSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
+    auto numWords = Gtk::make_managed<Gtk::Label>(std::to_string(0));
     auto numBlocks = Gtk::make_managed<Gtk::Label>(std::to_string(0));
 
-    std::vector<Gtk::Label*> labels = {numWhiteSquaresLabel, numBlackSquaresLabel, numBlocksLabel};
-    std::vector<Gtk::Label*> values = {numWhiteSquares, numBlackSquares, numBlocks};
+    std::vector<Gtk::Label*> labels = {numWhiteSquaresLabel, numBlackSquaresLabel, numWordsLabel, numBlocksLabel};
+    std::vector<Gtk::Label*> values = {numWhiteSquares, numBlackSquares, numWords, numBlocks};
     for (size_t i = 0; i < labels.size(); i++) {
         labels[i]->set_halign(Gtk::Align::START);
         values[i]->set_halign(Gtk::Align::END);
