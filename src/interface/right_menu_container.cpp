@@ -30,13 +30,13 @@ void RightMenuContainer::setUpMenuPage() {
     userCallbacksBox.set_orientation(Gtk::Orientation::VERTICAL);
 
     Gtk::Grid pencilBox = setUpWritingUtensilMenu();
-    Gtk::Grid criteriaBox = setUpWordCriteriaOptions();
+    // Gtk::Grid criteriaBox = setUpWordCriteriaOptions();
 
     // TODO: A button that evaluates the quality of the current highlighted word.
 
     userCallbacksBox.append(seps[0]);
     userCallbacksBox.append(pencilBox);
-    userCallbacksBox.append(criteriaBox);
+    // userCallbacksBox.append(criteriaBox);
     userCallbacksFrame.set_child(userCallbacksBox);
 
     settingsFrame.set_margin(interface::params::margin);
