@@ -48,6 +48,7 @@ class PuzzleGrid : public Gtk::DrawingArea {
     std::array<int, 2> getSelectedSquare() const;
     void setSelectedSquare(const std::array<int, 2>& indices);
     void renderSelectedSquare();
+    GridWord* getSelectedWord();
 
     // Get the next white square in the across/down direction, possibly the start of the next word.
     std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype,

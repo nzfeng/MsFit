@@ -6,10 +6,11 @@
  *  - WHITE = white with a black border, possibly with text in the center, and a number in the upper left corner.
  */
 
+#pragma once
+
 #include <gtkmm/drawingarea.h>
 #include <iostream>
 
-#include "msfit/puzzle/grid_word.h"
 #include "msfit/utilities/state.h"
 
 // TODO: inherit from Gtk::Entry?

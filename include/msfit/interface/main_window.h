@@ -1,9 +1,16 @@
+/*
+ * The main window is the "central" object where the program comes together.
+ * All objects used in the program (frontend & backend) are contained here.
+ */
+
 #pragma once
 
 #include <gtkmm/aspectframe.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/window.h>
 
+#include "msfit/engine/dataset_manager.h"
+#include "msfit/engine/fill_manager.h"
 #include "msfit/interface/bottom_menu_container.h"
 #include "msfit/interface/right_menu_container.h"
 #include "msfit/puzzle/puzzle_grid.h"
@@ -12,19 +19,10 @@ class MainWindow : public Gtk::Window {
 
   public:
     MainWindow();
-    virtual ~MainWindow() {}
+    ~MainWindow() {}
 
   protected:
-    // Container widgets:
-    // 	- Gtk::Grid arranges its child widgets in rows and columns. Use attach() and attach_next_to() to insert child
-    // widgets.
-    //	- Gtk::Box arranges its child widgets vertically or horizontally. Use append() to insert child widgets.
-
-    // Grid should be in an AspectFrame, whose aspect ratio will be constant no matter how the user resizes the
-    // top-level window.
-    //	- Each grid cell should be either a text box or a black square (which can perhaps be rendered using Cairo?)
-
-    // Child widgets
+    /* Child widgets */
 
     // Contains everything else
     Gtk::Paned mainContainer;
@@ -47,4 +45,11 @@ class MainWindow : public Gtk::Window {
 
     void on_size_button_clicked(int buttonIndex);
     void on_sizeSpinner_clicked(int buttonIndex);
+
+    /* Backend */
+    DatasetManager datasetManager;
+    FillManager fillManager;
+
+    void on_loadData_button_clicked();
+    void on_fill_clicked(const std::string& button);
 };

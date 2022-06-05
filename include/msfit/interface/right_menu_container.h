@@ -37,10 +37,14 @@ class RightMenuContainer : public Gtk::Notebook {
     // Buttons
     // Gtk::CheckButton and Gtk::ToggleButton act as radio buttons, if they are included in a group.
     Gtk::ToggleButton pencilToggle;
+    Gtk::Button loadAllWords;
     Gtk::Switch softConstraintToggle;
     Gtk::CheckButton constraintButtons[6];
     Glib::ustring constraintLabels[6] = {"No pop culture", "No proper nouns",    "No punctuation",
                                          "English-only",   "No partial phrases", "Root words"};
+    Gtk::Button fillButtons[2];
+    Glib::ustring fillButtonLabels[2] = {"Fill word", "Fill grid"};
+    // TODO: Also display little scroll window showing the first n other matches when "fill word" is clicked
 
     Gtk::CheckButton gridSymmetryButtons[4];
     Glib::ustring gridSymmetryLabels[4] = {"180°", "90°", "Mirror up-down", "Mirror left-right"};
@@ -62,6 +66,8 @@ class RightMenuContainer : public Gtk::Notebook {
     // For Menu page -- user settings
     Gtk::Grid setUpWritingUtensilMenu();
     Gtk::Grid setUpWordCriteriaOptions();
+    Gtk::Grid setUpWordlistOptions();
+    Gtk::Grid setUpFillOptions();
 
     // Signal handlers
     void on_makeSymmetric_button_toggled() const;

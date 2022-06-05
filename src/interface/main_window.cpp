@@ -15,14 +15,10 @@
  */
 MainWindow::MainWindow()
     : rightMenuContainer(), bottomMenuContainer(), canvasContainer(),
-      puzzleGrid(grid::params::initRows, grid::params::initCols) {
+      puzzleGrid(grid::params::initRows, grid::params::initCols), datasetManager(), fillManager(datasetManager) {
 
     set_title("MsFit");
     set_default_size(interface::params::window_width, interface::params::window_height);
-
-    // Paradigm: Each individual constructor handles all the settings (margin size, default size,
-    // orientation, function callbacks, etc.) All the parenting actions are done here, in one place, so that the
-    // whole hierarchy (parent-child relationships) can be seen at a glance, as well as all of the signal handling.
 
     mainContainer.set_margin(interface::params::margin);
     mainContainer.set_orientation(Gtk::Orientation::HORIZONTAL);
@@ -96,6 +92,15 @@ void MainWindow::connectMenuButtons() {
         rightMenuContainer.gridDimSpin[i].signal_value_changed().connect(
             sigc::bind(sigc::mem_fun(*this, &MainWindow::on_sizeSpinner_clicked), i));
     }
+
+    rightMenuContainer.loadAllWords.signal_clicked().connect(
+        sigc::mem_fun(*this, &MainWindow::on_loadData_button_clicked));
+
+    int nFillOptions = *(&rightMenuContainer.fillButtons + 1) - rightMenuContainer.fillButtons;
+    for (int i = 0; i < nFillOptions; i++) {
+        rightMenuContainer.fillButtons[i].signal_clicked().connect(
+            sigc::bind(sigc::mem_fun(*this, &MainWindow::on_fill_clicked), rightMenuContainer.fillButtonLabels[i]));
+    }
 }
 
 // =================================== SIGNAL HANDLERS ===================================
@@ -150,4 +155,18 @@ void MainWindow::on_sizeSpinner_clicked(int buttonIndex) {
         return;
     }
     puzzleGrid.setCols(rightMenuContainer.gridDimSpin[buttonIndex].get_value_as_int());
+}
+
+void MainWindow::on_loadData_button_clicked() { datasetManager.loadData(); }
+
+void MainWindow::on_fill_clicked(const std::string& button) {
+
+    if (button == "Fill word") {
+        std::vector<std::string> fills = fillManager.getWordFills(puzzleGrid.getSelectedWord());
+        for (auto fill : fills) {
+            std::cerr << fill << std::endl;
+        }
+    } else if (button == "Fill grid") {
+        // TODO
+    }
 }

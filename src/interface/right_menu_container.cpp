@@ -31,12 +31,16 @@ void RightMenuContainer::setUpMenuPage() {
 
     Gtk::Grid pencilBox = setUpWritingUtensilMenu();
     // Gtk::Grid criteriaBox = setUpWordCriteriaOptions();
+    Gtk::Grid wordlistBox = setUpWordlistOptions();
+    Gtk::Grid fillBox = setUpFillOptions();
 
     // TODO: A button that evaluates the quality of the current highlighted word.
 
     userCallbacksBox.append(seps[0]);
     userCallbacksBox.append(pencilBox);
     // userCallbacksBox.append(criteriaBox);
+    userCallbacksBox.append(wordlistBox);
+    userCallbacksBox.append(fillBox);
     userCallbacksFrame.set_child(userCallbacksBox);
 
     settingsFrame.set_margin(interface::params::margin);
@@ -165,6 +169,7 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
 Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     // TODO: Display pencil symbol
     Gtk::Grid pencilBox;
+    pencilBox.set_margin(interface::params::margin);
     pencilBox.set_orientation(Gtk::Orientation::HORIZONTAL);
     pencilBox.set_row_homogeneous(true);
     pencilBox.set_row_spacing(0);
@@ -205,6 +210,37 @@ Gtk::Grid RightMenuContainer::setUpWordCriteriaOptions() {
     }
 
     return criteriaBox;
+}
+
+Gtk::Grid RightMenuContainer::setUpWordlistOptions() {
+    Gtk::Grid wordlistBox;
+    wordlistBox.set_margin(interface::params::margin);
+    wordlistBox.set_column_homogeneous(false);
+    Gtk::Label label("Load wordlists: ");
+    label.set_halign(Gtk::Align::START);
+    wordlistBox.attach(label, 0, 0);
+
+    wordlistBox.attach(loadAllWords, 0, 1);
+    loadAllWords.set_label("Load all");
+
+    return wordlistBox;
+}
+
+Gtk::Grid RightMenuContainer::setUpFillOptions() {
+    Gtk::Grid fillBox;
+    fillBox.set_margin(interface::params::margin);
+    fillBox.set_column_homogeneous(false);
+    Gtk::Label label("Fill: ");
+    label.set_halign(Gtk::Align::START);
+    fillBox.attach(label, 0, 0);
+
+    int nOptions = *(&fillButtons + 1) - fillButtons;
+    for (int i = 0; i < nOptions; i++) {
+        fillButtons[i].set_label(fillButtonLabels[i]);
+        fillBox.attach(fillButtons[i], i, 1);
+    }
+
+    return fillBox;
 }
 
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }

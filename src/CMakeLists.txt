@@ -18,6 +18,10 @@ SET(SRCS
 
   puzzle/square.cpp
   puzzle/puzzle_grid.cpp
+
+  engine/dataset_manager.cpp
+  engine/fill_manager.cpp
+  engine/word_utils.cpp
 )
 
 SET(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../include/msfit/")
@@ -38,6 +42,11 @@ SET(HEADERS
   ${INCLUDE_ROOT}/puzzle/puzzle_grid.h
   ${INCLUDE_ROOT}/puzzle/puzzle_grid.ipp
   ${INCLUDE_ROOT}/puzzle/grid_word.h
+  ${INCLUDE_ROOT}/puzzle/grid_word.ipp
+
+  ${INCLUDE_ROOT}/engine/dataset_manager.h
+  ${INCLUDE_ROOT}/engine/fill_manager.h
+  ${INCLUDE_ROOT}/engine/word_utils.h
 )
 
 

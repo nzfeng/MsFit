@@ -62,6 +62,12 @@ For any box in the grid, black or white:
 * [WordNet](https://wordnet.princeton.edu/). Useful structure/classifications, also doesn't seem to have pop culture, etc. Has a C API.
 * The more I research, the more I'm leaning towards just compiling a wordlist (no structure or tags.) (Only sorting is done by word length)
 
+# Fill algorithm
+Ultimately the fill algorithm will be some variant of BFS or DFS... Here are some options:
+* naive DFS
+* naive BFS; memory issues might prevent this from being much better than DFS
+* dancing links
+
 # TODO
 * Export `.puz` file format
 * Support other major crossword types, such as British style, Japanese style, diagramless, etc.

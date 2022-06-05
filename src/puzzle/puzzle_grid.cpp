@@ -490,6 +490,13 @@ void PuzzleGrid::renderSelectedSquare() {
     data[ind_i][ind_j].setSelectionStatus(cell::state::SELECTED);
 }
 
+GridWord* PuzzleGrid::getSelectedWord() {
+    if (!areSquareIndicesValid(getSelectedSquare())) return NULL;
+    auto [ind_i, ind_j] = getSelectedSquare();
+    int wordtype = getWordMode();
+    return &gridWords[wordtype][data[ind_i][ind_j].getWord(wordtype)];
+}
+
 /*
  * Given the pixel locations of a click, determine which square was clicked.
  *
