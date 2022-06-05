@@ -11,7 +11,7 @@
 
 #include "msfit/engine/dataset_manager.h"
 #include "msfit/engine/fill_manager.h"
-#include "msfit/interface/bottom_menu_container.h"
+#include "msfit/interface/messages_list.h"
 #include "msfit/interface/right_menu_container.h"
 #include "msfit/puzzle/puzzle_grid.h"
 
@@ -31,7 +31,7 @@ class MainWindow : public Gtk::Window {
     // Contains the r.h.s menu.
     RightMenuContainer rightMenuContainer;
     // Contains the bottom menu/dialog.
-    BottomMenuContainer bottomMenuContainer;
+    MessagesList bottomMenuContainer;
     // Contains the actual grid.
     Gtk::AspectFrame canvasContainer;
     // The actual Gtk::DrawingArea representing the puzzle.

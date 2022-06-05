@@ -48,7 +48,7 @@ class PuzzleGrid : public Gtk::DrawingArea {
     std::array<int, 2> getSelectedSquare() const;
     void setSelectedSquare(const std::array<int, 2>& indices);
     void renderSelectedSquare();
-    GridWord* getSelectedWord();
+    GridWord* getSelectedWord(); // returns a pointer so it can be null;
 
     // Get the next white square in the across/down direction, possibly the start of the next word.
     std::array<int, 2> getNextLogicalSquare(const std::array<int, 2>& indices, const int wordtype,
@@ -59,6 +59,10 @@ class PuzzleGrid : public Gtk::DrawingArea {
                                                  bool stayWithinWord = false) const;
     // Get the next white square in the given direction.
     std::array<int, 2> getNextGeometricSquare(const std::array<int, 2>& indices, guint keyval);
+
+    std::array<int, 2> getNextLogicalOpenWord(const std::array<int, 2>& indices, const int wordtype);
+    // size_t getNextWord(const std::array<int, 2>& indices, const int wordtype);
+    // size_t getNextOpenWord(const std::array<int, 2>& indices, const int wordtype);
 
   private:
     // A bunch of variables/functions in PuzzleGrid, GridWord, and Square depend on pointers to elements in <data>;

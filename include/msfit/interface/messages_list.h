@@ -5,10 +5,10 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treeview.h>
 
-class BottomMenuContainer : public Gtk::ScrolledWindow {
+class MessagesList : public Gtk::ScrolledWindow {
   public:
-    BottomMenuContainer();
-    virtual ~BottomMenuContainer() {}
+    MessagesList(const std::string& label, size_t maxMessages = 10);
+    ~MessagesList() {}
 
     void setUpDialogPanel();
 
@@ -21,7 +21,16 @@ class BottomMenuContainer : public Gtk::ScrolledWindow {
 
     DialogColumns dialogColumns;
 
+    // Add a message to the dialog.
+    void addMessageToList(const std::string& text);
+    // Clear all messages.
+    void clear();
+
   protected:
     Glib::RefPtr<Gtk::ListStore> m_refListStore; // The Tree Model.
     Gtk::TreeView m_TreeView;                    // The Tree View.
+
+  private:
+    std::string label;  // the title displayed in the window
+    size_t maxMessages; // maximum number of messages to display in the dialog
 };

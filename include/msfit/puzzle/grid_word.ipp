@@ -10,7 +10,7 @@ inline Glib::ustring GridWord::toUstring() {
 inline bool GridWord::isOpen() {
     size_t nChars = this->squares.size();
     for (size_t i = 0; i < nChars; i++) {
-        if (!this->squares[i]->isEmpty()) return true;
+        if (this->squares[i]->isEmpty()) return true;
     }
     return false;
 }

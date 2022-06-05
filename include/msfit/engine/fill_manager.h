@@ -10,7 +10,7 @@ class FillManager {
     FillManager(DatasetManager& datasetManager);
     ~FillManager() {}
 
-    std::vector<std::string> getWordFills(GridWord* word, int nOptions = 10);
+    std::vector<std::string> getWordFills(GridWord* word, std::string& message, size_t nOptions = 10);
 
   private:
     DatasetManager& datasetManager;

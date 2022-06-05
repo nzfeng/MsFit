@@ -17,8 +17,23 @@ namespace params {
     extern int separator_margin;
     extern int minButtonWidth;
     extern int minButtonHeight;
+    extern int button_space;
 } // namespace params
 } // namespace interface
+
+namespace colors {
+extern std::array<float, 3> white;
+extern std::array<float, 3> black;
+extern std::array<float, 3> gold;
+extern std::array<float, 3> light_sky_blue;
+extern std::array<float, 3> gray;
+extern std::array<float, 3> yellow_green;
+extern std::array<float, 3> salmon;
+extern std::array<float, 3> alice_blue;
+extern std::array<float, 3> light_salmon;
+extern std::array<float, 3> honeydew;
+extern std::array<float, 3> papaya_whip;
+} // namespace colors
 
 namespace theme {
 enum utensil { PEN, PENCIL, AUTOFILL };

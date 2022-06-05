@@ -14,7 +14,7 @@ SET(SRCS
   interface/msfit_interface.cpp
   interface/main_window.cpp
   interface/right_menu_container.cpp
-  interface/bottom_menu_container.cpp
+  interface/messages_list.cpp
 
   puzzle/square.cpp
   puzzle/puzzle_grid.cpp
@@ -35,7 +35,7 @@ SET(HEADERS
   ${INCLUDE_ROOT}/interface/msfit_interface.h
   ${INCLUDE_ROOT}/interface/main_window.h
   ${INCLUDE_ROOT}/interface/right_menu_container.h
-  ${INCLUDE_ROOT}/interface/bottom_menu_container.h
+  ${INCLUDE_ROOT}/interface/messages_list.h
 
   ${INCLUDE_ROOT}/puzzle/square.h
   ${INCLUDE_ROOT}/puzzle/square.ipp

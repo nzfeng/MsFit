@@ -14,7 +14,7 @@
  * <bottomMenuContainer> = Containst the bottom dialog.
  */
 MainWindow::MainWindow()
-    : rightMenuContainer(), bottomMenuContainer(), canvasContainer(),
+    : rightMenuContainer(), bottomMenuContainer("Dialog"), canvasContainer(),
       puzzleGrid(grid::params::initRows, grid::params::initCols), datasetManager(), fillManager(datasetManager) {
 
     set_title("MsFit");
@@ -127,7 +127,7 @@ bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
     return false;
 }
 
-void MainWindow::on_left_click(int n_press, double x, double y) {}
+void MainWindow::on_left_click(int n_press, double x, double y) { state::lastCommandIsBackspace = false; }
 
 /*
  * On of the preset grid sizes in the RHS menu was clicked. Ideally, this would have remained in the RightMenuContainer
@@ -157,14 +157,21 @@ void MainWindow::on_sizeSpinner_clicked(int buttonIndex) {
     puzzleGrid.setCols(rightMenuContainer.gridDimSpin[buttonIndex].get_value_as_int());
 }
 
-void MainWindow::on_loadData_button_clicked() { datasetManager.loadData(); }
+void MainWindow::on_loadData_button_clicked() {
+    std::string message = "";
+    datasetManager.loadData(message);
+    bottomMenuContainer.addMessageToList(message);
+}
 
 void MainWindow::on_fill_clicked(const std::string& button) {
 
+    std::string message;
     if (button == "Fill word") {
-        std::vector<std::string> fills = fillManager.getWordFills(puzzleGrid.getSelectedWord());
+        std::vector<std::string> fills = fillManager.getWordFills(puzzleGrid.getSelectedWord(), message);
+        if (message != "") bottomMenuContainer.addMessageToList(message);
+        rightMenuContainer.fillOptionsList.clear();
         for (auto fill : fills) {
-            std::cerr << fill << std::endl;
+            rightMenuContainer.fillOptionsList.addMessageToList(fill);
         }
     } else if (button == "Fill grid") {
         // TODO

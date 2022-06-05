@@ -7,7 +7,7 @@
  *	(1) Menu/settings (general crossword settings)
  *	(2) Clues
  */
-RightMenuContainer::RightMenuContainer() {
+RightMenuContainer::RightMenuContainer() : fillOptionsList("Options", 100) {
     set_margin(interface::params::margin);
     // set_expand();
 
@@ -32,8 +32,8 @@ void RightMenuContainer::setUpMenuPage() {
     Gtk::Grid pencilBox = setUpWritingUtensilMenu();
     // Gtk::Grid criteriaBox = setUpWordCriteriaOptions();
     Gtk::Grid wordlistBox = setUpWordlistOptions();
-    Gtk::Grid fillBox = setUpFillOptions();
-
+    Gtk::Grid fillBox = setUpFillTools();
+    fillOptionsList.set_vexpand();
     // TODO: A button that evaluates the quality of the current highlighted word.
 
     userCallbacksBox.append(seps[0]);
@@ -41,6 +41,7 @@ void RightMenuContainer::setUpMenuPage() {
     // userCallbacksBox.append(criteriaBox);
     userCallbacksBox.append(wordlistBox);
     userCallbacksBox.append(fillBox);
+    userCallbacksBox.append(fillOptionsList);
     userCallbacksFrame.set_child(userCallbacksBox);
 
     settingsFrame.set_margin(interface::params::margin);
@@ -154,6 +155,7 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
     // TODO: Add icons. See https://developer-old.gnome.org/gtkmm-tutorial/stable/sec-pushbuttons.html.en
     // TODO: Add option to export to .puz
     Gtk::Box saveBox;
+    saveBox.set_spacing(interface::params::button_space);
     saveBox.set_orientation(Gtk::Orientation::HORIZONTAL);
     saveBox.set_margin(interface::params::margin);
     saveBox.set_homogeneous(true);
@@ -169,6 +171,8 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
 Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     // TODO: Display pencil symbol
     Gtk::Grid pencilBox;
+    pencilBox.set_row_spacing(interface::params::button_space);
+    pencilBox.set_column_spacing(interface::params::button_space);
     pencilBox.set_margin(interface::params::margin);
     pencilBox.set_orientation(Gtk::Orientation::HORIZONTAL);
     pencilBox.set_row_homogeneous(true);
@@ -214,6 +218,8 @@ Gtk::Grid RightMenuContainer::setUpWordCriteriaOptions() {
 
 Gtk::Grid RightMenuContainer::setUpWordlistOptions() {
     Gtk::Grid wordlistBox;
+    wordlistBox.set_row_spacing(interface::params::button_space);
+    wordlistBox.set_column_spacing(interface::params::button_space);
     wordlistBox.set_margin(interface::params::margin);
     wordlistBox.set_column_homogeneous(false);
     Gtk::Label label("Load wordlists: ");
@@ -226,8 +232,10 @@ Gtk::Grid RightMenuContainer::setUpWordlistOptions() {
     return wordlistBox;
 }
 
-Gtk::Grid RightMenuContainer::setUpFillOptions() {
+Gtk::Grid RightMenuContainer::setUpFillTools() {
     Gtk::Grid fillBox;
+    fillBox.set_row_spacing(interface::params::button_space);
+    fillBox.set_column_spacing(interface::params::button_space);
     fillBox.set_margin(interface::params::margin);
     fillBox.set_column_homogeneous(false);
     Gtk::Label label("Fill: ");
@@ -249,7 +257,8 @@ void RightMenuContainer::setUpSummaryPage() {
 
     // TODO
     Gtk::Grid summaryGrid;
-    summaryGrid.set_row_spacing(5);
+    summaryGrid.set_row_spacing(interface::params::button_space);
+    summaryGrid.set_column_spacing(interface::params::button_space);
     summaryGrid.set_margin(interface::params::margin);
 
     auto numWhiteSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of white squares: ");

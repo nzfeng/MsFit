@@ -17,13 +17,14 @@
 #include <iostream>
 #include <sstream>
 
+#include "msfit/interface/messages_list.h"
 #include "msfit/puzzle/puzzle_grid.h"
 
 class RightMenuContainer : public Gtk::Notebook {
 
   public:
     RightMenuContainer();
-    virtual ~RightMenuContainer() {}
+    ~RightMenuContainer() {}
 
     void setUpMenuPage();
     void setUpCluesPage();
@@ -44,7 +45,9 @@ class RightMenuContainer : public Gtk::Notebook {
                                          "English-only",   "No partial phrases", "Root words"};
     Gtk::Button fillButtons[2];
     Glib::ustring fillButtonLabels[2] = {"Fill word", "Fill grid"};
-    // TODO: Also display little scroll window showing the first n other matches when "fill word" is clicked
+    // Also display little scroll window showing the first n other matches when "fill word" is clicked.
+    // TODO: When "Fill grid" is pressed, use this window to show different fill options (if any)
+    MessagesList fillOptionsList;
 
     Gtk::CheckButton gridSymmetryButtons[4];
     Glib::ustring gridSymmetryLabels[4] = {"180°", "90°", "Mirror up-down", "Mirror left-right"};
@@ -67,7 +70,7 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::Grid setUpWritingUtensilMenu();
     Gtk::Grid setUpWordCriteriaOptions();
     Gtk::Grid setUpWordlistOptions();
-    Gtk::Grid setUpFillOptions();
+    Gtk::Grid setUpFillTools();
 
     // Signal handlers
     void on_makeSymmetric_button_toggled() const;

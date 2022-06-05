@@ -15,7 +15,7 @@ PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
 
     // Set up non-default event handlers for Gtk::DrawingArea.
     set_can_focus(true); // whether the input focus can enter the widget or any of its children
-    set_focusable(true); // Specifies whether widget can own the input focus
+    set_focusable(true); // Specifies whether widget can own the input focus; this seems to always keep focus on grid
     // has_visible_focus();
     // grab_focus(); // Causes widget (or one of its descendents) to have the focus for the Gtk::Window it's inside
     set_focus_on_click(true); // DrawingArea will be "focused" when clicked
@@ -355,14 +355,48 @@ std::array<int, 2> PuzzleGrid::getNextLogicalEmptySquare(const std::array<int, 2
     return {-1, -1}; // shouldn't get here
 }
 
+/*
+ * Return the indices of the first empty square in the next logical open (unfilled) word.
+ */
+std::array<int, 2> PuzzleGrid::getNextLogicalOpenWord(const std::array<int, 2>& indices, const int wordtype) {
+
+    if (!areSquareIndicesValid(indices)) return {-1, -1};
+
+    // Get the next open word.
+    auto [ind_i, ind_j] = indices;
+    size_t wordIndex = data[ind_i][ind_j].getWord(wordtype);
+    size_t currIndex = wordIndex;
+    GridWord* currWord = &gridWords[wordtype][wordIndex];
+    size_t nWords = gridWords[wordtype].size();
+    do {
+        currIndex = mod(currIndex + 1, nWords);
+        currWord = &gridWords[wordtype][currIndex];
+    } while (!currWord->isOpen() && currIndex != wordIndex);
+
+    // If the entire puzzle is filled, do nothing
+    if (currIndex == wordIndex && !gridWords[wordtype][wordIndex].isOpen()) return indices;
+
+    // If the entire puzzle is filled except for the current word, get the next open square in the current word.
+    if (currIndex == wordIndex) {
+        return getNextLogicalEmptySquare(indices, wordtype, true);
+    }
+
+    // Get the first empty square in the current word.
+    for (auto sq : currWord->squares) {
+        if (sq->isEmpty()) return sq->getPosition();
+    }
+
+    return indices; // shouldn't get here
+}
+
 std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& indices, guint keyval) {
 
     auto [ind_i, ind_j] = indices;
     int N = nRows();
     int M = nCols();
 
-    // If there are no white squares in the current row/col, just return the original square so we don't accidentally
-    // loop forever in one of the while loops below.
+    // If there are no white squares in the current row/col, just return the original square so we don't
+    // accidentally loop forever in one of the while loops below.
     Square sq;
     int i = ind_i;
     int j = ind_j;
@@ -450,8 +484,8 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
     getWords(); // there may have been unexpected global changes
 
     // If we toggled the currently selected square, change the selected square to the next logical square.
-    // TODO: Have yet to amend getNextLogicalSquare() appropriately. Currently, the puzzle just deselects (no square is
-    // selected.)
+    // TODO: Have yet to amend getNextLogicalSquare() appropriately. Currently, the puzzle just deselects (no square
+    // is selected.)
     std::array<int, 2> currentSquare = getSelectedSquare();
     if (indices == currentSquare) {
         indices = getNextLogicalSquare(indices, getWordMode());
@@ -463,8 +497,8 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
 }
 
 /*
- * Based on which square is selected, set the rendering properties of the square appropriately, along with the word it's
- * contained in.
+ * Based on which square is selected, set the rendering properties of the square appropriately, along with the word
+ * it's contained in.
  */
 void PuzzleGrid::renderSelectedSquare() {
 
@@ -517,14 +551,13 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
  * "Keyboard events are first sent to the top-level window (Gtk::Window), where it will be checked for any keyboard
  * shortcuts that may be set. Then it is sent to the widget which has focus; the event will propagate to the parent
  * until it reaches the top-level widget, or until you stop the propagation by returning true from an event handler.
- * Returning true indicates that the signal has been fully handled." Returning true also possibly prevents the default
- * handler from running.
+ * Returning true indicates that the signal has been fully handled." Returning true also possibly prevents the
+ * default handler from running.
  *
  * <keyval> = GDK_KEY_1, GDK_KEY_Escape, etc. See [https://gitlab.gnome.org/GNOME/gtk/-/blob/main/gdk/gdkkeysyms.h].
- * <keycode> = the hardware keycode; an identifying number for a physical key (i.e. "1" and "!" have the same keycode)
- * <state> = Gdk::ModifierType::SHIFT_MASK, etc.
- * <phase> = refers to the phase of event handling in which handler is called; Gtk::PropagationPhase::CAPTURE, etc.
- * See [https://stackoverflow.com/a/4616720].
+ * <keycode> = the hardware keycode; an identifying number for a physical key (i.e. "1" and "!" have the same
+ * keycode) <state> = Gdk::ModifierType::SHIFT_MASK, etc. <phase> = refers to the phase of event handling in which
+ * handler is called; Gtk::PropagationPhase::CAPTURE, etc. See [https://stackoverflow.com/a/4616720].
  *      - Capturing phase – the event goes down to the element.
  *      - Target phase – the event reached the target element.
  *      - Bubbling phase – the event bubbles up from the element.
@@ -535,14 +568,13 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
 
     if (phase != "bubble") return false;
     // If we press keys in any other part of the window.
-    if (!has_focus()) return true;
-    // TODO: If a modifier key alone (shift, alt, etc.), do nothing.
+    if (!has_focus()) return false;
 
     // Could also use gdk_keyval_name(keyval)
     switch (keyval) {
         case (GDK_KEY_Tab):
-            // Skip to the next unfilled (text-less) square; do nothing if puzzle is full.
-            setSelectedSquare(getNextLogicalEmptySquare(getSelectedSquare(), getWordMode()));
+            // Skip to the next unfilled (text-less) square in the next logical word; do nothing if puzzle is full.
+            setSelectedSquare(getNextLogicalOpenWord(getSelectedSquare(), getWordMode()));
             break;
         case (GDK_KEY_space):
             // `Space`: Toggle across/down.
@@ -592,10 +624,9 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
             data[i][j].setData(text);
             data[i][j].setUtensil(state::pencilSelected ? theme::PENCIL : theme::PEN);
 
-            // TODO: Render in gray if the pencil icon is selected.
-
             // Go to the next unfilled square in the current word, staying at the current square if the word is
-            // completely filled.
+            // completely filled. TODO: detect if we're "revisiting" a filled word, may still want to auto-skip to
+            // next square in that case.
             setSelectedSquare(getNextLogicalEmptySquare(getSelectedSquare(), getWordMode(), true)); // stay within word
         } break;
     }
