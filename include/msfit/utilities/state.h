@@ -18,6 +18,7 @@ namespace params {
     extern int minButtonWidth;
     extern int minButtonHeight;
     extern int button_space;
+    extern size_t maxFillOptions;
 } // namespace params
 } // namespace interface
 

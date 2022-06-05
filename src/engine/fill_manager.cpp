@@ -6,7 +6,7 @@ FillManager::FillManager(DatasetManager& datasetManager_) : datasetManager(datas
  * Filling a single word: The only constraints are the ones imposed by letters already in the given word.
  * Return the specified # of options.
  */
-std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& message, size_t nOptions) {
+std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& message, int nOptions) {
 
 
     std::vector<std::string> matches;
@@ -41,8 +41,8 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
             matches.push_back(match.str());
         }
     }
-    // TODO: maybe don't go through all possible options
-    if (nOptions < matches.size()) matches.resize(nOptions);
+
+    if (nOptions != -1 && nOptions < matches.size()) matches.resize(nOptions);
     message = "Fills generated";
     return matches;
 }

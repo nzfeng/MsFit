@@ -43,8 +43,16 @@ void MessagesList::addMessageToList(const std::string& text) {
 }
 
 void MessagesList::clear() {
+
     auto children = m_refListStore->children();
-    for (auto iter = children.begin(), end = children.end(); iter != end; ++iter) {
-        m_refListStore->erase(iter);
+    // Repeatedly get and delete pointer to the first element.
+    // while (m_refListStore->children().size() > 0) {
+    //     m_refListStore->erase(m_refListStore->children().begin());
+    // }
+
+    auto it = children.begin();
+    auto end = children.end();
+    while (it != end) {
+        it = m_refListStore->erase(it); // erase should auto-increment iterator
     }
 }

@@ -7,7 +7,7 @@
  *	(1) Menu/settings (general crossword settings)
  *	(2) Clues
  */
-RightMenuContainer::RightMenuContainer() : fillOptionsList("Options", 100) {
+RightMenuContainer::RightMenuContainer() : fillOptionsList("Options", interface::params::maxFillOptions) {
     set_margin(interface::params::margin);
     // set_expand();
 
