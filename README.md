@@ -68,6 +68,12 @@ Ultimately the fill algorithm will be some variant of BFS or DFS... Here are som
 * naive BFS; memory issues might prevent this from being much better than DFS
 * dancing links
 
+Ideas for fill tools:
+* Build database of English phonemes (to help narrow the search space based on feasible combos of letters)
+* When generating fills for a word, and it would complete in an intersecting word, only generate words that would complete both words.
+* Filter auto-fill results based on starting letter, whether starting vowel/consonant
+* Avoid repeated substrings, letters, and phonemes
+
 # TODO
 * Export `.puz` file format
 * Support other major crossword types, such as British style, Japanese style, diagramless, etc.

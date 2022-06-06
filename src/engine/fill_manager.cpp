@@ -41,9 +41,9 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
             matches.push_back(match.str());
         }
     }
-
-    if (nOptions != -1 && nOptions < matches.size()) matches.resize(nOptions);
-    message = "Fills generated";
+    size_t nMatches = matches.size();
+    message = "Fills generated: " + std::to_string(nMatches) + " matches.";
+    if (nOptions != -1 && (size_t)nOptions < nMatches) matches.resize(nOptions);
     return matches;
 }
 
