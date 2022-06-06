@@ -69,8 +69,9 @@ Ultimately the fill algorithm will be some variant of BFS or DFS... Here are som
 * dancing links
 
 Ideas for fill tools:
-* Build database of English phonemes (to help narrow the search space based on feasible combos of letters)
+* Build database of English phonemes (? I mean legal letter combinations), to help narrow the search space based on feasible combos of letters. However, this may erroneously eliminate compound words (e.g. "pj" in "flapjack".)
 * When generating fills for a word, and it would complete in an intersecting word, only generate words that would complete both words.
+* When generating fills for a word, only generate fills that would leave at least n possibilities for every intersecting word.
 * Filter auto-fill results based on starting letter, whether starting vowel/consonant
 * Avoid repeated substrings, letters, and phonemes
 
