@@ -5,19 +5,21 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/treeview.h>
 
+
+class DialogColumns : public Gtk::TreeModel::ColumnRecord {
+  public:
+    DialogColumns() { add(m_col_text); }
+    virtual ~DialogColumns();
+
+    Gtk::TreeModelColumn<Glib::ustring> m_col_text;
+};
+
 class MessagesList : public Gtk::ScrolledWindow {
   public:
     MessagesList(const std::string& label, size_t maxMessages = 10);
-    ~MessagesList() {}
+    virtual ~MessagesList();
 
     void setUpDialogPanel();
-
-    class DialogColumns : public Gtk::TreeModel::ColumnRecord {
-      public:
-        DialogColumns() { add(m_col_text); }
-
-        Gtk::TreeModelColumn<Glib::ustring> m_col_text;
-    };
 
     DialogColumns dialogColumns;
 

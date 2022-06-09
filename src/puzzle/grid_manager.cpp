@@ -14,16 +14,3 @@ int GridManager::isSymmetric() const {
 
     return grid::symmetry::ASYMMETRIC;
 }
-
-/*
- * Auto-generate a layout, with the given symmetry. Rules:
- *	- White squares must form a single connected component.
- * 	- Blocks must be at least 3 squares in height/width
- */
-// void GridManager::generateLayout(int symmetry) {
-
-//     switch (symmetry) {
-//     case grid::symmetry::TWO_TURN:
-//         break;
-//     }
-// }

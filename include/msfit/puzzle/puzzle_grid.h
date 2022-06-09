@@ -25,7 +25,7 @@ class PuzzleGrid : public Gtk::DrawingArea {
   public:
     PuzzleGrid();
     PuzzleGrid(size_t nRows, size_t nCols);
-    ~PuzzleGrid() {}
+    virtual ~PuzzleGrid();
 
     size_t nRows() const;
     size_t nCols() const;

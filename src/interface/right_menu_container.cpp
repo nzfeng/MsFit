@@ -9,12 +9,14 @@
  */
 RightMenuContainer::RightMenuContainer() : fillOptionsList("Options", interface::params::maxFillOptions) {
     set_margin(interface::params::margin);
-    // set_expand();
+    set_expand();
 
     setUpMenuPage();
     setUpCluesPage();
     setUpSummaryPage();
 }
+
+RightMenuContainer::~RightMenuContainer() {}
 
 void RightMenuContainer::setUpMenuPage() {
 

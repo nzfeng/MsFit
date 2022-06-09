@@ -179,3 +179,5 @@ void MainWindow::on_fill_clicked(const std::string& button) {
         // TODO
     }
 }
+
+MainWindow::~MainWindow() {}

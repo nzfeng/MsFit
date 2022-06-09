@@ -9,6 +9,8 @@
 // Constructors
 PuzzleGrid::PuzzleGrid() { PuzzleGrid(grid::params::initRows, grid::params::initCols); }
 
+PuzzleGrid::~PuzzleGrid() {}
+
 PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     setSize(nRows_, nCols_);
     set_draw_func(sigc::mem_fun(*this, &PuzzleGrid::draw));

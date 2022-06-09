@@ -14,6 +14,10 @@ MessagesList::MessagesList(const std::string& label_, size_t maxMessages_) : lab
     setUpDialogPanel();
 }
 
+MessagesList::~MessagesList() {}
+
+DialogColumns::~DialogColumns() {}
+
 /*
  * Set up the dialog window.
  */

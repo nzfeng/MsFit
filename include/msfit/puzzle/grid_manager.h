@@ -10,7 +10,7 @@ class GridManager {
 
   public:
     GridManager(PuzzleGrid& puzzleGrid);
-    ~GridManager();
+    ~GridManager() {}
 
     // Determine the current symmetry of the grid. Returns the enum corresponding to the symmetry (see state.h)
     int isSymmetric() const;

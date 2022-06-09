@@ -19,7 +19,7 @@ class MainWindow : public Gtk::Window {
 
   public:
     MainWindow();
-    ~MainWindow() {}
+    virtual ~MainWindow();
 
   protected:
     /* Child widgets */

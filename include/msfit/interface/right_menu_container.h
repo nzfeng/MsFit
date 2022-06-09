@@ -24,7 +24,7 @@ class RightMenuContainer : public Gtk::Notebook {
 
   public:
     RightMenuContainer();
-    ~RightMenuContainer() {}
+    virtual ~RightMenuContainer();
 
     void setUpMenuPage();
     void setUpCluesPage();
