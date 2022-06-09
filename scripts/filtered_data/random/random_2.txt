@@ -105,11 +105,9 @@ division
 doubt
 drink
 driving
-98.
 dust
 earth
 edge
-
 education
 effect
 end
@@ -211,7 +209,6 @@ measure
 meat
 meeting
 memory
-
 metal
 middle
 milk
@@ -778,7 +775,6 @@ voice
 lord
 stage
 king
-us
 situation
 light
 tax
@@ -851,7 +847,6 @@ plan
 behaviour
 treatment
 energy
-st
 peter
 income
 cup
@@ -1116,7 +1111,6 @@ match
 assessment
 message
 football
-no
 animal
 skin
 scene
@@ -1134,7 +1128,6 @@ japan
 claim
 kingdom
 video
-tv
 existence
 telephone
 move
@@ -1236,7 +1229,6 @@ expenditure
 second
 discipline
 cell
-pp.
 reaction
 castle
 congress
@@ -1382,7 +1374,6 @@ lane
 pool
 independence
 hole
-un
 flat
 content
 pay
@@ -1454,7 +1445,6 @@ deputy
 roof
 nose
 steel
-co
 artist
 graham
 plate
@@ -1602,11 +1592,9 @@ gun
 gap
 core
 uncle
-thatcher
 fun
 arrival
 snow
-no.
 command
 abuse
 limit
