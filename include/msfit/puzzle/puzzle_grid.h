@@ -83,9 +83,9 @@ class PuzzleGrid : public Gtk::DrawingArea {
 
     // Functions for signal handlers
     void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
+    void on_focus_out();
     void on_left_click(int n_press, double x, double y);
     void on_right_click(int n_press, double x, double y);
-    bool isEnterableCharacter(guint keyval) const;
     bool on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase);
     std::array<int, 2> mapClickToSquareIndex(double x, double y); // map cursor click to index of square in the grid
 

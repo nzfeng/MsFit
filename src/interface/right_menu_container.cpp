@@ -81,6 +81,7 @@ Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
     makeSymmetricButton.set_name("Symmetry toggle");
     makeSymmetricButton.set_halign(Gtk::Align::END);
     makeSymmetricButton.set_active(state::makeSymmetric);
+    makeSymmetricButton.set_can_focus(false);
     makeSymmetricButton.property_active().signal_changed().connect(
         sigc::mem_fun(*this, &RightMenuContainer::on_makeSymmetric_button_toggled));
     gridSymmetryBox.attach(makeSymmetricButton, 1, 0);
@@ -94,6 +95,7 @@ Gtk::Grid RightMenuContainer::setUpGridSymmetrySettings() {
         int row = i / nCols;
         int col = i - row * nCols;
         gridSymmetryButtons[i].set_label(gridSymmetryLabels[i]);
+        gridSymmetryButtons[i].set_can_focus(false);
         gridSymmetryButtons[i].signal_toggled().connect(
             sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_symmetry_button_clicked), i));
         gridSymmetryBox.attach(gridSymmetryButtons[i], col, row + 1);
@@ -115,6 +117,7 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
 
     lockGridSize.set_name("Lock size");
     lockGridSize.set_halign(Gtk::Align::END);
+    lockGridSize.set_can_focus(false);
     lockGridSize.set_active(false);
     lockGridSize.property_active().signal_changed().connect(
         sigc::mem_fun(*this, &RightMenuContainer::on_lockGrid_button_toggled));
@@ -145,6 +148,7 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
         int row = i / nCols;
         int col = i - row * nCols;
         gridSizePresetButtons[i].set_label(gridSizePresetLabels[i]);
+        gridSizePresetButtons[i].set_can_focus(false);
         gridSizeBox.attach(gridSizePresetButtons[i], col, row + 2);
         if (i > 0) gridSizePresetButtons[i].set_group(gridSizePresetButtons[0]);
         if (grid::params::initRows == presetSizes[i] && grid::params::initCols == presetSizes[i]) {
@@ -165,8 +169,10 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
     saveBox.set_homogeneous(true);
     saveBox.set_spacing(interface::params::margin);
     saveButton.set_label("Save");
+    saveButton.set_can_focus(false);
     // saveButton.set_image_from_icon_name("info");
     loadButton.set_label("Load");
+    loadButton.set_can_focus(false);
     saveBox.append(saveButton);
     saveBox.append(loadButton);
     return saveBox;
@@ -182,6 +188,7 @@ Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     pencilBox.set_row_spacing(0);
     pencilToggle.set_label("Pencil");
     pencilToggle.set_halign(Gtk::Align::END);
+    pencilToggle.set_can_focus(false);
     Gtk::Image pencilIcon("../../data/icons/pencil-icon.png");
     pencilToggle.set_child(pencilIcon);
     pencilToggle.signal_toggled().connect(sigc::mem_fun(*this, &RightMenuContainer::on_pencil_button_clicked));
@@ -233,6 +240,7 @@ Gtk::Grid RightMenuContainer::setUpWordlistOptions() {
 
     wordlistBox.attach(loadAllWords, 0, 1);
     loadAllWords.set_label("Load all");
+    loadAllWords.set_can_focus(false);
 
     return wordlistBox;
 }
@@ -250,6 +258,7 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
     int nOptions = *(&fillButtons + 1) - fillButtons;
     for (int i = 0; i < nOptions; i++) {
         fillButtons[i].set_label(fillButtonLabels[i]);
+        fillButtons[i].set_can_focus(false);
         fillBox.attach(fillButtons[i], i, 1);
     }
 

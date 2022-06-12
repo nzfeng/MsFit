@@ -1,4 +1,6 @@
 #include <gtkmm/accelerator.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/eventcontrollerfocus.h>
 #include <gtkmm/eventcontrollerkey.h>
 #include <gtkmm/gestureclick.h>
 
@@ -49,6 +51,10 @@ PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &PuzzleGrid::on_key_press), "capture"),
     //                                          false);
     // add_controller(keyHandler);
+
+    auto focusHandler = Gtk::EventControllerFocus::create();
+    focusHandler->signal_leave().connect(sigc::mem_fun(*this, &PuzzleGrid::on_focus_out));
+    add_controller(focusHandler);
 }
 
 void PuzzleGrid::setSize(size_t rows, size_t cols) {
@@ -431,6 +437,11 @@ std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& 
 
 // =================================== SIGNAL HANDLERS ===================================
 
+void PuzzleGrid::on_focus_out() {
+    setSelectedSquare({-1, -1});
+    queue_draw();
+}
+
 void PuzzleGrid::on_left_click(int n_press, double x, double y) {
 
     grab_focus(); // since apparently set_focus_on_click() doesn't work
@@ -600,6 +611,9 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
         } break;
         case (GDK_KEY_Escape):
             // TODO: `Esc`: Enter more than one letter in a box. Hit Esc again or `Enter' to exit this mode.
+            // This should make the square a different color, and instead of auto-skipping to the next square upon
+            // hitting a key, stays in the current square and appends to the current square data. Would be better if the
+            // square turned into a Gtk::Entry, so user has cursor freedom.
             break;
         case (GDK_KEY_Return):
             // TODO: Search fills according to user-defined criteria. Generate and display a list of top 10 fills.

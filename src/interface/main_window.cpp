@@ -131,6 +131,8 @@ bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
         state::lastCommandIsBackspace = false;
         return true;
     }
+    // TODO: When focus shifts to spin buttons, would be nice to de-select grid (no selected squares/words) just to be
+    // clear to the user that they must re-click on the grid to re-focus.
     return false;
 }
 
