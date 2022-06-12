@@ -1,5 +1,6 @@
 #include "msfit/interface/right_menu_container.h"
 #include "msfit/utilities/state.h"
+#include <gtkmm/image.h>
 
 /*
  * Construct r.h.s. menu. This menu will have multiple tabs:
@@ -123,7 +124,8 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
     // spin buttons
     int nDims = *(&gridDimLabels + 1) - gridDimLabels;
     for (int i = 0; i < nDims; i++) {
-        gridDimSpin[i].set_numeric(false);
+        gridDimSpin[i].set_editable(true);
+        gridDimSpin[i].set_numeric(true); // prevent user from typing non-numeric chars
         gridDimSpin[i].set_range(grid::params::minRows, grid::params::maxRows);
         gridDimSpin[i].set_increments(1, 1); // step, page (left/right mouse clicks)
         gridDimSpin[i].set_wrap();
@@ -171,7 +173,6 @@ Gtk::Box RightMenuContainer::setUpPuzzleIOSettings() {
 }
 
 Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
-    // TODO: Display pencil symbol
     Gtk::Grid pencilBox;
     pencilBox.set_row_spacing(interface::params::button_space);
     pencilBox.set_column_spacing(interface::params::button_space);
@@ -181,6 +182,8 @@ Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     pencilBox.set_row_spacing(0);
     pencilToggle.set_label("Pencil");
     pencilToggle.set_halign(Gtk::Align::END);
+    Gtk::Image pencilIcon("../../data/icons/pencil-icon.png");
+    pencilToggle.set_child(pencilIcon);
     pencilToggle.signal_toggled().connect(sigc::mem_fun(*this, &RightMenuContainer::on_pencil_button_clicked));
     pencilBox.attach(pencilToggle, 0, 0);
     return pencilBox;

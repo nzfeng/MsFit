@@ -19,9 +19,10 @@ class MainWindow : public Gtk::Window {
 
   public:
     MainWindow();
-    virtual ~MainWindow();
+    ~MainWindow() override;
+    // virtual ~MainWindow();
 
-  protected:
+  private:
     /* Child widgets */
 
     // Contains everything else

@@ -12,6 +12,7 @@ MessagesList::MessagesList(const std::string& label_, size_t maxMessages_) : lab
 
     set_margin(interface::params::margin);
     setUpDialogPanel();
+    set_can_focus(false);
 }
 
 MessagesList::~MessagesList() {}

@@ -16,13 +16,21 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
     // Scale the user-space coordinate system s.t. the width and height of the widget are both equal to 1.0 units.
     // cr->scale(size, size);
     std::array<float, 3> color;
+    std::array<float, 3> color_outline = theme::color_outline;
+    float border;
 
     if (solid) {
-        // Simply draw a black square (possibly with yellow outline, if selected)
+        // Simply draw a black square with gray outline (possibly with yellow outline, if selected)
+        std::array<float, 3> color_solid = theme::color_solid;
         switch (selectionStatus) {
             case (cell::UNSELECTED):
-                cr->set_source_rgb(0.0, 0.0, 0.0);
+                cr->set_source_rgb(color_outline[0], color_outline[1], color_outline[2]);
                 cr->rectangle(x, y, size, size);
+                cr->fill();
+
+                border = theme::white_border_width;
+                cr->set_source_rgb(color_solid[0], color_solid[1], color_solid[2]);
+                cr->rectangle(x + 0.5 * border, y + 0.5 * border, size - border, size - border);
                 cr->fill();
                 break;
             case (cell::SELECTED):
@@ -30,8 +38,8 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
                 cr->set_source_rgb(color[0], color[1], color[2]); // yellow outline
                 cr->rectangle(x, y, size, size);
                 cr->fill();
-                cr->set_source_rgb(0.0, 0.0, 0.0);
-                float border = theme::black_border_width;
+                cr->set_source_rgb(color_solid[0], color_solid[1], color_solid[2]);
+                border = theme::black_border_width;
                 cr->rectangle(x + 0.5 * border, y + 0.5 * border, size - border, size - border);
                 cr->fill();
                 break;
@@ -39,7 +47,7 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
     } else {
         // Draw a colored square with a gray outline by first drawing a gray square, then drawing a slightly smaller
         // colored square on top.
-        cr->set_source_rgb(0.8, 0.8, 0.8);
+        cr->set_source_rgb(color_outline[0], color_outline[1], color_outline[2]);
         cr->rectangle(x, y, size, size);
         cr->fill();
 
@@ -58,7 +66,7 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
                 break;
         }
         // border is 0.5px wide inside each square, 1px wide when squares are next to each other.
-        float border = theme::white_border_width;
+        border = theme::white_border_width;
         cr->rectangle(x + 0.5 * border, y + 0.5 * border, size - border, size - border);
         cr->fill();
 

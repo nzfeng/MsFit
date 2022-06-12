@@ -39,7 +39,7 @@ MainWindow::MainWindow()
 
     connectMenuButtons();
 
-    rightMenuContainer.set_can_focus(false);
+    puzzleGrid.grab_focus(); // makes puzzleGrid have the keyboard focus
     bottomMenuContainer.set_can_focus(false);
 
     canvasContainer.set_margin(interface::params::margin);
@@ -49,29 +49,29 @@ MainWindow::MainWindow()
     canvasContainer.set_ratio(1.0); // aspect ratio of grid is maintained
     canvasContainer.set_child(puzzleGrid);
 
-    // Event handlers
-    auto leftClickHandler = Gtk::GestureClick::create();
-    leftClickHandler->set_button(GDK_BUTTON_PRIMARY); // the left mouse button
-    leftClickHandler->signal_pressed().connect(sigc::mem_fun(*this, &MainWindow::on_left_click));
-    add_controller(leftClickHandler);
+    // // Event handlers
+    // auto leftClickHandler = Gtk::GestureClick::create();
+    // leftClickHandler->set_button(GDK_BUTTON_PRIMARY); // the left mouse button
+    // leftClickHandler->signal_pressed().connect(sigc::mem_fun(*this, &MainWindow::on_left_click));
+    // add_controller(leftClickHandler);
 
-    auto keyHandler = Gtk::EventControllerKey::create();
-    keyHandler->set_propagation_phase(Gtk::PropagationPhase::BUBBLE);
-    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "bubble"),
-                                             false);
-    add_controller(keyHandler);
+    // auto keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::BUBBLE);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "bubble"),
+    //                                          false);
+    // add_controller(keyHandler);
 
-    keyHandler = Gtk::EventControllerKey::create();
-    keyHandler->set_propagation_phase(Gtk::PropagationPhase::TARGET);
-    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "target"),
-                                             false);
-    add_controller(keyHandler);
+    // keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::TARGET);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "target"),
+    //                                          false);
+    // add_controller(keyHandler);
 
-    keyHandler = Gtk::EventControllerKey::create();
-    keyHandler->set_propagation_phase(Gtk::PropagationPhase::CAPTURE);
-    keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "capture"),
-                                             false);
-    add_controller(keyHandler);
+    // keyHandler = Gtk::EventControllerKey::create();
+    // keyHandler->set_propagation_phase(Gtk::PropagationPhase::CAPTURE);
+    // keyHandler->signal_key_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MainWindow::on_key_press), "capture"),
+    //                                          true);
+    // add_controller(keyHandler);
 }
 
 
@@ -107,27 +107,34 @@ void MainWindow::connectMenuButtons() {
 
 /*
  * Overwrite default window key handler.
+ * Doing this somehow prevents the default handlers for all child widgets from running; need to define own.
  */
 bool MainWindow::on_key_press(guint keyval, guint keycode, Gdk::ModifierType state, const Glib::ustring& phase) {
 
     // std::cerr << "Phase: " << phase << std::endl;
-
-    // std::cerr << has_focus() << std::endl;
-    // std::cerr << "mainContainer " << mainContainer.has_focus() << std::endl;
-    // std::cerr << "gridContainer " << gridContainer.has_focus() << std::endl;
+    //  std::cerr << has_focus() << std::endl;
+    //  std::cerr << "mainContainer " << mainContainer.has_focus() << std::endl;
+    //  std::cerr << "gridContainer " << gridContainer.has_focus() << std::endl;
     // std::cerr << "rhs menu " << rightMenuContainer.has_focus() << std::endl;
-    // std::cerr << "bottom menu " << bottomMenuContainer.has_focus() << std::endl;
-    // std::cerr << "canvasContainer " << canvasContainer.has_focus() << std::endl;
+    //  std::cerr << "bottom menu " << bottomMenuContainer.has_focus() << std::endl;
+    //  std::cerr << "canvasContainer " << canvasContainer.has_focus() << std::endl;
     // std::cerr << "puzzleGrid " << puzzleGrid.has_focus() << std::endl;
 
+    // std::cerr << "rhs settings " << rightMenuContainer.settingsFrame.has_focus() << std::endl;
+    // std::cerr << "rhs menu box " << rightMenuContainer.menuBox.has_focus() << std::endl;
+    // std::cerr << "rhs settingsBox " << rightMenuContainer.settingsBox.has_focus() << std::endl;
+    // std::cerr << "rhs spinButtons " << rightMenuContainer.gridDimSpin[0].has_focus() << " "
+    //           << rightMenuContainer.gridDimSpin[1].has_focus() << std::endl;
+
+    std::cerr << get_focus() << std::endl;
     if (phase == "capture" && !puzzleGrid.has_focus()) {
-        state::lastCommandIsBackspace = false; // TODO: set this variable upon any mouse click as well
+        state::lastCommandIsBackspace = false;
         return true;
     }
     return false;
 }
 
-void MainWindow::on_left_click(int n_press, double x, double y) { state::lastCommandIsBackspace = false; }
+// void MainWindow::on_left_click(int n_press, double x, double y) { state::lastCommandIsBackspace = false; }
 
 /*
  * On of the preset grid sizes in the RHS menu was clicked. Ideally, this would have remained in the RightMenuContainer

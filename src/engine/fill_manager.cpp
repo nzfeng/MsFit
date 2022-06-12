@@ -48,6 +48,13 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
 }
 
 /*
- * Filling the remaining entire puzzle using depth-first search. Heuristic is to start from the longest unfilled word.
- * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a different color.
+ * Filling the remaining entire puzzle using depth-first search:
+ *      - Heuristic is to start from the longest unfilled word.
+ *      - At each step, attempt to fill a word by randomly selecting a fill option. No other optimizations.
+ *      - After tentatively filling a word, check each of the words it intersects to see if they have >0 fill options.
+ *      If not, backtrack.
+ *      - No other optimizations for terminating unpromising sub-trees early.
+ *
+ * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a
+ * different color.
  */

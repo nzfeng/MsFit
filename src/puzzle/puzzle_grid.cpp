@@ -18,9 +18,7 @@ PuzzleGrid::PuzzleGrid(size_t nRows_, size_t nCols_) {
     // Set up non-default event handlers for Gtk::DrawingArea.
     set_can_focus(true); // whether the input focus can enter the widget or any of its children
     set_focusable(true); // Specifies whether widget can own the input focus; this seems to always keep focus on grid
-    // has_visible_focus();
-    // grab_focus(); // Causes widget (or one of its descendents) to have the focus for the Gtk::Window it's inside
-    set_focus_on_click(true); // DrawingArea will be "focused" when clicked
+    set_focus_on_click(true); // DrawingArea will be "focused" when clicked (this doesn't seem to work??)
     set_can_target(true);     // DrawingArea can be the target of pointer events
 
     // gtkmm4 moved all signal-handling functionality to "Gesture*" objects (clicks) and EventController
@@ -435,6 +433,9 @@ std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& 
 
 void PuzzleGrid::on_left_click(int n_press, double x, double y) {
 
+    grab_focus(); // since apparently set_focus_on_click() doesn't work
+    state::lastCommandIsBackspace = false;
+
     // Determine which square was clicked.
     std::array<int, 2> indices = mapClickToSquareIndex(x, y);
     // If outside the grid, don't do anything.
@@ -451,6 +452,9 @@ void PuzzleGrid::on_left_click(int n_press, double x, double y) {
 }
 
 void PuzzleGrid::on_right_click(int n_press, double x, double y) {
+
+    grab_focus(); // since apparently set_focus_on_click() doesn't work
+    state::lastCommandIsBackspace = false;
 
     // Determine which square was clicked.
     std::array<int, 2> indices = mapClickToSquareIndex(x, y);
