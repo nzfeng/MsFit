@@ -33,6 +33,11 @@ class PuzzleGrid : public Gtk::DrawingArea {
     void setCols(size_t cols);
     void setSize(size_t rows, size_t cols);
 
+    size_t nWords() const;
+
+    std::vector<std::vector<Square>>& getData();
+    std::vector<std::vector<GridWord>>& getWords();
+
     void save();
     void load();
 
@@ -67,7 +72,7 @@ class PuzzleGrid : public Gtk::DrawingArea {
   private:
     // A bunch of variables/functions in PuzzleGrid, GridWord, and Square depend on pointers to elements in <data>;
     // these pointers will remain valid as long as <data> is not resized. Whenever the grid is resized (i.e. setSize()
-    // is called), all pointers in these objects should be reset in getWords().
+    // is called), all pointers in these objects should be reset in determineWords().
     std::vector<std::vector<Square>> data; // row-major order
 
     // Rendering info. Variables set in the draw() function.
@@ -75,11 +80,11 @@ class PuzzleGrid : public Gtk::DrawingArea {
     size_t squareSize;     // side length of each square
     int wordtypeMode = 0;  // Are we in across mode or down mode?
 
+    std::vector<std::vector<GridWord>> gridWords;
     // Based on the current pattern of white/black squares, determine the words of the puzzle (contiguous blocks of
     // white squares) and their numbers.
-    std::vector<std::vector<GridWord>> gridWords;
     void setSquareNeighbors();
-    void getWords();
+    void determineWords();
 
     // Functions for signal handlers
     void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);

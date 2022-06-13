@@ -16,7 +16,7 @@ class DialogColumns : public Gtk::TreeModel::ColumnRecord {
 
 class MessagesList : public Gtk::ScrolledWindow {
   public:
-    MessagesList(const std::string& label, size_t maxMessages = 10);
+    MessagesList(const std::string& label, size_t maxMessages = 10, bool autoScroll = false);
     virtual ~MessagesList();
 
     void setUpDialogPanel();
@@ -35,4 +35,5 @@ class MessagesList : public Gtk::ScrolledWindow {
   private:
     std::string label;  // the title displayed in the window
     size_t maxMessages; // maximum number of messages to display in the dialog
+    bool autoScroll;    // whether the window auto-scrolls to the bottom every time a message is added
 };

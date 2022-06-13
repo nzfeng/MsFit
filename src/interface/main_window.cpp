@@ -14,8 +14,9 @@
  * <bottomMenuContainer> = Containst the bottom dialog.
  */
 MainWindow::MainWindow()
-    : rightMenuContainer(), bottomMenuContainer("Dialog"), canvasContainer(),
-      puzzleGrid(grid::params::initRows, grid::params::initCols), datasetManager(), fillManager(datasetManager) {
+    : rightMenuContainer(), bottomMenuContainer("Dialog", interface::params::maxDialogMessages, true),
+      canvasContainer(), puzzleGrid(grid::params::initRows, grid::params::initCols), datasetManager(),
+      fillManager(datasetManager) {
 
     set_title("MsFit");
     set_default_size(interface::params::window_width, interface::params::window_height);

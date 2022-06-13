@@ -74,7 +74,7 @@ void PuzzleGrid::setSize(size_t rows, size_t cols) {
     setSquareNeighbors();
 
     // Always re-compute words & reset pointers to squares in Square, GridWord objects.
-    getWords();
+    determineWords();
 
     queue_draw();
 }
@@ -131,7 +131,7 @@ void PuzzleGrid::setSquareNeighbors() {
  * Get *all* the words in the puzzle from scratch, and assign numbers to squares (if they are at the start of a word)
  * along the way. Words are stored in logical (numerical) order; squares comprising each word are stored in order.
  */
-void PuzzleGrid::getWords() {
+void PuzzleGrid::determineWords() {
 
     gridWords.resize(2);
     gridWords[grid::wordtype::ACROSS].clear();
@@ -435,6 +435,9 @@ std::array<int, 2> PuzzleGrid::getNextGeometricSquare(const std::array<int, 2>& 
     return sq.getPosition();
 }
 
+// =================================== MISCELLANEOUS ===================================
+
+
 // =================================== SIGNAL HANDLERS ===================================
 
 void PuzzleGrid::on_focus_out() {
@@ -498,7 +501,7 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
         }
     }
 
-    getWords(); // there may have been unexpected global changes
+    determineWords(); // there may have been unexpected global changes
 
     // If we toggled the currently selected square, change the selected square to the next logical square.
     // TODO: Have yet to amend getNextLogicalSquare() appropriately. Currently, the puzzle just deselects (no square

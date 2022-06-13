@@ -1,6 +1,8 @@
 #include "msfit/interface/messages_list.h"
 #include "msfit/utilities/state.h"
 
+#include <gtkmm/adjustment.h>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -8,7 +10,8 @@
 /*
  * Constructor
  */
-MessagesList::MessagesList(const std::string& label_, size_t maxMessages_) : label(label_), maxMessages(maxMessages_) {
+MessagesList::MessagesList(const std::string& label_, size_t maxMessages_, bool autoScroll_)
+    : label(label_), maxMessages(maxMessages_), autoScroll(autoScroll_) {
 
     set_margin(interface::params::margin);
     setUpDialogPanel();
@@ -45,6 +48,13 @@ void MessagesList::addMessageToList(const std::string& text) {
 
     auto start = m_refListStore->children().begin();
     if (m_refListStore->children().size() > maxMessages) m_refListStore->erase(start);
+
+    // TODO: This always scrolls to the second-to-last item. Probably need to hook up to a signal handler on size
+    // allocate.
+    if (autoScroll) {
+        Glib::RefPtr<Gtk::Adjustment> adj = get_vadjustment();
+        adj->set_value(adj->get_upper());
+    }
 }
 
 void MessagesList::clear() {
