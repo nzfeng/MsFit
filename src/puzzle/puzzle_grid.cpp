@@ -194,6 +194,18 @@ void PuzzleGrid::determineWords() {
     }
 }
 
+/*
+ * Clear all data from the grid.
+ */
+void PuzzleGrid::clear() {
+    for (size_t i = 0; i < data.size(); i++) {
+        for (size_t j = 0; j < data[i].size(); j++) {
+            data[i][j].clearData();
+        }
+    }
+    queue_draw();
+}
+
 // =================================== SYMMETRY CHECKERS ===================================
 
 // TODO: Maybe write a function "getSymmetricEquivalent(int mode)" to get the equivalent square to (i,j).

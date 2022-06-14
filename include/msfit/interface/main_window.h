@@ -46,6 +46,7 @@ class MainWindow : public Gtk::Window {
 
     void on_size_button_clicked(int buttonIndex);
     void on_sizeSpinner_clicked(int buttonIndex);
+    void on_clearGrid_button_clicked();
 
     /* Backend */
     DatasetManager datasetManager;

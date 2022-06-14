@@ -38,6 +38,8 @@ class PuzzleGrid : public Gtk::DrawingArea {
     std::vector<std::vector<Square>>& getData();
     std::vector<std::vector<GridWord>>& getWords();
 
+    void clear();
+
     void save();
     void load();
 

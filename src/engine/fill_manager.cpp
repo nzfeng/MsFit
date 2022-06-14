@@ -52,7 +52,8 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
 
 /*
  * Filling the remaining entire puzzle using depth-first search:
- *      - Heuristic is to start from the longest unfilled word. If a tie, go with the one with more empty squares.
+ *      - Heuristic is to start from the word with the fewest fill options. Usually this is longest unfilled word to
+ *      start; as the puzzle progresses, it will be the words that have started to get filled in.
  *      - At each step, attempt to fill a word by randomly selecting a fill option. No other optimizations.
  *      - After tentatively filling a word, check each of the words it intersects to see if they have >n fill options.
  *      If not, backtrack.

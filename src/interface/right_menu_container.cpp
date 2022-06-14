@@ -186,6 +186,7 @@ Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     pencilBox.set_orientation(Gtk::Orientation::HORIZONTAL);
     pencilBox.set_row_homogeneous(true);
     pencilBox.set_row_spacing(0);
+
     pencilToggle.set_label("Pencil");
     pencilToggle.set_halign(Gtk::Align::END);
     pencilToggle.set_can_focus(false);
@@ -193,6 +194,12 @@ Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     pencilToggle.set_child(pencilIcon);
     pencilToggle.signal_toggled().connect(sigc::mem_fun(*this, &RightMenuContainer::on_pencil_button_clicked));
     pencilBox.attach(pencilToggle, 0, 0);
+
+    clearGridButton.set_label("Clear");
+    clearGridButton.set_can_focus(false);
+    Gtk::Image clearIcon("../../data/icons/trash-icon.png");
+    clearGridButton.set_child(clearIcon);
+    pencilBox.attach(clearGridButton, 1, 0);
     return pencilBox;
 }
 

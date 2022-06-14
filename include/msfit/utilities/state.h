@@ -30,6 +30,7 @@ extern std::array<float, 3> gold;
 extern std::array<float, 3> light_sky_blue;
 extern std::array<float, 3> gray;
 extern std::array<float, 3> light_gray;
+extern std::array<float, 3> dark_gray;
 extern std::array<float, 3> yellow_green;
 extern std::array<float, 3> salmon;
 extern std::array<float, 3> alice_blue;
@@ -42,8 +43,9 @@ namespace theme {
 enum utensil { PEN, PENCIL, AUTOFILL };
 
 extern std::array<float, 3> color_outline;
-extern std::array<float, 3> color_solid;      // color of a solid cell (usually black)
-extern std::array<float, 3> color_unselected; // usually white
+extern std::array<float, 3> color_solid_outline; // outline of a solid cell
+extern std::array<float, 3> color_solid;         // color of a solid cell (usually black)
+extern std::array<float, 3> color_unselected;    // usually white
 extern std::array<float, 3> color_selected;
 extern std::array<float, 3> color_highlighted;
 extern std::array<float, 3> color_pencil;

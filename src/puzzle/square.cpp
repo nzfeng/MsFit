@@ -17,14 +17,15 @@ void Square::draw(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Cont
     // cr->scale(size, size);
     std::array<float, 3> color;
     std::array<float, 3> color_outline = theme::color_outline;
+    std::array<float, 3> solid_outline = theme::color_solid_outline;
     float border;
 
     if (solid) {
-        // Simply draw a black square with gray outline (possibly with yellow outline, if selected)
+        // Simply draw a black square with (a darker) gray outline (possibly with yellow outline, if selected)
         std::array<float, 3> color_solid = theme::color_solid;
         switch (selectionStatus) {
             case (cell::UNSELECTED):
-                cr->set_source_rgb(color_outline[0], color_outline[1], color_outline[2]);
+                cr->set_source_rgb(solid_outline[0], solid_outline[1], solid_outline[2]);
                 cr->rectangle(x, y, size, size);
                 cr->fill();
 

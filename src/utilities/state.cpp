@@ -37,6 +37,7 @@ std::array<float, 3> gold = {1.0, 0.843137, 0.0};
 std::array<float, 3> light_sky_blue = {0.690196, 0.866667, 0.984314}; // light sky blue, desaturated
 std::array<float, 3> gray = {0.6, 0.6, 0.6};
 std::array<float, 3> light_gray = {0.8, 0.8, 0.8};
+std::array<float, 3> dark_gray = {0.2, 0.2, 0.2};
 std::array<float, 3> yellow_green = {0.603922, 0.803922, 0.196078};
 std::array<float, 3> salmon = {0.98039, 0.50196, 4453125};
 std::array<float, 3> alice_blue = {0.941176, 0.972549, 1.};
@@ -47,6 +48,7 @@ std::array<float, 3> papaya_whip = {1., 0.937255, 0.835294};
 
 namespace theme {
 std::array<float, 3> color_outline = colors::light_gray;
+std::array<float, 3> color_solid_outline = colors::dark_gray;
 std::array<float, 3> color_solid = colors::black;
 std::array<float, 3> color_unselected = colors::white;
 std::array<float, 3> color_selected = colors::gold;

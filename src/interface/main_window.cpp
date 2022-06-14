@@ -102,6 +102,8 @@ void MainWindow::connectMenuButtons() {
         rightMenuContainer.fillButtons[i].signal_clicked().connect(
             sigc::bind(sigc::mem_fun(*this, &MainWindow::on_fill_clicked), rightMenuContainer.fillButtonLabels[i]));
     }
+    rightMenuContainer.clearGridButton.signal_clicked().connect(
+        sigc::mem_fun(*this, &MainWindow::on_clearGrid_button_clicked));
 }
 
 // =================================== SIGNAL HANDLERS ===================================
@@ -188,6 +190,10 @@ void MainWindow::on_fill_clicked(const std::string& button) {
     } else if (button == "Fill grid") {
         // TODO
     }
+}
+
+void MainWindow::on_clearGrid_button_clicked() {
+    puzzleGrid.clear(); // TODO: Set message "Puzzle cleared"?
 }
 
 MainWindow::~MainWindow() {}

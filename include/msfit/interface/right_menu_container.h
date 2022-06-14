@@ -39,6 +39,7 @@ class RightMenuContainer : public Gtk::Notebook {
     // Buttons
     // Gtk::CheckButton and Gtk::ToggleButton act as radio buttons, if they are included in a group.
     Gtk::ToggleButton pencilToggle;
+    Gtk::Button clearGridButton;
     Gtk::Button loadAllWords;
     Gtk::Switch softConstraintToggle;
     Gtk::CheckButton constraintButtons[6];
