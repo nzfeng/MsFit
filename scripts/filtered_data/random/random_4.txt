@@ -79,3 +79,15 @@ toasters
 toaster_oven
 air_fryer
 air_fryers
+big_break
+lucky_break
+star_turn
+breakthrough
+breakthroughs
+starring_role
+good_advice
+garlic_naan
+elastigirl
+Kim_Possible
+yet_here_we_are
+are_we_there_yet

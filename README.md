@@ -62,6 +62,7 @@ For any box in the grid, black or white:
 * [WordNet](https://wordnet.princeton.edu/). Useful structure/classifications, also doesn't seem to have pop culture, etc. Has a C API.
 * The more I research, the more I'm leaning towards just compiling a wordlist (no structure or tags.) (Only sorting is done by word length)
 * Filtering words that are uncommon, inelegant; refer to people, places, cultural phenomena; for short words (< 7 letters), avoid common crossword-ese, plurals or other derivatives, and multi-word phrases; for long entries, avoid phrases with more than 3 words.
+* No British English, non-English entries except for common phrases ("vice versa", etc.)
 
 # Fill algorithm
 Ultimately the fill algorithm will be some variant of BFS or DFS... Here are some options:
@@ -87,6 +88,7 @@ Ideas for fill tools:
 * Switch from GTK to Qt, which has better cross-platform support, and platform-specific UI.
 * Co-optimize both the grid and fill quality (I belive this is very hard)
 * Take some ideas from the industry-standard [Crossword Compiler](https://www.crossword-compiler.com/). For example, Grid Insight; viewing "forced words", etc.
+* Go through all filtered words and add all derivatives.
 
 # Puzzle ideas
 * Include hexagonal cells as 3-way intersections
