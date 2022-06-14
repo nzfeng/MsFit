@@ -1,5 +1,9 @@
 photobomb
+photobombs
+photobombed
+photobombing
 fever dream
+dreamy
 absurdist
 new day
 bad day
@@ -87,7 +91,7 @@ breakthroughs
 starring_role
 good_advice
 garlic_naan
-elastigirl
+Elastigirl
 Kim_Possible
 yet_here_we_are
 are_we_there_yet
@@ -96,3 +100,9 @@ groks
 grokked
 spa
 loose
+loose_ends
+product_placement
+product_placements
+false_dichotomy
+kid_in_a_candy_shop
+kid_in_a_candy_store
