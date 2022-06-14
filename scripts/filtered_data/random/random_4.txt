@@ -91,3 +91,8 @@ elastigirl
 Kim_Possible
 yet_here_we_are
 are_we_there_yet
+grok
+groks
+grokked
+spa
+loose
