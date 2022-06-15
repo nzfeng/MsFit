@@ -63,6 +63,7 @@ For any box in the grid, black or white:
 * The more I research, the more I'm leaning towards just compiling a wordlist (no structure or tags.) (Only sorting is done by word length)
 * Filtering words that are uncommon, inelegant; refer to people, places, cultural phenomena; for short words (< 7 letters), avoid common crossword-ese, plurals or other derivatives, and multi-word phrases; for long entries, avoid phrases with more than 3 words.
 * No British English, non-English entries except for common phrases ("vice versa", etc.)
+* No offensive or potentially offensive entries; no entries relating to warfare or other sensitive topics.
 
 # Fill algorithm
 Ultimately the fill algorithm will be some variant of BFS or DFS... Here are some options:
