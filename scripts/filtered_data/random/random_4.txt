@@ -106,3 +106,12 @@ product_placements
 false_dichotomy
 kid_in_a_candy_shop
 kid_in_a_candy_store
+jock
+jocks
+jockstrap
+atom
+atoms
+mixin
+mixins
+cast
+casts
