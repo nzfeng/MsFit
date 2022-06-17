@@ -115,3 +115,17 @@ mixin
 mixins
 cast
 casts
+plot twist
+cliffhanger
+cliffhangers
+nailbiter
+nailbiters
+pool noodle
+pool noodles
+fake tattoo
+fake tattoos
+temporary tattoo
+temporary tattoos
+alley cat
+alley cats
+audiophile
