@@ -206,6 +206,13 @@ void PuzzleGrid::clear() {
     queue_draw();
 }
 
+
+// ====================================== WORD LOGIC =======================================
+/*
+ * Given a word in the puzzle, get all intersecting words, and the position of intersecting square in the crossing word.
+ */
+// PuzzleGrid() {}
+
 // =================================== SYMMETRY CHECKERS ===================================
 
 // TODO: Maybe write a function "getSymmetricEquivalent(int mode)" to get the equivalent square to (i,j).
@@ -657,7 +664,7 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
             if (text == "") return true;      // if the key pressed doesn't result in a char, like shift, ctrl, etc.
             text = text.uppercase();
             data[i][j].setData(text);
-            data[i][j].setUtensil(state::pencilSelected ? theme::PENCIL : theme::PEN);
+            data[i][j].setUtensil(state::pencilSelected ? cell::PENCIL : cell::PEN);
 
             // Go to the next unfilled square in the current word, staying at the current square if the word is
             // completely filled. TODO: detect if we're "revisiting" a filled word, may still want to auto-skip to

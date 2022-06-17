@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
 #include <gtkmm/checkbutton.h>
@@ -41,13 +40,12 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::ToggleButton pencilToggle;
     Gtk::Button clearGridButton;
     Gtk::Button loadAllWords;
-    Gtk::Switch softConstraintToggle;
-    Gtk::CheckButton constraintButtons[6];
-    Glib::ustring constraintLabels[6] = {"No pop culture", "No proper nouns",    "No punctuation",
-                                         "English-only",   "No partial phrases", "Root words"};
     Gtk::Button fillButtons[2];
     Glib::ustring fillButtonLabels[2] = {"Fill word", "Fill grid"};
+    Gtk::CheckButton fillWordGridFeasible, ignorePenciled;
     // Also display little scroll window showing the first n other matches when "fill word" is clicked.
+    // TODO: Options for sorting fill options by various criteria (alphabetical, various fill-quality metrics [diversity
+    // of letters, etc.])
     // TODO: When "Fill grid" is pressed, use this window to show different fill options (if any)
     MessagesList fillOptionsList;
 
@@ -70,7 +68,6 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::Box setUpPuzzleIOSettings();
     // For Menu page -- user settings
     Gtk::Grid setUpWritingUtensilMenu();
-    Gtk::Grid setUpWordCriteriaOptions();
     Gtk::Grid setUpWordlistOptions();
     Gtk::Grid setUpFillTools();
 

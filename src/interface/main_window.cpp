@@ -179,7 +179,9 @@ void MainWindow::on_fill_clicked(const std::string& button) {
 
     std::string message;
     if (button == "Fill word") {
-        std::vector<std::string> fills = fillManager.getWordFills(puzzleGrid.getSelectedWord(), message, -1);
+        std::vector<std::string> fills = fillManager.getWordFills(
+            puzzleGrid.getSelectedWord(), message, rightMenuContainer.ignorePenciled.get_active(),
+            rightMenuContainer.fillWordGridFeasible.get_active(), -1);
         if (message != "") bottomMenuContainer.addMessageToList(message);
         rightMenuContainer.fillOptionsList.clear();
         // instead of forcing the TreeView to continually add/delete options

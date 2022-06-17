@@ -33,7 +33,6 @@ void RightMenuContainer::setUpMenuPage() {
     userCallbacksBox.set_orientation(Gtk::Orientation::VERTICAL);
 
     Gtk::Grid pencilBox = setUpWritingUtensilMenu();
-    // Gtk::Grid criteriaBox = setUpWordCriteriaOptions();
     Gtk::Grid wordlistBox = setUpWordlistOptions();
     Gtk::Grid fillBox = setUpFillTools();
     fillOptionsList.set_vexpand();
@@ -203,38 +202,6 @@ Gtk::Grid RightMenuContainer::setUpWritingUtensilMenu() {
     return pencilBox;
 }
 
-Gtk::Grid RightMenuContainer::setUpWordCriteriaOptions() {
-    Gtk::Grid criteriaBox;
-    criteriaBox.set_margin(interface::params::margin);
-    criteriaBox.set_column_homogeneous(false);
-    Gtk::Label criteriaLabel("Word criteria: ");
-    criteriaLabel.set_halign(Gtk::Align::START);
-    criteriaBox.attach(criteriaLabel, 0, 0);
-
-    softConstraintToggle.set_name("Soft constraints");
-    softConstraintToggle.set_halign(Gtk::Align::END);
-    softConstraintToggle.set_active(false);
-    // softConstraintToggle.property_active().signal_changed().connect(
-    //     sigc::mem_fun(*this, &RightMenuContainer::on_constraint_button_toggled));
-    criteriaBox.attach(softConstraintToggle, 1, 0);
-
-    int nConstraints = *(&constraintButtons + 1) - constraintButtons;
-    int nRows = 2;
-    int nCols = 2;
-    // int width = right_menu_width / 3; // int height;
-    for (int i = 0; i < nConstraints; i++) {
-        int row = i / nCols;
-        int col = i - row * nCols;
-        constraintButtons[i].set_label(constraintLabels[i]);
-        // constraintButtons[i].signal_toggled().connect(
-        //     sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_criterion_button_clicked), i));
-        criteriaBox.attach(constraintButtons[i], col, row + 1);
-        constraintButtons[i].set_active(true);
-    }
-
-    return criteriaBox;
-}
-
 Gtk::Grid RightMenuContainer::setUpWordlistOptions() {
     Gtk::Grid wordlistBox;
     wordlistBox.set_row_spacing(interface::params::button_space);
@@ -262,12 +229,24 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
     label.set_halign(Gtk::Align::START);
     fillBox.attach(label, 0, 0);
 
+    // Add checkbox that lets user choose whether autofill ignores penciled-in cells.
+    ignorePenciled.set_label("Ignore penciled");
+    ignorePenciled.set_can_focus(false);
+    fillBox.attach(ignorePenciled, 1, 0);
+
     int nOptions = *(&fillButtons + 1) - fillButtons;
     for (int i = 0; i < nOptions; i++) {
         fillButtons[i].set_label(fillButtonLabels[i]);
         fillButtons[i].set_can_focus(false);
-        fillBox.attach(fillButtons[i], i, 1);
     }
+
+    fillBox.attach(fillButtons[0], 0, 1);
+    fillBox.attach(fillButtons[1], 0, 2);
+    // Add checkbox that allows user to specify whether they want to limit fills of the current word to only those that
+    // are "grid-feasible", i.e. fills that don't lead to other words being unfillable.
+    fillWordGridFeasible.set_label("Grid-feasible");
+    fillWordGridFeasible.set_can_focus(false);
+    fillBox.attach(fillWordGridFeasible, 1, 1);
 
     return fillBox;
 }

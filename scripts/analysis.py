@@ -30,6 +30,28 @@ def unusedLetterPairs(wordSet, location="beginning"):
 
 	return unusedPairs
 
+def printPairsInMapForm(pairs):
+	'''
+	Given a list of letter pairs, determine map from 
+	[letter + position] -> [unused letter in the empty position].
+	'''
+	mapToLetters = {}
+	for pair in pairs:
+		key0 = pair[0] + "."
+		key1 = "." + pair[1]
+
+		if key0 in mapToLetters: mapToLetters[key0].add(pair[1]);
+		else: mapToLetters[key0] = {pair[1]};
+
+		if key1 in mapToLetters: mapToLetters[key1].add(pair[0]);
+		else: mapToLetters[key1] = {pair[0]};
+
+	for key in mapToLetters:
+		unusedLetters = ""
+		for letter in mapToLetters[key]:
+			unusedLetters += letter
+		print("{\"%s\", \"%s\"}," %(key, unusedLetters))
+
 def main():
 	# allWords = getAllWords();
 	# print("Total number of words: %d" %len(allWords))
@@ -40,6 +62,9 @@ def main():
 	unusedEndPairs = unusedLetterPairs(allWords, "end")
 	print('{:<} {:>7}'.format("Number unused beginning pairs:", len(unusedBeginningPairs)))
 	print('{:<} {:>10}'.format("Number unused ending pairs:", len(unusedEndPairs)))
+
+	#printPairsInMapForm(unusedBeginningPairs)
+	printPairsInMapForm(unusedEndPairs)
 
 if __name__=="__main__":
 	main()

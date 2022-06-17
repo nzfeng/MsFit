@@ -17,14 +17,17 @@ inline bool GridWord::isOpen() {
 
 inline size_t GridWord::length() { return this->squares.size(); }
 
-inline std::regex GridWord::toRegex() const {
+inline std::regex GridWord::toRegex(bool ignorePenciled) const {
     std::string pattern = "";
     size_t nChars = this->squares.size();
     for (size_t i = 0; i < nChars; i++) {
-        if (this->squares[i]->isEmpty())
+        if (this->squares[i]->getUtensil() == cell::PENCIL && ignorePenciled) {
             pattern += ".";
-        else
+        } else if (this->squares[i]->isEmpty()) {
+            pattern += ".";
+        } else {
             pattern += this->squares[i]->getData();
+        }
     }
     return std::regex(pattern);
 }

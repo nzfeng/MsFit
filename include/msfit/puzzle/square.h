@@ -18,7 +18,7 @@ class Square {
 
   public:
     Square(int isSolid = false, Glib::ustring data = "", int width = 20, int selectionStatus = cell::UNSELECTED,
-           int utensil = theme::PEN);
+           int utensil = cell::PEN);
     ~Square() {}
 
     Glib::ustring getData() const;

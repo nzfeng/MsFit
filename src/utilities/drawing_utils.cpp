@@ -10,13 +10,13 @@ void draw_text(Gtk::DrawingArea& drawingArea, const Cairo::RefPtr<Cairo::Context
 
     std::array<float, 3> pen_color;
     switch (utensil) {
-        case theme::PENCIL:
+        case cell::PENCIL:
             pen_color = theme::color_pencil;
             break;
-        case theme::AUTOFILL:
+        case cell::AUTOFILL:
             pen_color = theme::color_autofill;
             break;
-        case theme::PEN:
+        case cell::PEN:
         default:
             pen_color = theme::color_pen;
             break;

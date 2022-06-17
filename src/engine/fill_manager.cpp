@@ -7,9 +7,16 @@ FillManager::FillManager(DatasetManager& datasetManager_) : datasetManager(datas
 
 /*
  * Filling a single word: The only constraints are the ones imposed by letters already in the given word.
+ * In other words, we only consider the current word in isolation; we do not consider how crossing words might narrow
+ * the space of possible fills.
+ *
+ * If you *do* want to limit fills to only ones that allow possibilites for all intersecting words, set <gridFeasible>
+ * to true.
+ *
  * Return the specified # of options.
  */
-std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& message, int nOptions) const {
+std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& message, bool ignorePenciled,
+                                                   bool gridFeasible, int nOptions) const {
 
 
     std::vector<std::string> matches;
@@ -33,21 +40,39 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
         return matches;
     }
 
-
-    // Look through all options for now
+    // Get all options.
     size_t n = word->length();
     std::vector<std::string>& options = datasetManager.words[n];
     std::smatch match;
-    const std::regex pattern = word->toRegex();
+    const std::regex pattern = word->toRegex(ignorePenciled);
     for (const auto& option : options) {
         if (std::regex_match(option, match, pattern)) {
             matches.push_back(match.str());
         }
     }
+
+    // Return the specified number of matches.
     size_t nMatches = matches.size();
     message = "Fills generated: " + std::to_string(nMatches) + " matches.";
     if (nOptions != -1 && (size_t)nOptions < nMatches) matches.resize(nOptions);
     return matches;
+}
+
+/*
+ * Get all grid-feasible fills for the given word.
+ */
+std::vector<std::string> FillManager::getGridFeasibleWordFills(GridWord* word, bool ignorePenciled) {
+    size_t n = word->length();
+    std::vector<std::string>& options = datasetManager.words[n];
+    std::smatch match;
+
+    // Build the regex pattern.
+    GridWord x;
+    std::string pattern = "";
+    for (auto sq : word.squares) {
+        // Determine which word intersects the current word at this square.
+    }
+    // const std::regex pattern;
 }
 
 /*
@@ -73,6 +98,7 @@ void FillManager::fillGridDFS(PuzzleGrid& puzzleGrid, std::string& message) cons
     std::vector<std::vector<GridWord>>& gridWords = puzzleGrid.getWords();
     std::map<Square*, size_t> squareToDenseIdx;
     std::vector<std::string> cells;
+    // Each word is a sequence of indices into <cells>.
     std::vector<std::vector<size_t>> words;
     // the i-th entry contains the indices of all words that intersect the i-th word
     std::vector<std::vector<size_t>> xMap;

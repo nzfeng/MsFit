@@ -70,6 +70,31 @@ def removeDuplicates(wordlist):
 
 	return wordSet;
 
+def removeEntries(wordlist, setlist):
+	'''
+	Subtract elements in <setlist> from <wordlist>. Preserve the original formatting of the word.
+	'''
+
+	# Lists are passed in by reference in Python...
+	stdSetlist = [standardize(word) for word in setlist]
+
+	# Build map from standardized versions of entries to the original entries.
+	wordMap = {}
+	stdList = []
+	for word in wordlist:
+		std = standardize(word)
+		wordMap[std] = word
+		stdList.append(std)
+
+	# Remove elements.
+	newList = set(stdList) - set(stdSetlist)
+
+	# Return original versions of entries.
+	wordSet = []
+	for word in newList:
+		wordSet.append(wordMap[word])
+
+	return wordSet
 
 ##### INPUT/OUTPUT
 
@@ -170,5 +195,50 @@ def saveRawWords(wordset, dataset_name="broda", incr=1000, offset=0, toSort=Fals
 			if (i==nFiles-1): end = None
 
 			for word in wordset[start:end]:
+				f.write(word)
+				f.write("\n")
+
+def saveFilteredWords():
+	'''
+	Save final wordlist, to be loaded into MsFit.
+
+	Save de-punctuated, capitalized words from the filtered lists (the files I manually compiled)
+	into files sorted by wordlength, in the "data" directory.
+	'''
+
+	files = glob.glob('./filtered_data/*/*.txt', recursive = True)
+
+	all_words = []
+	for file in files:
+		f = open(file, 'r')
+		lines = f.read().splitlines() 
+		f.close()
+		all_words += lines
+
+	print("Total number of words: %d" %len(all_words))
+
+	all_words = [depunctuate(word).upper() for word in all_words]
+	print([word for word in all_words if len(word)<3])
+	all_words = [word for word in all_words if len(word) >= 3]
+	all_words = set(all_words)
+	print("Number of unique words: %d" %len(all_words))
+
+	# No categories for now. Just sort by wordlength.
+	wordLengths = [len(word) for word in all_words]
+	minLength = min(wordLengths)
+	maxLength = max(wordLengths)
+	print("min length: %d\t max length: %d" %(minLength,maxLength))
+
+	for i in range(minLength,maxLength+1):
+		n = len([word for word in all_words if len(word)==i])
+		print("# of words of length %d: %d" %(i, n))
+
+	# Save words.
+	for i in range(minLength, maxLength+1):
+		filename = "../data/words_%d.txt" %i
+		words = [word for word in all_words if len(word)==i]
+
+		with open(filename, 'w') as f:
+			for word in words:
 				f.write(word)
 				f.write("\n")

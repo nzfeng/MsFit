@@ -40,7 +40,6 @@ extern std::array<float, 3> papaya_whip;
 } // namespace colors
 
 namespace theme {
-enum utensil { PEN, PENCIL, AUTOFILL };
 
 extern std::array<float, 3> color_outline;
 extern std::array<float, 3> color_solid_outline; // outline of a solid cell
@@ -61,6 +60,7 @@ extern float puzzle_border_width; // width of border around the puzzle board
 namespace cell {
 
 enum state { UNSELECTED, SELECTED, HIGHLIGHTED };
+enum utensil { PEN, PENCIL, AUTOFILL };
 
 } // namespace cell
 
