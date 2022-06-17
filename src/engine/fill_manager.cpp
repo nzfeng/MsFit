@@ -60,6 +60,7 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
 
 /*
  * Get all grid-feasible fills for the given word.
+ * TODO: Move this to PuzzleGrid?
  */
 std::vector<std::string> FillManager::getGridFeasibleWordFills(GridWord* word, bool ignorePenciled) {
     size_t n = word->length();
@@ -67,10 +68,17 @@ std::vector<std::string> FillManager::getGridFeasibleWordFills(GridWord* word, b
     std::smatch match;
 
     // Build the regex pattern.
-    GridWord x;
+    GridWord& x;
     std::string pattern = "";
+    int crossType = word->isAcross; // assumes ACROSS = 0, DOWN = 1
     for (auto sq : word.squares) {
-        // Determine which word intersects the current word at this square.
+        // Which word intersects the current word at this square.
+        size_t wordIndex = sq->wordIndex[crossType];
+        x = gridWords[crossType][wordIndex];
+        // Index of <sq> in this word.
+        size_t charIndex = sq->charIndex[crossType];
+
+        // TODO: Determine if this square is the first/second, or last/second-to-last in the word.
     }
     // const std::regex pattern;
 }
