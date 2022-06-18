@@ -10,6 +10,7 @@
 #include <fstream>
 #include <iostream>
 #include <random>
+#include <regex>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -70,6 +71,8 @@ class PuzzleGrid : public Gtk::DrawingArea {
     std::array<int, 2> getNextLogicalOpenWord(const std::array<int, 2>& indices, const int wordtype);
     // size_t getNextWord(const std::array<int, 2>& indices, const int wordtype);
     // size_t getNextOpenWord(const std::array<int, 2>& indices, const int wordtype);
+
+    std::regex getGridFeasibleRegex(GridWord* word, bool ignorePenciled);
 
   private:
     // A bunch of variables/functions in PuzzleGrid, GridWord, and Square depend on pointers to elements in <data>;

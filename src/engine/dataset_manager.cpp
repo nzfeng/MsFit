@@ -1,4 +1,7 @@
 #include "msfit/engine/dataset_manager.h"
+#include "msfit/utilities/state.h"
+
+DatasetManager::DatasetManager() {}
 
 void DatasetManager::loadFromFile(std::string& message) {
     // Get all txt files in the data directory
@@ -57,4 +60,112 @@ void DatasetManager::loadData(std::string& message) {
         loadFromFile(message);
     }
     // TODO: else load from binary
+
+    // Run stats
+    analyzeLetterPairs();
+}
+
+/*
+ * Helper function for analyzeLetterPairs().
+ *
+ * Out of all 26^2 possible two-letter combinations, return the set of pairs that *don't* appear at the
+ * [beginning | middle | end] of any word in the dataset.
+ */
+std::vector<std::string> DatasetManager::getUnusedLetterPairs(const std::string& location) const {
+
+    // Generate all letter pairs
+    std::vector<std::string> unusedPairs;
+    for (const auto& l1 : ALL_LETTERS) {
+        for (const auto& l2 : ALL_LETTERS) {
+            unusedPairs.push_back(l1 + l2);
+        }
+    }
+
+    for (auto const& [n, words_n] : words) {
+        for (auto const& word : words_n) {
+            std::string pair; // TODO: Change wordlist to std::string_views?
+            if (location == "beginning") {
+                pair = word.substr(0, 2);
+            } else if (location == "end") {
+                pair = word.substr(word.size() - 2);
+            }
+            unusedPairs.erase(std::remove(unusedPairs.begin(), unusedPairs.end(), pair), unusedPairs.end());
+        }
+    }
+    return unusedPairs;
+}
+
+/*
+ * Helper function for analyzeLetterPairs().
+ *
+ * Takes in a std::vector<std::string> of unused letter pairs, and generates the regex map.
+ */
+std::map<std::string, std::string>
+DatasetManager::unusedPairsToRegexMap(const std::vector<std::string>& unusedPairs) const {
+
+    // Construct map from pair patterns -> list of chars that don't appear in the empty position.
+    std::map<std::string, std::set<std::string>> unusedPairMap;
+    std::string firstChar, secondChar, key0, key1;
+    for (const auto& pair : unusedPairs) {
+        firstChar = pair.substr(0, 1);
+        secondChar = pair.substr(1);
+        key0 = firstChar + ".";
+        key1 = "." + secondChar;
+        if (unusedPairMap.count(key0) > 0) {
+            unusedPairMap[key0].insert(secondChar);
+        } else {
+            unusedPairMap[key0] = {secondChar};
+        }
+
+        if (unusedPairMap.count(key1) > 0) {
+            unusedPairMap[key1].insert(firstChar);
+        } else {
+            unusedPairMap[key1] = {firstChar};
+        }
+    }
+
+    // Now construct the regexes.
+    std::map<std::string, std::string> regexMap;
+    for (auto const& [key, unusedLetters] : unusedPairMap) {
+        size_t n = unusedLetters.size();
+        std::string pattern = "";
+
+        if (n == 0) {
+            // This pattern matches with everything
+            pattern = ".";
+        } else if (n <= 13) {
+            pattern += "[";
+            for (auto const& letter : unusedLetters) {
+                pattern += letter;
+            }
+            pattern += "]";
+        } else {
+            // Compute {used letters} = {all letters} - {unused letters}
+            std::set<std::string> usedLetters;
+            std::set_difference(ALL_LETTERS.begin(), ALL_LETTERS.end(), unusedLetters.begin(), unusedLetters.end(),
+                                std::inserter(usedLetters, usedLetters.end()));
+
+            pattern += "[^";
+            for (auto const& letter : usedLetters) {
+                pattern += letter;
+            }
+            pattern += "]";
+        }
+        regexMap[key] = pattern;
+    }
+    return regexMap;
+}
+
+/*
+ * Generate regex for letter pairs.
+ */
+void DatasetManager::analyzeLetterPairs() const {
+
+    std::vector<std::string> unusedStartingPairs = getUnusedLetterPairs("beginning");
+    std::vector<std::string> unusedEndingPairs = getUnusedLetterPairs("end");
+
+    fillData::startingPairRegex = unusedPairsToRegexMap(unusedStartingPairs);
+    fillData::endingPairRegex = unusedPairsToRegexMap(unusedEndingPairs);
+    fillData::startingPairRegex["."] = ".";
+    fillData::endingPairRegex["."] = ".";
 }

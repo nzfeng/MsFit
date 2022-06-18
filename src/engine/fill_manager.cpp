@@ -58,30 +58,6 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
     return matches;
 }
 
-/*
- * Get all grid-feasible fills for the given word.
- * TODO: Move this to PuzzleGrid?
- */
-std::vector<std::string> FillManager::getGridFeasibleWordFills(GridWord* word, bool ignorePenciled) {
-    size_t n = word->length();
-    std::vector<std::string>& options = datasetManager.words[n];
-    std::smatch match;
-
-    // Build the regex pattern.
-    GridWord& x;
-    std::string pattern = "";
-    int crossType = word->isAcross; // assumes ACROSS = 0, DOWN = 1
-    for (auto sq : word.squares) {
-        // Which word intersects the current word at this square.
-        size_t wordIndex = sq->wordIndex[crossType];
-        x = gridWords[crossType][wordIndex];
-        // Index of <sq> in this word.
-        size_t charIndex = sq->charIndex[crossType];
-
-        // TODO: Determine if this square is the first/second, or last/second-to-last in the word.
-    }
-    // const std::regex pattern;
-}
 
 /*
  * Filling the remaining entire puzzle using depth-first search:
@@ -93,15 +69,18 @@ std::vector<std::string> FillManager::getGridFeasibleWordFills(GridWord* word, b
  *      - No other optimizations for terminating unpromising sub-trees early.
  *      - Just return the first grid fill found.
  *
+ * Warning: The only solutions returned by this method are ones that only contain words from the wordlist.
+ *
  * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a
  * different color.
  */
 void FillManager::fillGridDFS(PuzzleGrid& puzzleGrid, std::string& message) const {
 
-    // Convert the current puzzle into something with a more compact (smaller memory), and faster to do word-lookups on
-    // (maybe?) Puzzle is defined as dense array of fillable squares (std::vector of strings) Each word is represented
-    // as an array of ints indexing into the array of squares. Total set of words is fixed-length. For each word, keep
-    // track of each word that intersects it (an int into the array of words.) Everything is index-based.
+    // Convert the current puzzle into something with a more compact (smaller memory), and faster to do word-lookups on.
+    // Puzzle is defined as dense array of fillable squares (std::vector of strings) Each word is represented as an
+    // array of ints indexing into the array of squares. Total set of words is fixed-length. For each word, keep track
+    // of each word that intersects it (an int into the array of words.) Everything is index-based; hopefully the time
+    // savings add up vs. pointer-chasing (which is how the data in PuzzleGrid is implemented.)
     std::vector<std::vector<Square>>& data = puzzleGrid.getData();
     std::vector<std::vector<GridWord>>& gridWords = puzzleGrid.getWords();
     std::map<Square*, size_t> squareToDenseIdx;

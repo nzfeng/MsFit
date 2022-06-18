@@ -32,7 +32,7 @@ def unusedLetterPairs(wordSet, location="beginning"):
 
 def printPairsInMapForm(pairs):
 	'''
-	Given a list of letter pairs, determine map from 
+	Given a list of unused letter pairs, determine map from 
 	[letter + position] -> [unused letter in the empty position].
 	'''
 	mapToLetters = {}
@@ -52,6 +52,47 @@ def printPairsInMapForm(pairs):
 			unusedLetters += letter
 		print("{\"%s\", \"%s\"}," %(key, unusedLetters))
 
+def printPairsInRegexForm(pairs):
+	'''
+	Given a list of unused letter pairs, print the regex pattern for allowable characters
+	in the empty position. 
+	'''
+	mapToLetters = {}
+	for pair in pairs:
+		key0 = pair[0] + "."
+		key1 = "." + pair[1]
+
+		if key0 in mapToLetters: mapToLetters[key0].add(pair[1]);
+		else: mapToLetters[key0] = {pair[1]};
+
+		if key1 in mapToLetters: mapToLetters[key1].add(pair[0]);
+		else: mapToLetters[key1] = {pair[0]};
+
+	for key in mapToLetters:
+		unusedLetters = mapToLetters[key]
+		nUnused = len(unusedLetters)
+
+		regex_pattern = ""
+		if (nUnused == 0):
+			regex_pattern = "."
+		elif (nUnused == 26):
+			# https://stackoverflow.com/a/940840
+			regex_pattern = "[a^]"
+		elif (nUnused <= 13):
+			regex_pattern = "[^"
+			for letter in unusedLetters:
+				regex_pattern += letter
+			regex_pattern += "]"
+		else:
+			usedLetters = set(ALL_LETTERS) - unusedLetters
+			regex_pattern = "["
+			for letter in usedLetters:
+				regex_pattern += letter
+			regex_pattern += "]"
+
+		print("{\"%s\", \"%s\"}," %(key, regex_pattern))
+
+
 def main():
 	# allWords = getAllWords();
 	# print("Total number of words: %d" %len(allWords))
@@ -63,8 +104,8 @@ def main():
 	print('{:<} {:>7}'.format("Number unused beginning pairs:", len(unusedBeginningPairs)))
 	print('{:<} {:>10}'.format("Number unused ending pairs:", len(unusedEndPairs)))
 
-	#printPairsInMapForm(unusedBeginningPairs)
-	printPairsInMapForm(unusedEndPairs)
+	printPairsInRegexForm(unusedBeginningPairs)
+	printPairsInRegexForm(unusedEndPairs)
 
 if __name__=="__main__":
 	main()
