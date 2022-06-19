@@ -18,6 +18,7 @@
 #include <sstream>
 
 #include "msfit/interface/messages_list.h"
+#include "msfit/interface/msfit_button.h"
 #include "msfit/puzzle/puzzle_grid.h"
 
 class RightMenuContainer : public Gtk::Notebook {
@@ -40,9 +41,11 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::ToggleButton pencilToggle;
     Gtk::Button clearGridButton;
     Gtk::Button loadAllWords;
-    Gtk::Button fillButtons[2];
+    MsFitButton fillButtons[2];
     Glib::ustring fillButtonLabels[2] = {"Fill word", "Fill grid"};
-    Gtk::CheckButton ignorePenciled, fillWordGridFeasible, fillWordGridCompliant;
+    Gtk::CheckButton ignorePenciled;
+    Gtk::CheckButton fillConstraints[3];
+    Glib::ustring fillConstraintLabels[3] = {"Grid-feasible", "Grid-compliant", "None"};
     std::string getFillWordConstraint() const;
     // Also display little scroll window showing the first n other matches when "fill word" is clicked.
     // TODO: Options for sorting fill options by various criteria (alphabetical, various fill-quality metrics [diversity

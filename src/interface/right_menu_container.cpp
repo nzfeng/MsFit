@@ -237,31 +237,33 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
     int nOptions = *(&fillButtons + 1) - fillButtons;
     for (int i = 0; i < nOptions; i++) {
         fillButtons[i].set_label(fillButtonLabels[i]);
+        fillButtons[i].setFontSize(10);
         fillButtons[i].set_can_focus(false);
     }
-    fillBox.attach(fillButtons[0], 0, 1);
-    fillBox.attach(fillButtons[1], 0, 2);
 
-    // Add checkbox that allows user to specify whether they want to limit fills of the current word to only those that
-    // are "grid-feasible", i.e. fills that don't lead to other words being unfillable.
-    fillWordGridFeasible.set_label("Grid-feasible");
-    fillWordGridFeasible.set_can_focus(false);
-    fillBox.attach(fillWordGridFeasible, 1, 1);
-    fillWordGridCompliant.set_label("Grid-compliant");
-    fillWordGridCompliant.set_can_focus(false);
-    fillBox.attach(fillWordGridCompliant, 2, 1);
-    fillWordGridCompliant.set_group(fillWordGridFeasible);
+    fillBox.attach(fillButtons[0], 0, 1);
+    int nFillConstraints = *(&fillConstraints + 1) - fillConstraints;
+    // Add radio buttons that allow user to specify whether they want to limit fills of the current word to only those
+    // that are "grid-feasible" or "grid-compliant", i.e. fills that don't lead to other words being unfillable.
+    for (int i = 0; i < nFillConstraints; i++) {
+        fillConstraints[i].set_label(fillConstraintLabels[i]);
+        fillConstraints[i].set_can_focus(false);
+        fillBox.attach(fillConstraints[i], i, 2);
+        if (i > 0) fillConstraints[i].set_group(fillConstraints[0]);
+    }
+    fillConstraints[0].set_active(true);
+
+    fillBox.attach(fillButtons[1], 0, 3);
 
     return fillBox;
 }
 
 std::string RightMenuContainer::getFillWordConstraint() const {
-    if (fillWordGridFeasible.get_active()) {
-        return "grid-feasible";
-    } else if (fillWordGridCompliant.get_active()) {
-        return "grid-compliant";
+    int nFillConstraints = *(&fillConstraints + 1) - fillConstraints;
+    for (int i = 0; i < nFillConstraints; i++) {
+        if (fillConstraints[i].get_active()) return fillConstraintLabels[i];
     }
-    return "none";
+    return ""; // shouldn't get here
 }
 
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }

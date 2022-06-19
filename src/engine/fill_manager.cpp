@@ -43,9 +43,9 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
 
     std::smatch match;
     std::regex pattern;
-    if (constraint == "grid-feasible") {
+    if (constraint == "Grid-feasible") {
         pattern = getGridFeasibleRegex(word, ignorePenciled);
-    } else if (constraint == "none") {
+    } else if (constraint == "None") {
         word->toRegex(ignorePenciled);
     }
 
@@ -58,7 +58,7 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
         }
     }
 
-    if (constraint == "grid-compliant") {
+    if (constraint == "Grid-compliant") {
         matches = getGridCompliantWords(word, matches, ignorePenciled);
     }
 

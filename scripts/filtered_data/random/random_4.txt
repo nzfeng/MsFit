@@ -135,3 +135,7 @@ QWERTY
 skincare_routine
 skincare_regimen
 vague_idea
+hit_single
+one-hit_wonder
+one-hit_wonders
+Christmas_album
