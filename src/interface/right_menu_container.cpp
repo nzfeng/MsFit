@@ -236,24 +236,27 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
 
     int nOptions = *(&fillButtons + 1) - fillButtons;
     for (int i = 0; i < nOptions; i++) {
-        fillButtons[i].set_label(fillButtonLabels[i]);
-        fillButtons[i].setFontSize(10);
+        fillButtons[i].setText(fillButtonLabels[i]);
         fillButtons[i].set_can_focus(false);
     }
 
     fillBox.attach(fillButtons[0], 0, 1);
     int nFillConstraints = *(&fillConstraints + 1) - fillConstraints;
+    int nCols = 2;
+    int nRows = nFillConstraints / nCols;
     // Add radio buttons that allow user to specify whether they want to limit fills of the current word to only those
     // that are "grid-feasible" or "grid-compliant", i.e. fills that don't lead to other words being unfillable.
     for (int i = 0; i < nFillConstraints; i++) {
         fillConstraints[i].set_label(fillConstraintLabels[i]);
         fillConstraints[i].set_can_focus(false);
-        fillBox.attach(fillConstraints[i], i, 2);
+        int row = i / nCols;
+        int col = i - row * nCols;
+        fillBox.attach(fillConstraints[i], col, row + 2);
         if (i > 0) fillConstraints[i].set_group(fillConstraints[0]);
     }
     fillConstraints[0].set_active(true);
 
-    fillBox.attach(fillButtons[1], 0, 3);
+    fillBox.attach(fillButtons[1], 0, nRows + 3);
 
     return fillBox;
 }

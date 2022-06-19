@@ -11,6 +11,7 @@ class MsFitButton : public Gtk::Button {
     MsFitButton();
     virtual ~MsFitButton();
 
+    void setText(const Glib::ustring& text);
     void setFontSize(int font_size = 10);
     int getFontSize();
     void setFontFamily(Glib::ustring family = "sans");

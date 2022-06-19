@@ -45,8 +45,8 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
     std::regex pattern;
     if (constraint == "Grid-feasible") {
         pattern = getGridFeasibleRegex(word, ignorePenciled);
-    } else if (constraint == "None") {
-        word->toRegex(ignorePenciled);
+    } else {
+        pattern = word->toRegex(ignorePenciled);
     }
 
     // Get all options.
@@ -92,15 +92,24 @@ std::vector<std::string> FillManager::getGridCompliantWords(GridWord* word, cons
     // For each match, go through each square and make sure it results at least 1 fill option for the crossing word.
     std::vector<std::string> winnowed;
     int crossType = word->isAcross; // assumes ACROSS = 0, DOWN = 1
+    size_t n = word->length();
+    Square* sq;
     for (const auto& match : matches) {
         bool compliant = true;
-        for (auto sq : word->squares) {
+        for (size_t i = 0; i < n; i++) {
+            sq = word->squares[i];
+            if (!sq->isEmpty()) continue;
+
+            sq->setData(match.substr(i, 1));
+
             // Which word intersects the current word at this square.
             GridWord& x = puzzleGrid.getWordFromSquare(sq, crossType);
             if (!doFillsExist(&x, ignorePenciled)) {
                 compliant = false;
+                sq->clearData();
                 break;
             }
+            sq->clearData();
         }
         if (!compliant) continue;
         winnowed.push_back(match);
