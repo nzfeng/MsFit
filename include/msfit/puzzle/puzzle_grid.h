@@ -20,6 +20,7 @@
 
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/square.h"
+#include "msfit/utilities/state.h"
 
 class PuzzleGrid : public Gtk::DrawingArea {
 
@@ -38,6 +39,8 @@ class PuzzleGrid : public Gtk::DrawingArea {
 
     std::vector<std::vector<Square>>& getData();
     std::vector<std::vector<GridWord>>& getWords();
+
+    GridWord& getWordFromSquare(Square* sq, int wordtype);
 
     void clear();
 
@@ -71,8 +74,6 @@ class PuzzleGrid : public Gtk::DrawingArea {
     std::array<int, 2> getNextLogicalOpenWord(const std::array<int, 2>& indices, const int wordtype);
     // size_t getNextWord(const std::array<int, 2>& indices, const int wordtype);
     // size_t getNextOpenWord(const std::array<int, 2>& indices, const int wordtype);
-
-    std::regex getGridFeasibleRegex(GridWord* word, bool ignorePenciled);
 
   private:
     // A bunch of variables/functions in PuzzleGrid, GridWord, and Square depend on pointers to elements in <data>;

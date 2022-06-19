@@ -14,6 +14,8 @@
 #include <string_view>
 #include <vector>
 
+#include "msfit/utilities/state.h"
+
 // TODO: Currently passing messages to the message dialog in the bottom menu isn't very elegant. Would probably make
 // more sense if everything was defined in the main_window.cpp file (which contains the central logic of the program),
 // but currently I like the class setup I have currently, for modularity and code maintenance reasons... I may need to

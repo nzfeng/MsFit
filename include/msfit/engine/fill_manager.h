@@ -8,14 +8,19 @@
 
 class FillManager {
   public:
-    FillManager(DatasetManager& datasetManager);
+    FillManager(DatasetManager& datasetManager, PuzzleGrid& puzzleGrid);
     ~FillManager() {}
 
     std::vector<std::string> getWordFills(GridWord* word, std::string& message, bool ignorePenciled,
-                                          bool gridFeasible = false, int nOptions = 10) const;
-    void fillGridDFS(PuzzleGrid& puzzleGrid, std::string& message) const;
+                                          const std::string& constraint = "none", int nOptions = 10) const;
+    void fillGridDFS(std::string& message) const;
 
   private:
     DatasetManager& datasetManager;
-    // PuzzleGrid& puzzleGrid;
+    PuzzleGrid& puzzleGrid;
+
+    bool doFillsExist(GridWord* word, bool ignorePenciled) const;
+    std::regex getGridFeasibleRegex(GridWord* word, bool ignorePenciled) const;
+    std::vector<std::string> getGridCompliantWords(GridWord* word, const std::vector<std::string>& matches,
+                                                   bool ignorePenciled) const;
 };

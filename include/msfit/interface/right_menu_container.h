@@ -42,7 +42,8 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::Button loadAllWords;
     Gtk::Button fillButtons[2];
     Glib::ustring fillButtonLabels[2] = {"Fill word", "Fill grid"};
-    Gtk::CheckButton fillWordGridFeasible, ignorePenciled;
+    Gtk::CheckButton ignorePenciled, fillWordGridFeasible, fillWordGridCompliant;
+    std::string getFillWordConstraint() const;
     // Also display little scroll window showing the first n other matches when "fill word" is clicked.
     // TODO: Options for sorting fill options by various criteria (alphabetical, various fill-quality metrics [diversity
     // of letters, etc.])

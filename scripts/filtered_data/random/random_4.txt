@@ -132,3 +132,6 @@ audiophile
 hard pass
 dealbreaker
 QWERTY
+skincare_routine
+skincare_regimen
+vague_idea

@@ -3,7 +3,8 @@
 
 #include "msfit/engine/fill_manager.h"
 
-FillManager::FillManager(DatasetManager& datasetManager_) : datasetManager(datasetManager_) {}
+FillManager::FillManager(DatasetManager& datasetManager_, PuzzleGrid& puzzleGrid_)
+    : datasetManager(datasetManager_), puzzleGrid(puzzleGrid_) {}
 
 /*
  * Filling a single word: The only constraints are the ones imposed by letters already in the given word.
@@ -16,7 +17,7 @@ FillManager::FillManager(DatasetManager& datasetManager_) : datasetManager(datas
  * Return the specified # of options.
  */
 std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& message, bool ignorePenciled,
-                                                   bool gridFeasible, int nOptions) const {
+                                                   const std::string& constraint, int nOptions) const {
 
 
     std::vector<std::string> matches;
@@ -40,15 +41,25 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
         return matches;
     }
 
+    std::smatch match;
+    std::regex pattern;
+    if (constraint == "grid-feasible") {
+        pattern = getGridFeasibleRegex(word, ignorePenciled);
+    } else if (constraint == "none") {
+        word->toRegex(ignorePenciled);
+    }
+
     // Get all options.
     size_t n = word->length();
     std::vector<std::string>& options = datasetManager.words[n];
-    std::smatch match;
-    const std::regex pattern = word->toRegex(ignorePenciled);
     for (const auto& option : options) {
         if (std::regex_match(option, match, pattern)) {
             matches.push_back(match.str());
         }
+    }
+
+    if (constraint == "grid-compliant") {
+        matches = getGridCompliantWords(word, matches, ignorePenciled);
     }
 
     // Return the specified number of matches.
@@ -56,6 +67,109 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
     message = "Fills generated: " + std::to_string(nMatches) + " matches.";
     if (nOptions != -1 && (size_t)nOptions < nMatches) matches.resize(nOptions);
     return matches;
+}
+
+bool FillManager::doFillsExist(GridWord* word, bool ignorePenciled) const {
+
+    std::smatch match;
+    const std::regex pattern = word->toRegex(ignorePenciled);
+    size_t n = word->length();
+    std::vector<std::string>& options = datasetManager.words[n];
+    for (const auto& option : options) {
+        if (std::regex_match(option, match, pattern)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*
+ * Given a set of matches, narrow them down to the ones that are grid-compliant.
+ */
+std::vector<std::string> FillManager::getGridCompliantWords(GridWord* word, const std::vector<std::string>& matches,
+                                                            bool ignorePenciled) const {
+
+    // For each match, go through each square and make sure it results at least 1 fill option for the crossing word.
+    std::vector<std::string> winnowed;
+    int crossType = word->isAcross; // assumes ACROSS = 0, DOWN = 1
+    for (const auto& match : matches) {
+        bool compliant = true;
+        for (auto sq : word->squares) {
+            // Which word intersects the current word at this square.
+            GridWord& x = puzzleGrid.getWordFromSquare(sq, crossType);
+            if (!doFillsExist(&x, ignorePenciled)) {
+                compliant = false;
+                break;
+            }
+        }
+        if (!compliant) continue;
+        winnowed.push_back(match);
+    }
+    return winnowed;
+}
+
+/*
+ * Construct a regex pattern to find grid-feasible fills for the given word.
+ *
+ * Generating strictly "grid-compliant" fills would mean also evaluating the regex for each intersecting word, and only
+ * returning fills that result in more than zero fills for every intersecting word. However, this function instead
+ * returns all fills that merely "grid-plausible": all fills that result in legal letter-pairs that appear in the
+ * English language.
+ *
+ * The reasoning is that (1) the set of grid-compliant fills is probably too strict, especially when the wordset is
+ * incomplete (which it always will be); and (2) the set of grid-plausible fills is probably not that much larger than
+ * the set of grid-compliant fills anyway. The goal of autofill tools is to alleviate the computational burden of
+ * finding a crossword-compliant combination of words, and help guide the constructor towards a legal crossword; along
+ * the way, the constructor will likely think of good entries to complete partially-filled words that may not appear in
+ * wordlists.
+ */
+std::regex FillManager::getGridFeasibleRegex(GridWord* word, bool ignorePenciled) const {
+
+    // Build the regex pattern.
+    std::string pattern = "";
+    int crossType = word->isAcross; // assumes ACROSS = 0, DOWN = 1
+    for (auto sq : word->squares) {
+        if (!sq->isEmpty()) {
+            pattern += sq->getData();
+            continue;
+        }
+
+        // Which word intersects the current word at this square.
+        GridWord& x = puzzleGrid.getWordFromSquare(sq, crossType);
+        size_t n = x.length();
+        // Index of <sq> in this word.
+        size_t charIndex = sq->getIndexOfCharInWord(crossType);
+
+        // Determine if this square is the first/second, or last/second-to-last in the word.
+        // I wish I could come up with a more elegant way to do this...
+        std::string nextChar;
+        std::string pair;
+        Square* nextSq;
+        if (charIndex == 0) {
+            nextSq = x.squares[charIndex + 1];
+            nextChar = (nextSq->getUtensil() == cell::PENCIL) && ignorePenciled ? "" : nextSq->getData();
+            pair = "." + nextChar;
+            pattern += data::startingPairRegex[pair];
+        } else if (charIndex == n - 2) {
+            nextSq = x.squares[charIndex + 1];
+            nextChar = (nextSq->getUtensil() == cell::PENCIL) && ignorePenciled ? "" : nextSq->getData();
+            pair = "." + nextChar;
+            pattern += data::endingPairRegex[pair];
+        } else if (charIndex == 1) {
+            nextSq = x.squares[charIndex - 1];
+            nextChar = (nextSq->getUtensil() == cell::PENCIL) && ignorePenciled ? "" : nextSq->getData();
+            pair = nextChar + ".";
+            pattern += data::startingPairRegex[pair];
+        } else if (charIndex == n - 1) {
+            nextSq = x.squares[charIndex - 1];
+            nextChar = (nextSq->getUtensil() == cell::PENCIL) && ignorePenciled ? "" : nextSq->getData();
+            pair = nextChar + ".";
+            pattern += data::endingPairRegex[pair];
+        } else {
+            pattern += ".";
+        }
+    }
+    return std::regex(pattern);
 }
 
 
@@ -74,7 +188,7 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
  * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a
  * different color.
  */
-void FillManager::fillGridDFS(PuzzleGrid& puzzleGrid, std::string& message) const {
+void FillManager::fillGridDFS(std::string& message) const {
 
     // Convert the current puzzle into something with a more compact (smaller memory), and faster to do word-lookups on.
     // Puzzle is defined as dense array of fillable squares (std::vector of strings) Each word is represented as an

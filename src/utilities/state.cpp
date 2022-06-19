@@ -69,3 +69,10 @@ bool enteringMultipleLetters = false;
 bool pencilSelected = false;
 bool lastCommandIsBackspace = false;
 } // namespace state
+
+namespace data {
+// Map from a pair of chars at the start of a word, to a regex pattern for the blank spot.
+std::map<std::string, std::string> startingPairRegex;
+// Map from a pair of chars at the end of a word, to a regex pattern for the blank spot.
+std::map<std::string, std::string> endingPairRegex;
+} // namespace data

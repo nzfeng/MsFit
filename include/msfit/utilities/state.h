@@ -4,6 +4,7 @@
 
 #include <array>
 #include <map>
+#include <string>
 
 namespace interface {
 namespace params {
@@ -93,9 +94,9 @@ extern bool lastCommandIsBackspace;
 } // namespace state
 
 // Stuff having to do with the word data
-namespace fillData {
+namespace data {
 // Map from a pair of chars at the start of a word, to a regex pattern for the blank spot.
 extern std::map<std::string, std::string> startingPairRegex;
 // Map from a pair of chars at the end of a word, to a regex pattern for the blank spot.
 extern std::map<std::string, std::string> endingPairRegex;
-} // namespace fillData
+} // namespace data

@@ -1,5 +1,4 @@
 #include "msfit/engine/dataset_manager.h"
-#include "msfit/utilities/state.h"
 
 DatasetManager::DatasetManager() {}
 
@@ -70,6 +69,10 @@ void DatasetManager::loadData(std::string& message) {
  *
  * Out of all 26^2 possible two-letter combinations, return the set of pairs that *don't* appear at the
  * [beginning | middle | end] of any word in the dataset.
+ *
+ * TODO: Maybe have some threshold for how many times a pair can appear before it counts a legal.
+ * For example, the presence of acronyms in the dataset messes up this method. Maybe don't compare to
+ * the dataset; compare to an English dictionary (which should only include full words, and few acronyms.)
  */
 std::vector<std::string> DatasetManager::getUnusedLetterPairs(const std::string& location) const {
 
@@ -134,7 +137,7 @@ DatasetManager::unusedPairsToRegexMap(const std::vector<std::string>& unusedPair
             // This pattern matches with everything
             pattern = ".";
         } else if (n <= 13) {
-            pattern += "[";
+            pattern = "[^";
             for (auto const& letter : unusedLetters) {
                 pattern += letter;
             }
@@ -145,7 +148,7 @@ DatasetManager::unusedPairsToRegexMap(const std::vector<std::string>& unusedPair
             std::set_difference(ALL_LETTERS.begin(), ALL_LETTERS.end(), unusedLetters.begin(), unusedLetters.end(),
                                 std::inserter(usedLetters, usedLetters.end()));
 
-            pattern += "[^";
+            pattern = "[";
             for (auto const& letter : usedLetters) {
                 pattern += letter;
             }
@@ -164,8 +167,8 @@ void DatasetManager::analyzeLetterPairs() const {
     std::vector<std::string> unusedStartingPairs = getUnusedLetterPairs("beginning");
     std::vector<std::string> unusedEndingPairs = getUnusedLetterPairs("end");
 
-    fillData::startingPairRegex = unusedPairsToRegexMap(unusedStartingPairs);
-    fillData::endingPairRegex = unusedPairsToRegexMap(unusedEndingPairs);
-    fillData::startingPairRegex["."] = ".";
-    fillData::endingPairRegex["."] = ".";
+    data::startingPairRegex = unusedPairsToRegexMap(unusedStartingPairs);
+    data::endingPairRegex = unusedPairsToRegexMap(unusedEndingPairs);
+    data::startingPairRegex["."] = ".";
+    data::endingPairRegex["."] = ".";
 }

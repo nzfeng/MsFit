@@ -58,7 +58,7 @@ void RightMenuContainer::setUpMenuPage() {
     settingsBox.append(seps[1]);
     settingsBox.append(gridSymmetryContainer);
     settingsBox.append(gridSizeContainer);
-    settingsBox.append(saveBox);
+    // settingsBox.append(saveBox);
     settingsFrame.set_child(settingsBox);
 
     // A page of the Notebook can only be 1 item; let it be <menuBox>.
@@ -239,16 +239,29 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
         fillButtons[i].set_label(fillButtonLabels[i]);
         fillButtons[i].set_can_focus(false);
     }
-
     fillBox.attach(fillButtons[0], 0, 1);
     fillBox.attach(fillButtons[1], 0, 2);
+
     // Add checkbox that allows user to specify whether they want to limit fills of the current word to only those that
     // are "grid-feasible", i.e. fills that don't lead to other words being unfillable.
     fillWordGridFeasible.set_label("Grid-feasible");
     fillWordGridFeasible.set_can_focus(false);
     fillBox.attach(fillWordGridFeasible, 1, 1);
+    fillWordGridCompliant.set_label("Grid-compliant");
+    fillWordGridCompliant.set_can_focus(false);
+    fillBox.attach(fillWordGridCompliant, 2, 1);
+    fillWordGridCompliant.set_group(fillWordGridFeasible);
 
     return fillBox;
+}
+
+std::string RightMenuContainer::getFillWordConstraint() const {
+    if (fillWordGridFeasible.get_active()) {
+        return "grid-feasible";
+    } else if (fillWordGridCompliant.get_active()) {
+        return "grid-compliant";
+    }
+    return "none";
 }
 
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
@@ -265,6 +278,7 @@ void RightMenuContainer::setUpSummaryPage() {
     auto numBlackSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of black squares: ");
     auto numWordsLabel = Gtk::make_managed<Gtk::Label>("Number of words: ");
     auto numBlocksLabel = Gtk::make_managed<Gtk::Label>("Number of blocks: ");
+    // TODO: Diversity of letters, syllables/phonemes in the puzzle.
 
     auto numWhiteSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
     auto numBlackSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
@@ -293,7 +307,7 @@ void RightMenuContainer::on_makeSymmetric_button_toggled() const {
 }
 
 /*
- * On of the preset symmetry options was clicked.
+ * One of the preset symmetry options was clicked.
  */
 void RightMenuContainer::on_symmetry_button_clicked(int buttonIndex) const {
     // selected button = gridSymmetryButtons[buttonIndex]

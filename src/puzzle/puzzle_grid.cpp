@@ -5,7 +5,6 @@
 #include <gtkmm/gestureclick.h>
 
 #include "msfit/puzzle/puzzle_grid.h"
-#include "msfit/utilities/state.h"
 #include "msfit/utilities/utils.h"
 
 // Constructors
@@ -167,7 +166,8 @@ void PuzzleGrid::determineWords() {
         }
     }
 
-    // Set the <word> member variables in each Square.
+    // Set the <word> member variables in each Square. I wish this code could be less repetitive; the only reason why it
+    // isn't is the dependence on getRight() vs. getBelow().
     int wordtype = grid::wordtype::ACROSS;
     for (size_t i = 0; i < gridWords[wordtype].size(); i++) {
         Square* curr = gridWords[wordtype][i].squares[0];
@@ -208,63 +208,13 @@ void PuzzleGrid::clear() {
 
 
 // ====================================== WORD LOGIC =======================================
-/*
- * Given a word in the puzzle, get all intersecting words, and the position of intersecting square in the crossing word.
- */
-// PuzzleGrid() {}
 
-/*
- * Construct a regex pattern to find grid-feasible fills for the given word.
- *
- * Generating strictly "grid-compliant" fills would mean also evaluating the regex for each intersecting word, and only
- * returning fills that result in more than zero fills for every intersecting word. However, this function instead
- * returns all fills that merely "grid-plausible": all fills that result in legal letter-pairs that appear in the
- * English language.
- *
- * The reasoning is that (1) the set of grid-compliant fills is probably too strict, especially when the wordset is
- * incomplete (which it always will be); and (2) the set of grid-plausible fills is probably not that much larger than
- * the set of grid-compliant fills anyway. The goal of autofill tools is to alleviate the computational burden of
- * finding a crossword-compliant combination of words, and help guide the constructor towards a legal crossword; along
- * the way, the constructor will likely think of good entries to complete partially-filled words that may not appear in
- * wordlists.
- */
-std::regex PuzzleGrid::getGridFeasibleRegex(GridWord* word, bool ignorePenciled) {
 
-    // Build the regex pattern.
-    std::string pattern = "";
-    int crossType = word->isAcross; // assumes ACROSS = 0, DOWN = 1
-    for (auto sq : word->squares) {
-        // Which word intersects the current word at this square.
-        size_t wordIndex = sq->getWord(crossType);
-        GridWord& x = gridWords[crossType][wordIndex];
-        size_t n = x.length();
-        // Index of <sq> in this word.
-        size_t charIndex = sq->getIndexOfCharInWord(crossType);
-
-        // Determine if this square is the first/second, or last/second-to-last in the word.
-        // I wish I could come up with a more elegant way to do this...
-        std::string nextChar;
-        std::string pair;
-        if (charIndex == 0) {
-            nextChar = x.squares[charIndex + 1]->getData();
-            pair = "." + nextChar;
-            pattern += fillData::startingPairRegex[pair];
-        } else if (charIndex == n - 2) {
-            nextChar = x.squares[charIndex + 1]->getData();
-            pair = "." + nextChar;
-            pattern += fillData::endingPairRegex[pair];
-        } else if (charIndex == 1) {
-            nextChar = x.squares[charIndex - 1]->getData();
-            pair = nextChar + ".";
-            pattern += fillData::startingPairRegex[pair];
-        } else if (charIndex == n - 1) {
-            nextChar = x.squares[charIndex - 1]->getData();
-            pair = nextChar + ".";
-            pattern += fillData::endingPairRegex[pair];
-        }
-    }
-    return std::regex(pattern);
+GridWord& PuzzleGrid::getWordFromSquare(Square* sq, int wordtype) {
+    size_t wordIndex = sq->getWord(wordtype);
+    return gridWords[wordtype][wordIndex];
 }
+
 
 // =================================== SYMMETRY CHECKERS ===================================
 

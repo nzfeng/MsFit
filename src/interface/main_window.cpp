@@ -16,7 +16,7 @@
 MainWindow::MainWindow()
     : rightMenuContainer(), bottomMenuContainer("Dialog", interface::params::maxDialogMessages, true),
       canvasContainer(), puzzleGrid(grid::params::initRows, grid::params::initCols), datasetManager(),
-      fillManager(datasetManager) {
+      fillManager(datasetManager, puzzleGrid) {
 
     set_title("MsFit");
     set_default_size(interface::params::window_width, interface::params::window_height);
@@ -179,9 +179,9 @@ void MainWindow::on_fill_clicked(const std::string& button) {
 
     std::string message;
     if (button == "Fill word") {
-        std::vector<std::string> fills = fillManager.getWordFills(
-            puzzleGrid.getSelectedWord(), message, rightMenuContainer.ignorePenciled.get_active(),
-            rightMenuContainer.fillWordGridFeasible.get_active(), -1);
+        std::vector<std::string> fills = fillManager.getWordFills(puzzleGrid.getSelectedWord(), message,
+                                                                  rightMenuContainer.ignorePenciled.get_active(),
+                                                                  rightMenuContainer.getFillWordConstraint(), -1);
         if (message != "") bottomMenuContainer.addMessageToList(message);
         rightMenuContainer.fillOptionsList.clear();
         // instead of forcing the TreeView to continually add/delete options
