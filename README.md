@@ -62,8 +62,12 @@ For any box in the grid, black or white:
 * [WordNet](https://wordnet.princeton.edu/). Useful structure/classifications, also doesn't seem to have pop culture, etc. Has a C API.
 * The more I research, the more I'm leaning towards just compiling a wordlist (no structure or tags.) (Only sorting is done by word length)
 * Filtering words that are uncommon, inelegant; refer to people, places, cultural phenomena; for short words (< 7 letters), avoid common crossword-ese, plurals or other derivatives, and multi-word phrases; for long entries, avoid phrases with more than 3 words.
-* No British English, non-English entries except for common phrases ("vice versa", etc.)
-* No offensive or potentially offensive entries; no entries relating to warfare or other sensitive topics.
+* Only include derivative words (plurals, gerunds, past tense, etc.) if they are commonly used in everyday language. 
+* Try not to include words/phrases that, although they are commonly used, make for boring entries. This is somewhat subjective, especially since a lot depends on the cluing.
+* Don't include full phrases if their abbreviations are more commonly used (i.e. "magnetic resonance imaging" for "MRI". The former would be a boring entry; we want long entries to be exciting.)
+* No British English, or non-English entries except for common phrases ("vice versa", etc.)
+* No offensive or potentially offensive entries; no entries relating to warfare, violence, or other sensitive topics.
+* Avoid people. Constructors can manually add their own people-entries if they want.
 
 # Fill algorithm
 Ultimately the fill algorithm will be some variant of BFS or DFS... Here are some options:
@@ -89,7 +93,8 @@ Ideas for fill tools:
 * Switch from GTK to Qt, which has better cross-platform support, and platform-specific UI.
 * Co-optimize both the grid and fill quality (I belive this is very hard)
 * Take some ideas from the industry-standard [Crossword Compiler](https://www.crossword-compiler.com/). For example, Grid Insight; viewing "forced words", etc.
-* Go through all filtered words and add all derivatives.
+* Go through all filtered words and add any commonly-used derivatives.
+* Store all unfiltered WordNet words (and Broda words) from the version I used, so I can check against them when I add entries in the future. 
 
 # Puzzle ideas
 * Include hexagonal cells as 3-way intersections

@@ -5,6 +5,7 @@
 #include "msfit/engine/dataset_manager.h"
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/puzzle_grid.h"
+#include "msfit/utilities/state.h"
 
 class FillManager {
   public:
@@ -23,4 +24,7 @@ class FillManager {
     std::regex getGridFeasibleRegex(GridWord* word, bool ignorePenciled) const;
     std::vector<std::string> getGridCompliantWords(GridWord* word, const std::vector<std::string>& matches,
                                                    bool ignorePenciled) const;
+
+    void buildSearchStructures(std::vector<std::string>& cells, std::vector<std::vector<size_t>>& words,
+                               std::vector<std::vector<size_t>>& xMap, std::vector<Square*>& cellToSquare) const;
 };

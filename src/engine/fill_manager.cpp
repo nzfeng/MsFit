@@ -181,43 +181,35 @@ std::regex FillManager::getGridFeasibleRegex(GridWord* word, bool ignorePenciled
     return std::regex(pattern);
 }
 
-
 /*
- * Filling the remaining entire puzzle using depth-first search:
- *      - Heuristic is to start from the word with the fewest fill options. Usually this is longest unfilled word to
- *      start; as the puzzle progresses, it will be the words that have started to get filled in.
- *      - At each step, attempt to fill a word by randomly selecting a fill option. No other optimizations.
- *      - After tentatively filling a word, check each of the words it intersects to see if they have >n fill options.
- *      If not, backtrack.
- *      - No other optimizations for terminating unpromising sub-trees early.
- *      - Just return the first grid fill found.
+ * Helper function for fillGridDFS().
  *
- * Warning: The only solutions returned by this method are ones that only contain words from the wordlist.
- *
- * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a
- * different color.
+ * <cells> is a dense array of all the write-able cells in the puzzle.
+ * <words> is a dense array representing all the words in the puzzle. Each item is a sequence of indices into <cells>.
+ * <xMap> is a dense array where the i-th entry contains the indices of all words that intersect the i-th word.
+ * <cellToSquare> is a map from <cells> to the original Squares* in the puzzle.
  */
-void FillManager::fillGridDFS(std::string& message) const {
+void FillManager::buildSearchStructures(std::vector<std::string>& cells, std::vector<std::vector<size_t>>& words,
+                                        std::vector<std::vector<size_t>>& xMap,
+                                        std::vector<Square*>& cellToSquare) const {
 
-    // Convert the current puzzle into something with a more compact (smaller memory), and faster to do word-lookups on.
-    // Puzzle is defined as dense array of fillable squares (std::vector of strings) Each word is represented as an
-    // array of ints indexing into the array of squares. Total set of words is fixed-length. For each word, keep track
-    // of each word that intersects it (an int into the array of words.) Everything is index-based; hopefully the time
-    // savings add up vs. pointer-chasing (which is how the data in PuzzleGrid is implemented.)
+    cells.clear();
+    words.clear();
+    xMap.clear();
+    cellToSquare.clear();
+
     std::vector<std::vector<Square>>& data = puzzleGrid.getData();
     std::vector<std::vector<GridWord>>& gridWords = puzzleGrid.getWords();
     std::map<Square*, size_t> squareToDenseIdx;
-    std::vector<std::string> cells;
-    // Each word is a sequence of indices into <cells>.
-    std::vector<std::vector<size_t>> words;
-    // the i-th entry contains the indices of all words that intersect the i-th word
-    std::vector<std::vector<size_t>> xMap;
+
     // Fill cells.
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
             if (!data[i][j].isSolid()) {
-                squareToDenseIdx[&data[i][j]] = cells.size();
+                size_t idx = cells.size();
+                squareToDenseIdx[&data[i][j]] = idx;
                 cells.push_back(data[i][j].getData());
+                cellToSquare.push_back(&data[i][j]);
             }
         }
     }
@@ -238,6 +230,58 @@ void FillManager::fillGridDFS(std::string& message) const {
             xMap.push_back(crosses);
         }
     }
+}
+
+
+/*
+ * Filling the remaining entire puzzle using depth-first search:
+ *      - Heuristic is to start from the word with the fewest fill options. Usually this is longest unfilled word to
+ *      start; as the puzzle progresses, it will be the words that have started to get filled in. The idea is to prune
+ *      unpromising sub-trees ASAP.
+ *      - At each step, attempt to fill a word by randomly selecting a fill option. No other optimizations.
+ *      - After tentatively filling a word, check each of the words it intersects to see if they have >n fill options.
+ *      If not, backtrack.
+ *      - No other optimizations for terminating unpromising sub-trees early.
+ *      - Just return the first grid fill found.
+ *
+ * Warning: The only solutions returned by this method are ones that only contain words from the wordlist.
+ *
+ * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a
+ * different color.
+ */
+void FillManager::fillGridDFS(std::string& message) const {
+
+    // Convert the current puzzle into something with a more compact (smaller memory), and faster to do word-lookups on.
+    // Everything is index-based; hopefully the time savings add up vs. pointer-chasing (which is how the data in
+    // PuzzleGrid is implemented.)
+    std::vector<std::string> cells;
+    std::vector<std::vector<size_t>> words;
+    std::vector<size_t> nFills; // map from word index to number of potential fills
+    std::vector<std::vector<size_t>> xMap;
+    std::vector<Square*> cellToSquare;
+    buildSearchStructures(cells, words, xMap, cellToSquare);
+
+    // Initialize the number of fills for every word.
+    nFills.resize(words.size());
+    for (size_t i = 0; i < words.size(); i++) {
+        nFills[i] = datasetManager.words[words[i].size()].size();
+    }
+
+    // At each step, start at the incomplete word with the fewest fills.
+    // Need to keep track of which entries were tried (which sub-trees were pruned.)
+    // Also need to make sure no duplicate entries in the puzzle at each step.
+
+    // Fill in empty cells if a solution was found.
+    for (size_t i = 0; i < cells.size(); i++) {
+        Square* sq = cellToSquare[i];
+        if (sq->isEmpty()) {
+            sq->setUtensil(cell::AUTOFILL);
+            sq->setData(cells[i]);
+        }
+    }
+    puzzleGrid.queue_draw();
 
     // message = "No grid fills found.";
 }
+
+// TODO: a function that returns partial solutions; somehow indicates which areas of the grid are difficult to fill
