@@ -139,3 +139,6 @@ hit_single
 one-hit_wonder
 one-hit_wonders
 Christmas_album
+cartwheel
+cartwheels
+leave_no_trace

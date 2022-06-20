@@ -62,9 +62,11 @@ For any box in the grid, black or white:
 * [WordNet](https://wordnet.princeton.edu/). Useful structure/classifications, also doesn't seem to have pop culture, etc. Has a C API.
 * The more I research, the more I'm leaning towards just compiling a wordlist (no structure or tags.) (Only sorting is done by word length)
 * Filtering words that are uncommon, inelegant; refer to people, places, cultural phenomena; for short words (< 7 letters), avoid common crossword-ese, plurals or other derivatives, and multi-word phrases; for long entries, avoid phrases with more than 3 words.
-* Only include derivative words (plurals, gerunds, past tense, etc.) if they are commonly used in everyday language. 
+* Only include derivative words (plurals, gerunds, past tense, etc.) if they are commonly used in everyday language, and could lend themselves to good clues/natural-sounding entries. A good rule of thumb is to avoid adverbs.
 * Try not to include words/phrases that, although they are commonly used, make for boring entries. This is somewhat subjective, especially since a lot depends on the cluing.
 * Don't include full phrases if their abbreviations are more commonly used (i.e. "magnetic resonance imaging" for "MRI". The former would be a boring entry; we want long entries to be exciting.)
+* Don't include words that have the prefixes "un-", "dis-", etc. unless they are just as commonly used as their positive counterpart (i.e., if you look the word up in the dictionary and it's defined as the negation of something, don't include it.)
+<!--* Similarly, try not to include words whose meanings are too evident from their components, such as "southbound." It would be hard to come up with clues. -->
 * No British English, or non-English entries except for common phrases ("vice versa", etc.)
 * No offensive or potentially offensive entries; no entries relating to warfare, violence, or other sensitive topics.
 * Avoid people. Constructors can manually add their own people-entries if they want.
