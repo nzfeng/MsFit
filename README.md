@@ -65,6 +65,7 @@ For any box in the grid, black or white:
 * Only include derivative words (plurals, gerunds, past tense, etc.) if they are commonly used in everyday language, and could lend themselves to good clues/natural-sounding entries. A good rule of thumb is to avoid adverbs.
 * Try not to include words/phrases that, although they are commonly used, make for boring entries. This is somewhat subjective, especially since a lot depends on the cluing.
 * Don't include full phrases if their abbreviations are more commonly used (i.e. "magnetic resonance imaging" for "MRI". The former would be a boring entry; we want long entries to be exciting.)
+* Avoid phrases that depend on prepositions/conjunctions ("and").
 * Don't include words that have the prefixes "un-", "dis-", etc. unless they are just as commonly used as their positive counterpart (i.e., if you look the word up in the dictionary and it's defined as the negation of something, don't include it.)
 <!--* Similarly, try not to include words whose meanings are too evident from their components, such as "southbound." It would be hard to come up with clues. -->
 * No British English, or non-English entries except for common phrases ("vice versa", etc.)
