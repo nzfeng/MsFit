@@ -347,7 +347,7 @@ std::array<int, 2> PuzzleGrid::getNextLogicalEmptySquare(const std::array<int, 2
 
     if (stayWithinWord) {
         int nChars = gridWords[wordtype][wordIndex].squares.size();
-        for (int i = 1; i < nChars - 1; i++) {
+        for (int i = 1; i < nChars; i++) {
             // (charIndex + i) gets implicitly converted to an int, but this shouldn't be a problem since it's > 0
             sq = gridWords[wordtype][wordIndex].squares[mod(charIndex + i, nChars)];
             if (sq->isEmpty()) {

@@ -190,7 +190,8 @@ training
 wet_bar
 solemnly
 mottle
-halon
+talon
+talons
 giggler
 knock-knee
 knock-kneed
