@@ -76,13 +76,13 @@ For any box in the grid, black or white:
 * No offensive words or insensitive entries. No entries relating to warfare, violence, weapons, chemical agents that have been been used in war, etc. No entries with negative connotations (like RACISM, WHITE_SUPREMACY, MANIFEST_DESTINY, etc.) Even if their clues are benign, these types of topics don't deserve visibility in crossword puzzles. Avoid "gross" entries pertaining to bodily fluids, bodily functions, crimes, abuse, etc. 
 * Avoid people. Constructors can manually add their own people-entries if they want. Exceptions are extremely iconic people who are a part of American collective memory at this point, like EINSTEIN or ELVIS.
 * Avoid places, except for maybe iconic American places.
-* General goal: Really try to *only* include entries that are commonly used in everyday language, roll off the tongue, can be standalone entries, encourage lively clues, and so on.... Highly subjective but this is my dataset :sunglasses:
+* General goal: Really try to *only* include entries that are commonly used in everyday language, roll off the tongue, can be standalone entries, encourage lively clues, and so on.... Highly subjective but this is my dataset :sunglasses:.
 
 There might be entries that I've accidentally included that don't adhere to my own rules. Since I make snap judgments as I quickly skim over entries (about 5k-10k at a time), I'm liable to make mistakes especially when my eyes glaze over. But it's better to cut out too many words initially, rather than have to go back to and find bad words and take them out. It's easier to add fresh words/phrases later.
 
 So far I've manually filtered all \~147k lemmas in [WordNet](https://wordnet.princeton.edu/). About 20-25% I deemed good enough to include in this dataset. I'm partway through filtering Peter Broda's dataset, which presents another \~240k unique entries after removing all the words I've already looked at. So far, the worth-keeping rate for the Broda dataset is about a third. I've also added any random words/phrases that came to me. 
 
-Dream goal is to tag all the entries, although that won't happen without other people to help :)
+Dream goal is to tag all the entries, although that won't happen without other people to help :).
 
 # Fill algorithm
 Ultimately the fill algorithm will be some variant of BFS or DFS... Here are some options:
