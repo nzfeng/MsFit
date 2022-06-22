@@ -68,21 +68,21 @@ For any box in the grid, black or white:
 * Try not to include words/phrases that, although they are commonly used, make for boring entries. This is somewhat subjective, especially since boringness also depends on the cluing. But some examples of what not to include are legal terms and phrases, and other dry phrases pertaining to specific fields, government, bureaucracy, banking, or the boring world of adult life.
 * Don't include full phrases if their abbreviations are more commonly used (i.e. "magnetic resonance imaging" for MRI. The former would be a boring entry; long entries should be exciting.)
 * Avoid phrases that depend on too many prepositions/conjunctions ("and", "of", "for", etc.) For shorter entries, even one is too many.
-* For shorter entries, avoid two-word phrases, especially if one of the words is a preposition (ASK_IN, etc.) Only include multi-word phrases if they really do "come as a set", i.e. you typically hear one word only it comes with the other. For long entries, avoid phrases with more than 3 words.
+* For shorter entries, avoid two-word phrases, especially if one of the words is a preposition (ASK_IN, etc.) Only include multi-word phrases if they really do "come as a set". For long entries, avoid phrases with more than 3 words.
 * Try to avoid partial phrases. I assume these would almost always have fill-in-the-blank clues, which are okay once in a while, to help a solver get started, but that's about it. Best to keep them to a minimum.
 * Don't include words that have negative prefixes like "un-", "dis-", etc. unless they are just as commonly used as their positive counterpart (i.e., if you look the word up in the dictionary and it's simply defined as the negation of something, don't include it.)
 <!--* Similarly, try not to include words whose meanings are too evident from their components, such as "southbound." It would be hard to come up with clues. -->
 * No British English, or non-English entries except for common phrases ("vice versa", etc.) These words should not be a core part of crossword lexicon, and I don't like it when puzzles rely on other languages/dialects/variant spellings -- it feels cheap.
-* No offensive words or insensitive entries. No entries relating to warfare, violence, weapons, chemical agents that have been been used in war, etc. No entries with negative connotations (like RACISM, WHITE_SUPREMACY, MANIFEST_DESTINY, etc.); even if their clues are benign, these types of topics don't deserve visibility in crossword puzzles. Avoid "gross" entries pertaining to bodily fluids, bodily functions, crimes, abuse, etc. 
+* No offensive words or insensitive entries. No entries relating to warfare, violence, weapons, chemical agents that have been been used in war, etc. No entries with negative connotations (like RACISM, WHITE_SUPREMACY, MANIFEST_DESTINY, etc.) Even if their clues are benign, these types of topics don't deserve visibility in crossword puzzles. Avoid "gross" entries pertaining to bodily fluids, bodily functions, crimes, abuse, etc. 
 * Avoid people. Constructors can manually add their own people-entries if they want. Exceptions are extremely iconic people who are a part of American collective memory at this point, like EINSTEIN or ELVIS.
 * Avoid places, except for maybe iconic American places.
-* General goal: Really try to *only* include entries that are commonly used in everyday language, roll off the tongue, can be standalone entries, encourage lively clues, and so on.... Highly subjective but this is my dataset. :blush:
+* General goal: Really try to *only* include entries that are commonly used in everyday language, roll off the tongue, can be standalone entries, encourage lively clues, and so on.... Highly subjective but this is my dataset :sunglasses:
 
 There might be entries that I've accidentally included that don't adhere to my own rules. Since I make snap judgments as I quickly skim over entries (about 5k-10k at a time), I'm liable to make mistakes especially when my eyes glaze over. But it's better to cut out too many words initially, rather than have to go back to and find bad words and take them out. It's easier to add fresh words/phrases later.
 
 So far I've manually filtered all \~147k lemmas in [WordNet](https://wordnet.princeton.edu/). About 20-25% I deemed good enough to include in this dataset. I'm partway through filtering Peter Broda's dataset, which presents another \~240k unique entries after removing all the words I've already looked at. So far, the worth-keeping rate for the Broda dataset is about a third. I've also added any random words/phrases that came to me. 
 
-Dream goal is to tag all the entries, although that won't happen without a team of dedicated people.
+Dream goal is to tag all the entries, although that won't happen without other people to help :)
 
 # Fill algorithm
 Ultimately the fill algorithm will be some variant of BFS or DFS... Here are some options:
