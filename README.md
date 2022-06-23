@@ -81,7 +81,7 @@ For any box in the grid, black or white:
 
 There might be entries that I've accidentally included that don't adhere to my own rules. Since I make snap judgments as I quickly skim over entries (about 5k-10k at a time), I'm liable to make mistakes especially when my eyes glaze over. Conversely, if I've missed any good entries, that's slightly better than mistakenly including bad ones. It's better to cut out too many words initially, rather than have to go back to and find bad words and take them out; it's easier to add fresh words/phrases later. Please email me or make a PR if you would like to contribute to this wordlist!
 
-So far I've manually filtered all \~147k lemmas in [WordNet](https://wordnet.princeton.edu/). About 20-25% I deemed good enough to include in this dataset. I'm partway through filtering Peter Broda's dataset, which presents another \~240k unique entries after removing all the words I've already looked at, and words with scores less than 50. So far, the worth-keeping rate for the Broda dataset is about a third. I've also added any random words/phrases that came to me. 
+So far I've manually filtered all \~145k lemmas in [WordNet](https://wordnet.princeton.edu/). About 20-25% I deemed good enough to include in this dataset. I'm partway through filtering Peter Broda's dataset, which presents another \~320k unique entries after removing all the words I've already looked at, and words with scores less than 50. So far, the worth-keeping rate for the Broda dataset is about a third. I've also added any random words/phrases that came to me. 
 
 Dream goal is to tag all the entries, although that won't happen without other people to help :).
 

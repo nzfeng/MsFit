@@ -269,6 +269,7 @@ void FillManager::fillGridDFS(std::string& message) const {
 
     // At each step, start at the incomplete word with the fewest fills.
     // Need to keep track of which entries were tried (which sub-trees were pruned.)
+    // Don't prune if the word that has zero fills is a word that was manually filled to begin with.
     // Also need to make sure no duplicate entries in the puzzle at each step.
 
     // Fill in empty cells if a solution was found.

@@ -53,21 +53,18 @@ void MessagesList::addMessageToList(const std::string& text) {
     // allocate.
     if (autoScroll) {
         Glib::RefPtr<Gtk::Adjustment> adj = get_vadjustment();
-        adj->set_value(adj->get_upper());
+        adj->set_value(adj->get_upper() - adj->get_page_size());
     }
 }
 
 void MessagesList::clear() {
 
-    auto children = m_refListStore->children();
-    // Repeatedly get and delete pointer to the first element.
-    // while (m_refListStore->children().size() > 0) {
-    //     m_refListStore->erase(m_refListStore->children().begin());
+    // auto children = m_refListStore->children();
+    // auto it = children.begin();
+    // auto end = children.end();
+    // while (it != end) {
+    //     it = m_refListStore->erase(it); // erase should auto-increment iterator
     // }
 
-    auto it = children.begin();
-    auto end = children.end();
-    while (it != end) {
-        it = m_refListStore->erase(it); // erase should auto-increment iterator
-    }
+    m_refListStore->clear();
 }
