@@ -44,7 +44,7 @@ def main():
 	# restBroda = removeEntries(remaining_broda, wordnet+filtered)
 	# print(len(restBroda))
 
-	# saveFilteredWords()
+	saveFilteredWords()
 
 if __name__=="__main__":
 	main()
