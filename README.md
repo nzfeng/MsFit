@@ -119,6 +119,7 @@ Ideas for fill tools:
 * Other tilings
 * Tilings of the sphere/hyperbolic disk?
 * I liked this puzzle: https://crosshare.org/crosswords/oC5KN16iBGMncNxU4ie5/2x3x4-3. TODO: Option for multiple chars per cell (i.e. use `.*` in regex.)
+* [Polyhedral Patterns](https://geometry.stanford.edu/papers/jtvwp-pp-15/jtvwp-pp-15.pdf)
 
 # Limitations
 * Only English is supported.
