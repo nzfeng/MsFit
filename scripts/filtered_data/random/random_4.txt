@@ -147,3 +147,14 @@ blow_a_kiss
 blows_a_kiss
 bayou
 mecca
+edgewise
+edge_case
+corner_case
+goody_bag
+goody_bags
+premeditated
+retouch
+airbrush
+airbrushed
+photoshop
+photoshopped

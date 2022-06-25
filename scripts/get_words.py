@@ -35,19 +35,19 @@ def getRemainingBroda():
 	return allWords
 
 def main():
-	# Once I've filtered all of WordNet, remove all duplicates (and currently-sorted filtered words) from the 
-	# remaining Broda words that I haven't filtered yet.
-	wordnet = getWordNetWords()
-	filtered = getFilteredWords()
-	remaining_broda = getRemainingBroda()
-	print(len(remaining_broda))
-	restBroda = removeEntries(remaining_broda, wordnet+filtered)
-	print(len(restBroda))
-	saveRawWords(restBroda, dataset_name="broda", incr=1000, offset=0, toSort=True)
+	# # Once I've filtered all of WordNet, remove all duplicates (and currently-sorted filtered words) from the 
+	# # remaining Broda words that I haven't filtered yet.
+	# wordnet = getWordNetWords()
+	# filtered = getFilteredWords()
+	# remaining_broda = getRemainingBroda()
+	# print(len(remaining_broda))
+	# restBroda = removeEntries(remaining_broda, wordnet+filtered)
+	# print(len(restBroda))
+	# saveRawWords(restBroda, dataset_name="broda", incr=1000, offset=0, toSort=True)
 
 	# TODO: Need to get Broda words 3-4 letters
 
-	# saveFilteredWords()
+	saveFilteredWords()
 
 if __name__=="__main__":
 	main()
