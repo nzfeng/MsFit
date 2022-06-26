@@ -190,7 +190,7 @@ low_temperature
 info
 scrabble
 savanna
-loofa
+loofah
 go_to
 hand-crafted
 take_water

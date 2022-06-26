@@ -120,6 +120,11 @@ Ideas for fill tools:
 * Go through all filtered words and add any commonly-used derivatives.
 * Store all unfiltered WordNet words (and Broda words) from the version I used, so I can check against them when I add entries in the future. 
 
+* Automatically show "illegal" grids, i.e. 2-letter words, cells shared by only one word, etc. (can toggle this option)
+* Automatically detect duplicate entries. Also have option to display repeated substrings.
+* Determine the word in the grid with the fewest possible fills (with the option to ignore penciled cells)
+* Keyboard shortcuts for everything.
+
 # Puzzle ideas
 * Include hexagonal cells as 3-way intersections
 * Other tilings
