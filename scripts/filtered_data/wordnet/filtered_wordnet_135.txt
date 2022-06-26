@@ -205,7 +205,6 @@ simulate
 tessellated
 king-size
 hound
-oreo_cookie
 blood_relative
 assumed_name
 dog_bite

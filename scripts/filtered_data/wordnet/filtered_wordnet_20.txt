@@ -98,7 +98,6 @@ fading
 wine_vinegar
 shorn
 gluttonous
-oreo
 sardine
 nursing_home
 drug_cartel

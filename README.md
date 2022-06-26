@@ -87,6 +87,8 @@ So far I've manually filtered all \~145k lemmas in [WordNet](https://wordnet.pri
 
 [Desi Quintas](http://www.desiquintans.com/nounlist) has a hand-curated plain.txt list of 6801 common nouns in English; his curation criteria aligns really well with what makes a good crossword entry. I've gone through and removed British-English and words I don't like, resulting in \~6250 words. This added another \~1200 entries unique from WordNet, 5-letter Broda words, and some other filtered words I had at the time.
 
+Type common words into OED and use the sub-entries/senses. They tend to make for good phrases.
+
 TODO: Go through [this list](https://richardharringtonblog.com/list-of-nouns).
 
 Dream goal is to tag all the entries, although that won't happen without other people to help :).
