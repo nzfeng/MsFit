@@ -48,3 +48,6 @@ trachea
 trackpad
 traction
 tradeoff
+thin_air
+thin_ice
+garden_variety

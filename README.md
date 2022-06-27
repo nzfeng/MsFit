@@ -124,7 +124,6 @@ Ideas for fill tools:
 
 * Automatically show "illegal" grids, i.e. 2-letter words, cells shared by only one word, etc. (can toggle this option)
 * Automatically detect duplicate entries. Also have option to display repeated substrings.
-* Determine the word in the grid with the fewest possible fills (with the option to ignore penciled cells)
 * Keyboard shortcuts for everything.
 
 # Puzzle ideas
