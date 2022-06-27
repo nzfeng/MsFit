@@ -35,6 +35,9 @@ class Square {
     void setSolid(bool state);
     void toggleSolid();
 
+    bool isHighlighted() const;
+    void setHighlight(bool highlight);
+
     void setNumber(int num);
     int getNumber() const;
 
@@ -72,6 +75,7 @@ class Square {
     int selectionStatus;
     int number = -1; // only positive if this square is the start of a new word
     int utensil;
+    bool highlight = false;
 
     // Info about this square within the grid
     Square* left;

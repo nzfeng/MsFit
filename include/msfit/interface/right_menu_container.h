@@ -17,6 +17,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "msfit/engine/fill_manager.h"
 #include "msfit/interface/messages_list.h"
 #include "msfit/interface/msfit_button.h"
 #include "msfit/puzzle/puzzle_grid.h"
@@ -33,16 +34,17 @@ class RightMenuContainer : public Gtk::Notebook {
 
     // Frames containing user-defined callbacks, general crossword settings
     Gtk::Box menuBox, clueBox, summaryBox;
-    Gtk::Frame userCallbacksFrame, settingsFrame;
-    Gtk::Box userCallbacksBox, settingsBox;
+    Gtk::Frame fillOptionsFrame, settingsFrame;
+    Gtk::Box fillOptionsBox, settingsBox;
 
     // Buttons
     // Gtk::CheckButton and Gtk::ToggleButton act as radio buttons, if they are included in a group.
     Gtk::ToggleButton pencilToggle;
-    Gtk::Button clearGridButton;
+    Gtk::Button clearGridButton, saveButton, loadButton;
     Gtk::Button loadAllWords;
     MsFitButton fillButtons[2];
     Glib::ustring fillButtonLabels[2] = {"Fill word", "Fill grid"};
+    MsFitButton getMostConstrainedButton;
     Gtk::CheckButton ignorePenciled;
     Gtk::CheckButton fillConstraints[3];
     Glib::ustring fillConstraintLabels[3] = {"Grid-feasible", "Grid-compliant", "None"};
@@ -63,19 +65,26 @@ class RightMenuContainer : public Gtk::Notebook {
     int presetSizes[4] = {15, 21, 23, 25};
     Glib::ustring gridSizePresetLabels[4] = {"15 x 15", "21 x 21", "23 x 23", "25 x 25"};
 
-    Gtk::Button saveButton, loadButton;
+    PuzzleGrid* puzzleGrid;
+    FillManager* fillManager;
 
   private:
     // For Menu page -- grid settings
     Gtk::Grid setUpGridSymmetrySettings();
     Gtk::Grid setUpGridDimensionSettings();
-    Gtk::Box setUpPuzzleIOSettings();
     // For Menu page -- user settings
-    Gtk::Grid setUpWritingUtensilMenu();
+    Gtk::Grid setUpToolbar();
     Gtk::Grid setUpWordlistOptions();
     Gtk::Grid setUpFillTools();
 
     // Signal handlers
+    // void on_size_button_clicked(int buttonIndex);
+    // void on_sizeSpinner_clicked(int buttonIndex);
+
+    // void on_fill_clicked(const std::string& button);
+
+    // void on_clearGrid_button_clicked();
+
     void on_makeSymmetric_button_toggled() const;
     void on_symmetry_button_clicked(int buttonIndex) const;
 
@@ -83,4 +92,6 @@ class RightMenuContainer : public Gtk::Notebook {
 
     void on_pencil_button_clicked() const;
     void on_constraint_button_toggled() const;
+
+    void on_getMostConstrained_clicked();
 };

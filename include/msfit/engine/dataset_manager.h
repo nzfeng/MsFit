@@ -14,6 +14,7 @@
 #include <string_view>
 #include <vector>
 
+#include "msfit/interface/messages_list.h"
 #include "msfit/utilities/state.h"
 
 // TODO: Currently passing messages to the message dialog in the bottom menu isn't very elegant. Would probably make
@@ -26,7 +27,7 @@ class DatasetManager {
     DatasetManager();
     ~DatasetManager() {}
 
-    void loadData(std::string& message);
+    void loadData();
 
     // datasets, indexed by wordlength
     std::map<size_t, std::vector<std::string>> words;
@@ -34,6 +35,8 @@ class DatasetManager {
     // std::map<std::string, std::string> startingPairRegex = {{".", "."}};
     // // Map from a pair of chars at the end of a word, to a regex pattern for the blank spot.
     // std::map<std::string, std::string> endingPairRegex = {{".", "."}};
+
+    MessagesList* bottomMenuContainer;
 
   private:
     std::string dir = "../../data";     // hard-coded for now
@@ -43,9 +46,9 @@ class DatasetManager {
                                          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
     // Load in datasets
-    void loadFromFile(std::string& message);
-    void createBinary(std::string& message);
-    void loadBinary(std::string& message);
+    void loadFromFile();
+    void createBinary();
+    void loadBinary();
 
     // Sort datasets -- split into groups based on word length.
 

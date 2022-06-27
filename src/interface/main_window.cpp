@@ -38,6 +38,8 @@ MainWindow::MainWindow()
     gridContainer.set_start_child(canvasContainer);
     gridContainer.set_end_child(bottomMenuContainer);
 
+    // Need to set up signals in RHS menu connecting to puzzleGrid here, because puzzleGrid needs to be properly
+    // initialized before RHS menu is.
     connectMenuButtons();
 
     puzzleGrid.grab_focus(); // makes puzzleGrid have the keyboard focus
@@ -49,6 +51,16 @@ MainWindow::MainWindow()
     canvasContainer.set_obey_child(false);
     canvasContainer.set_ratio(1.0); // aspect ratio of grid is maintained
     canvasContainer.set_child(puzzleGrid);
+
+    // Pass around all the pointers/reference variables we need to enable info-passing between different objects
+    rightMenuContainer.puzzleGrid = &puzzleGrid;
+    rightMenuContainer.fillManager = &fillManager;
+    fillManager.bottomMenuContainer = &bottomMenuContainer;
+    datasetManager.bottomMenuContainer = &bottomMenuContainer;
+    // puzzleGrid.mainWindow = this;
+
+    // Load wordlist as default upon startup.
+    loadData();
 
     // // Event handlers
     // auto leftClickHandler = Gtk::GestureClick::create();
@@ -78,6 +90,7 @@ MainWindow::MainWindow()
 
 /*
  * Set up all the buttons in the RHS menu that need access to the other members of the MainWindow.
+ * TODO: Have classes store Glib::RefPtr's to other members, rather than going through MainWindow.
  */
 void MainWindow::connectMenuButtons() {
 
@@ -93,9 +106,6 @@ void MainWindow::connectMenuButtons() {
         rightMenuContainer.gridDimSpin[i].signal_value_changed().connect(
             sigc::bind(sigc::mem_fun(*this, &MainWindow::on_sizeSpinner_clicked), i));
     }
-
-    rightMenuContainer.loadAllWords.signal_clicked().connect(
-        sigc::mem_fun(*this, &MainWindow::on_loadData_button_clicked));
 
     int nFillOptions = *(&rightMenuContainer.fillButtons + 1) - rightMenuContainer.fillButtons;
     for (int i = 0; i < nFillOptions; i++) {
@@ -169,26 +179,26 @@ void MainWindow::on_sizeSpinner_clicked(int buttonIndex) {
     puzzleGrid.setCols(rightMenuContainer.gridDimSpin[buttonIndex].get_value_as_int());
 }
 
-void MainWindow::on_loadData_button_clicked() {
-    std::string message = "";
-    datasetManager.loadData(message);
-    bottomMenuContainer.addMessageToList(message);
+void MainWindow::loadData() { datasetManager.loadData(); }
+
+void MainWindow::generate_word_fills() {
+    std::vector<std::string> fills =
+        fillManager.getWordFills(puzzleGrid.getSelectedWord(), rightMenuContainer.ignorePenciled.get_active(),
+                                 rightMenuContainer.getFillWordConstraint(), true, -1);
+
+    // Populate the little scroll window with fills
+    rightMenuContainer.fillOptionsList.clear();
+    // instead of forcing the TreeView to continually add/delete options
+    if (fills.size() > interface::params::maxFillOptions) fills.resize(interface::params::maxFillOptions);
+    for (auto fill : fills) {
+        rightMenuContainer.fillOptionsList.addMessageToList(fill);
+    }
 }
 
 void MainWindow::on_fill_clicked(const std::string& button) {
 
-    std::string message;
     if (button == "Fill word") {
-        std::vector<std::string> fills = fillManager.getWordFills(puzzleGrid.getSelectedWord(), message,
-                                                                  rightMenuContainer.ignorePenciled.get_active(),
-                                                                  rightMenuContainer.getFillWordConstraint(), -1);
-        if (message != "") bottomMenuContainer.addMessageToList(message);
-        rightMenuContainer.fillOptionsList.clear();
-        // instead of forcing the TreeView to continually add/delete options
-        if (fills.size() > interface::params::maxFillOptions) fills.resize(interface::params::maxFillOptions);
-        for (auto fill : fills) {
-            rightMenuContainer.fillOptionsList.addMessageToList(fill);
-        }
+        generate_word_fills();
     } else if (button == "Fill grid") {
         // TODO
     }

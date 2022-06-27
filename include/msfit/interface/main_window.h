@@ -19,8 +19,7 @@ class MainWindow : public Gtk::Window {
 
   public:
     MainWindow();
-    ~MainWindow() override;
-    // virtual ~MainWindow();
+    virtual ~MainWindow();
 
   private:
     /* Child widgets */
@@ -52,6 +51,7 @@ class MainWindow : public Gtk::Window {
     DatasetManager datasetManager;
     FillManager fillManager;
 
-    void on_loadData_button_clicked();
+    void loadData();
+    void generate_word_fills();
     void on_fill_clicked(const std::string& button);
 };

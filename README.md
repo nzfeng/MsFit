@@ -20,6 +20,8 @@ Possibly [RE2](https://github.com/google/re2).
 
 # Interface controls
 
+* `Shift-P`: Toggle pencil.
+
 ## Grid crossword
 Controls for navigating a grid crossword:
 

@@ -20,6 +20,9 @@ inline void Square::toggleSolid() {
     solid = !solid;
 }
 
+inline bool Square::isHighlighted() const { return highlight; }
+inline void Square::setHighlight(bool highlight_) { highlight = highlight_; }
+
 inline void Square::setNumber(int num) { number = num; }
 inline int Square::getNumber() const { return number; }
 

@@ -15,29 +15,30 @@ FillManager::FillManager(DatasetManager& datasetManager_, PuzzleGrid& puzzleGrid
  * to true.
  *
  * Return the specified # of options.
+ *
+ * TODO: Only add message to dialog if explicitly specified.
  */
-std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& message, bool ignorePenciled,
-                                                   const std::string& constraint, int nOptions) const {
+std::vector<std::string> FillManager::getWordFills(GridWord* word, bool ignorePenciled, const std::string& constraint,
+                                                   bool printMessage, int nOptions) const {
 
 
     std::vector<std::string> matches;
 
     // If no word selected
     if (word == NULL) {
-        message = "No word selected.";
+        if (printMessage) bottomMenuContainer->addMessageToList("No word selected.");
         return matches;
     }
 
     // If no dataset
     if (datasetManager.words.size() == 0) {
-        message = "No wordlist loaded.";
-        std::cerr << message << std::endl;
+        if (printMessage) bottomMenuContainer->addMessageToList("No wordlist loaded.");
         return matches;
     }
 
     // If word is already filled, return.
     if (!word->isOpen()) {
-        message = "Word is already filled.";
+        if (printMessage) bottomMenuContainer->addMessageToList("Word is already filled.");
         return matches;
     }
 
@@ -64,11 +65,16 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, std::string& 
 
     // Return the specified number of matches.
     size_t nMatches = matches.size();
-    message = "Fills generated: " + std::to_string(nMatches) + " matches.";
+    std::string message = "Fills generated: " + std::to_string(nMatches) + " matches.";
+    if (printMessage) bottomMenuContainer->addMessageToList(message);
     if (nOptions != -1 && (size_t)nOptions < nMatches) matches.resize(nOptions);
     return matches;
 }
 
+/*
+ * Return true if the given word, and its current fill pattern, allow possible fills.
+ * This is purely based on the current fill pattern, not any relationship with other words.
+ */
 bool FillManager::doFillsExist(GridWord* word, bool ignorePenciled) const {
 
     std::smatch match;
@@ -182,6 +188,31 @@ std::regex FillManager::getGridFeasibleRegex(GridWord* word, bool ignorePenciled
 }
 
 /*
+ * Determine the current word in the grid with the fewest possible fills (i.e., the most "constrained" word.)
+ *
+ * <constraint> = "Grid-feasible", "Grid-compliant", "None"
+ */
+GridWord* FillManager::getMostConstrainedWord(bool ignorePenciled, const std::string& constraint) {
+
+    std::vector<std::vector<GridWord>>& gridWords = puzzleGrid.getWords();
+
+    size_t minFills = 100000;
+    GridWord* minWord = NULL;
+    for (size_t i = 0; i < gridWords.size(); i++) {
+        for (size_t j = 0; j < gridWords[i].size(); j++) {
+            if (!gridWords[i][j].isOpen()) continue;
+            size_t nFills = getWordFills(&gridWords[i][j], ignorePenciled, constraint).size();
+            if (nFills < minFills) {
+                minWord = &gridWords[i][j];
+                minFills = nFills;
+            }
+        }
+    }
+    bottomMenuContainer->addMessageToList("Most constrained word has " + std::to_string(minFills) + " fills.");
+    return minWord;
+}
+
+/*
  * Helper function for fillGridDFS().
  *
  * <cells> is a dense array of all the write-able cells in the puzzle.
@@ -249,7 +280,7 @@ void FillManager::buildSearchStructures(std::vector<std::string>& cells, std::ve
  * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a
  * different color.
  */
-void FillManager::fillGridDFS(std::string& message) const {
+void FillManager::fillGridDFS() const {
 
     // Convert the current puzzle into something with a more compact (smaller memory), and faster to do word-lookups on.
     // Everything is index-based; hopefully the time savings add up vs. pointer-chasing (which is how the data in
@@ -282,7 +313,7 @@ void FillManager::fillGridDFS(std::string& message) const {
     }
     puzzleGrid.queue_draw();
 
-    // message = "No grid fills found.";
+    // bottomMenuContainer->addMessageToList("No grid fills found.");
 }
 
 // TODO: a function that returns partial solutions; somehow indicates which areas of the grid are difficult to fill

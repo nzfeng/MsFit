@@ -18,6 +18,7 @@
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/grid.h>
 
+// #include "msfit/interface/main_window.h"
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/square.h"
 #include "msfit/utilities/state.h"
@@ -75,6 +76,10 @@ class PuzzleGrid : public Gtk::DrawingArea {
     // size_t getNextWord(const std::array<int, 2>& indices, const int wordtype);
     // size_t getNextOpenWord(const std::array<int, 2>& indices, const int wordtype);
 
+    void setHighlightedWord(GridWord* word);
+
+    // MainWindow* mainWindow;
+
   private:
     // A bunch of variables/functions in PuzzleGrid, GridWord, and Square depend on pointers to elements in <data>;
     // these pointers will remain valid as long as <data> is not resized. Whenever the grid is resized (i.e. setSize()
@@ -94,6 +99,7 @@ class PuzzleGrid : public Gtk::DrawingArea {
 
     // Functions for signal handlers
     void draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, int gridHeight);
+    void renderHighlightedWord(const Cairo::RefPtr<Cairo::Context>& cr, const size_t& squareSize);
     void on_focus_out();
     void on_left_click(int n_press, double x, double y);
     void on_right_click(int n_press, double x, double y);
@@ -102,6 +108,9 @@ class PuzzleGrid : public Gtk::DrawingArea {
 
     // Interactive state variables particular to the grid.
     std::array<int, 2> selectedSquare; // indices of the currently selected square in <data>
+
+    GridWord* hlWord;
+    int hlWordLifetime = -1;
 };
 
 #include "msfit/puzzle/puzzle_grid.ipp"

@@ -2,7 +2,7 @@
 
 DatasetManager::DatasetManager() {}
 
-void DatasetManager::loadFromFile(std::string& message) {
+void DatasetManager::loadFromFile() {
     // Get all txt files in the data directory
     std::string path, num, fn;
     for (const auto& entry : std::filesystem::directory_iterator(dir)) {
@@ -31,32 +31,30 @@ void DatasetManager::loadFromFile(std::string& message) {
         }
     }
     if (words.size() > 0) {
-        message = "Data loaded from file.";
-        std::cout << message << std::endl;
+        bottomMenuContainer->addMessageToList("Data loaded from file.");
     }
 }
 
 /*
  * Create a binary file from the txt wordlist.
  */
-void DatasetManager::createBinary(std::string& message) {}
+void DatasetManager::createBinary() {}
 
 
 /*
  * Read from a saved binary file containing the entire wordlist.
  */
-void DatasetManager::loadBinary(std::string& message) {}
+void DatasetManager::loadBinary() {}
 
-void DatasetManager::loadData(std::string& message) {
+void DatasetManager::loadData() {
     if (words.size() > 0) {
-        message = "Data already loaded.";
-        std::cout << message << std::endl;
+        bottomMenuContainer->addMessageToList("Data already loaded.");
         return;
     }
 
     std::ifstream file(binFile.c_str());
     if (!file.is_open()) {
-        loadFromFile(message);
+        loadFromFile();
     }
     // TODO: else load from binary
 

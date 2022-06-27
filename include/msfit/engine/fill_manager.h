@@ -3,6 +3,7 @@
 #include <string_view>
 
 #include "msfit/engine/dataset_manager.h"
+#include "msfit/interface/messages_list.h"
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/puzzle_grid.h"
 #include "msfit/utilities/state.h"
@@ -12,9 +13,15 @@ class FillManager {
     FillManager(DatasetManager& datasetManager, PuzzleGrid& puzzleGrid);
     ~FillManager() {}
 
-    std::vector<std::string> getWordFills(GridWord* word, std::string& message, bool ignorePenciled,
-                                          const std::string& constraint = "none", int nOptions = 10) const;
-    void fillGridDFS(std::string& message) const;
+    std::vector<std::string> getWordFills(GridWord* word, bool ignorePenciled, const std::string& constraint = "none",
+                                          bool printMessage = false, int nOptions = -1) const;
+
+    GridWord* getMostConstrainedWord(bool ignorePenciled, const std::string& constraint);
+
+    void fillGridDFS() const;
+
+    // to send messages to the dialog
+    MessagesList* bottomMenuContainer;
 
   private:
     DatasetManager& datasetManager;

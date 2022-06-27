@@ -49,6 +49,7 @@ extern std::array<float, 3> color_solid;         // color of a solid cell (usual
 extern std::array<float, 3> color_unselected;    // usually white
 extern std::array<float, 3> color_selected;
 extern std::array<float, 3> color_highlighted;
+extern std::array<float, 3> color_word_highlight; // outline of a word
 extern std::array<float, 3> color_pencil;
 extern std::array<float, 3> color_pen;
 extern std::array<float, 3> color_autofill;

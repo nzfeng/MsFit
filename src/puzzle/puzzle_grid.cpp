@@ -103,9 +103,65 @@ void PuzzleGrid::draw(const Cairo::RefPtr<Cairo::Context>& cr, int gridWidth, in
 
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
+            // Pass upper left corner coordinates of square
             data[i][j].draw(*this, cr, squareSize, x + squareSize * j, y + squareSize * i);
         }
     }
+
+    // Highlight a word, if any.
+    if (hlWordLifetime == 0) renderHighlightedWord(cr, squareSize);
+}
+
+/*
+ * Highlight a word by drawing an outline around the whole word.
+ */
+void PuzzleGrid::renderHighlightedWord(const Cairo::RefPtr<Cairo::Context>& cr, const size_t& squareSize) {
+
+    if (hlWord == NULL) return;
+
+    // Determine the 4 corners of the rectangle that the word inhabits.
+    size_t n = hlWord->length();
+    std::array<size_t, 2> c1, c2, c3, c4;
+    auto [firstSq_i, firstSq_j] = hlWord->squares[0]->getPosition();
+    auto [lastSq_i, lastSq_j] = hlWord->squares[n - 1]->getPosition();
+    c2 = {xStart + squareSize * firstSq_j, yStart + squareSize * firstSq_i};           // firstSq::upperLeft
+    c4 = {xStart + squareSize * (lastSq_j + 1), yStart + squareSize * (lastSq_i + 1)}; // lastSq::lowerRight
+    if (hlWord->isAcross) {
+        // firstSq::lowerLeft -> firstSq::upperLeft -> lastSq::upperRight -> lastSq::lowerRight
+        c1 = {xStart + squareSize * firstSq_j, yStart + squareSize * (firstSq_i + 1)}; // firstSq::lowerLeft
+        c3 = {xStart + squareSize * (lastSq_j + 1), yStart + squareSize * lastSq_i};   // lastSq::upperRight
+    } else {
+        // firstSq::upperRight -> firstSq::upperLeft -> lastSq::lowerLeft -> lastSq::lowerRight
+        c1 = {xStart + squareSize * (firstSq_j + 1), yStart + squareSize * firstSq_i}; // firstSq::upperRight
+        c3 = {xStart + squareSize * lastSq_j, yStart + squareSize * (lastSq_i + 1)};   // lastSq::lowerLeft
+    }
+
+    std::array<float, 3> color = theme::color_word_highlight;
+    cr->set_source_rgb(color[0], color[1], color[2]);
+    // cr->set_line_join(Cairo::LineJoin::MITER); // Miter, Bevel, Round
+    // cr->set_line_cap(); // Butt, Round, Square
+    cr->move_to(c1[0], c1[1]);
+    cr->line_to(c2[0], c2[1]);
+    cr->line_to(c3[0], c3[1]);
+    cr->line_to(c4[0], c4[1]);
+    cr->line_to(c1[0], c1[1]);
+    cr->stroke();
+
+    hlWordLifetime++;
+}
+
+/*
+ * Set a word to be highlighted. Normally a "rubber-banding" technique would be optimal to fulfill this function, but it
+ * seems that a Cairo::Context can't be accessed outside of the drawing callback.
+ *
+ * The highlighting is dropped when the user does something that results in the grid being redrawn (i.e. enters a
+ * letter, adjusts the grid settings.)
+ */
+void PuzzleGrid::setHighlightedWord(GridWord* word) {
+
+    hlWordLifetime = 0;
+    hlWord = word;
+    queue_draw();
 }
 
 /*
@@ -483,6 +539,9 @@ void PuzzleGrid::on_left_click(int n_press, double x, double y) {
 
     setSelectedSquare(indices);
 
+    // Automatically display fill options.
+    // mainWindow->generate_word_fills();
+
     // Request redraw.
     queue_draw();
 }
@@ -598,8 +657,10 @@ std::array<int, 2> PuzzleGrid::mapClickToSquareIndex(double x, double y) {
  *
  * <keyval> = GDK_KEY_1, GDK_KEY_Escape, etc. See [https://gitlab.gnome.org/GNOME/gtk/-/blob/main/gdk/gdkkeysyms.h].
  * <keycode> = the hardware keycode; an identifying number for a physical key (i.e. "1" and "!" have the same
- * keycode) <state> = Gdk::ModifierType::SHIFT_MASK, etc. <phase> = refers to the phase of event handling in which
- * handler is called; Gtk::PropagationPhase::CAPTURE, etc. See [https://stackoverflow.com/a/4616720].
+ * keycode)
+ * <state> = Gdk::ModifierType::SHIFT_MASK, etc.
+ * <phase> = refers to the phase of event handling in which handler is called; Gtk::PropagationPhase::CAPTURE, etc. See
+ * [https://stackoverflow.com/a/4616720].
  *      - Capturing phase – the event goes down to the element.
  *      - Target phase – the event reached the target element.
  *      - Bubbling phase – the event bubbles up from the element.
@@ -611,6 +672,22 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
     if (phase != "bubble") return false;
     // If we press keys in any other part of the window.
     if (!has_focus()) return false;
+
+    // Detect hotkeys
+    if (state == Gdk::ModifierType::CONTROL_MASK) {
+        // Ctrl-P: print
+        // Ctrl-S: save
+        // Ctrl-O: load (open)
+        return true;
+    } else if (state == Gdk::ModifierType::SHIFT_MASK) {
+        switch (keyval) {
+            case (GDK_KEY_P):
+                // Toggle pencil
+                // TODO: need to toggle button
+                state::pencilSelected = !state::pencilSelected;
+        }
+        return true;
+    }
 
     // Could also use gdk_keyval_name(keyval)
     switch (keyval) {
