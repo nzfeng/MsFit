@@ -136,7 +136,6 @@ sell
 candied
 breathalyzer
 corruption
-botulism
 marinara
 unconstitutional
 centrifugal_force

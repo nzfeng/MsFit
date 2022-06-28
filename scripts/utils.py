@@ -46,10 +46,11 @@ def removeDigits(string):
 def standardize(string):
 	return depunctuate(removeDigits(string)).upper()
 
-def removeDuplicates(wordlist):
+
+def buildStandardizedDictAndWordlist(wordlist):
 	'''
-	Remove duplicates from the given wordlist, where duplicates are determined by comparing standardized (de-puncutated) 
-	versions; preserve the original format of the word. 
+	Build map from standardized versions of entries to the original entries.
+	Return this map (a dict), and a list of the standardized entries.
 	'''
 
 	# Build map from standardized versions of entries to the original entries.
@@ -60,15 +61,35 @@ def removeDuplicates(wordlist):
 		wordMap[std] = word
 		stdList.append(std)
 
-	# Remove duplicates.
-	stdList = set(stdList)
+	return (wordMap, stdList)
 
-	# Return original versions of entries.
+def mapFromStandardizedWordist(stdList, wordMap):
+	'''
+	Given a wordlist <stdList> of standardized entries, and a 
+	dictionary <wordMap> mapping standardized entries to their original entries,
+	return the mapped <stdList>.
+	'''
+
 	wordSet = []
 	for word in stdList:
 		wordSet.append(wordMap[word])
 
-	return wordSet;
+	return wordSet
+
+def removeDuplicates(wordlist):
+	'''
+	Remove duplicates from the given wordlist, where duplicates are determined by comparing standardized (de-puncutated) 
+	versions; preserve the original format of the word. 
+	'''
+
+	# Build map from standardized versions of entries to the original entries.
+	(wordMap, stdList) = buildStandardizedDictAndWordlist(wordlist)
+
+	# Remove duplicates.
+	stdList = set(stdList)
+
+	# Return original versions of entries.
+	return mapFromStandardizedWordist(stdList, wordMap)
 
 def removeEntries(wordlist, setlist):
 	'''
@@ -79,20 +100,13 @@ def removeEntries(wordlist, setlist):
 	stdSetlist = [standardize(word) for word in setlist]
 
 	# Build map from standardized versions of entries to the original entries.
-	wordMap = {}
-	stdList = []
-	for word in wordlist:
-		std = standardize(word)
-		wordMap[std] = word
-		stdList.append(std)
+	(wordMap, stdList) = buildStandardizedDictAndWordlist(wordlist)
 
 	# Remove elements.
 	newList = set(stdList) - set(stdSetlist)
 
 	# Return original versions of entries.
-	wordSet = []
-	for word in newList:
-		wordSet.append(wordMap[word])
+	wordSet = mapFromStandardizedWordist(newList, wordMap)
 
 	return wordSet
 

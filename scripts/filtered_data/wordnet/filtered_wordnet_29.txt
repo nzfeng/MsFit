@@ -156,7 +156,6 @@ coverall
 court_order
 ultraviolet
 pinto_bean
-egocentrism
 rib_cage
 interception
 doctorate
@@ -253,6 +252,5 @@ broiled
 seabed
 at_least
 transformer
-ethnocentrism
 reproducible
 doggo

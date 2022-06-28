@@ -134,7 +134,6 @@ vaporize
 down_pat
 lever
 morphological
-existentialism
 as_it_were
 pamphlet
 fever_pitch

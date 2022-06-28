@@ -91,7 +91,6 @@ word_for_word
 crankiness
 coconut_milk
 playful
-terrorism
 flabbiness
 disruptive
 club_soda
@@ -164,7 +163,6 @@ jaw
 remains
 directing
 workshop
-asceticism
 pamper
 symbolic
 car_door

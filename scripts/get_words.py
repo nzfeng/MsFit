@@ -35,6 +35,26 @@ def filterPreviousWords(dataset):
 	print(len(dedup))
 	return dedup
 
+def outputAlphabetizedFiltered():
+	'''
+	Get all filtered words currently, and output them in alphabetized order into a txt file.
+	'''
+
+	wordset = getFilteredWords()
+
+	# Build map from standardized versions of entries to the original entries.
+	(wordMap, stdList) = buildStandardizedDictAndWordlist(wordset)
+
+	# Remove duplicates.
+	stdList = set(stdList)
+
+	stdList = sorted(stdList) # alphabetized
+
+	with open('./alphabetized-entries.txt', 'w') as f:
+		for word in stdList:
+			f.write(wordMap[word]) # write original entry
+			f.write("\n")
+
 def main():
 	# # Once I've filtered all of WordNet, remove all duplicates (and currently-sorted filtered words) from the 
 	# # remaining Broda words that I haven't filtered yet.
@@ -43,10 +63,12 @@ def main():
 
 	# TODO: Need to get Broda words 3-4 letters
 
-	saveFilteredWords()
+	# saveFilteredWords()
 
 	# harringtonRaw = filterPreviousWords(getRemainingPrefilter("harrington-nouns"));
 	# saveRawWords(harringtonRaw, dataset_name="harrington-nouns", incr=4000, offset=0)
+
+	outputAlphabetizedFiltered()
 
 if __name__=="__main__":
 	main()

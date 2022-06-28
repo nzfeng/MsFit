@@ -1309,7 +1309,6 @@ cornflakes
 cornmeal
 corporal
 corporation
-corporatism
 corps
 corral
 correspondence
@@ -1333,7 +1332,6 @@ counselor
 count
 counter
 counterpart
-counterterrorism
 countess
 country
 countryside
@@ -1374,7 +1372,6 @@ crayon
 crazy
 cream
 creation
-creationism
 creationist
 creative
 creativity
@@ -3513,7 +3510,6 @@ mineral
 mini
 mini-skirt
 minibus
-minimalism
 minimum
 mining
 minion
@@ -4470,8 +4466,6 @@ raccoon
 race
 racer
 racing
-racism
-racist
 rack
 radar
 radiator
@@ -4582,7 +4576,6 @@ refuse
 regard
 regime
 region
-regionalism
 register
 registration
 registry

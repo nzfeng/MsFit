@@ -93,10 +93,11 @@ def printPairsInRegexForm(pairs):
 		print("{\"%s\", \"%s\"}," %(key, regex_pattern))
 
 
-def main():
-	# allWords = getAllWords();
-	# print("Total number of words: %d" %len(allWords))
-
+def computeLetterPairPatterns():
+	'''
+	Determine and print all two-letter patterns that occur at beginning/ends of words 
+	in the current filtered wordlist.
+	'''
 	allWords = getFilteredWords()
 	print('{:<} {:>12}'.format("Number of filtered words:", len(allWords)))
 	unusedBeginningPairs = unusedLetterPairs(allWords, "beginning")
@@ -106,6 +107,36 @@ def main():
 
 	printPairsInRegexForm(unusedBeginningPairs)
 	printPairsInRegexForm(unusedEndPairs)
+
+
+def computePercentageWordnetKept():
+	'''
+	Compute the proportion of WordNet lemmas that I deemed usable.
+	'''
+	wordnet = getWordNetWords()
+	wordnetSize = len(wordnet)
+
+	# Get all filtered Wordnet words.
+	files = glob.glob('./filtered_data/wordnet/*.txt', recursive = True)
+	allWords = []
+	for file in files:
+	    f = open(file, 'r')
+	    lines = f.read().splitlines() 
+	    f.close()
+	    allWords += lines
+	allWords = removeDuplicates(allWords)
+	allWords = [word for word in allWords if len(word) >= 3]
+	filteredSize = len(allWords)
+
+	print("[Filtered]/[WordNet lemmas]: %d/%d" %(filteredSize, wordnetSize))
+	print("Percentage kept: %f" %(filteredSize/wordnetSize))
+
+
+def main():
+	# allWords = getAllWords();
+	# print("Total number of words: %d" %len(allWords))
+	computePercentageWordnetKept()
+	
 
 if __name__=="__main__":
 	main()
