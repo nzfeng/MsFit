@@ -12,13 +12,22 @@ RightMenuContainer::RightMenuContainer() : fillOptionsList("Options", interface:
 
     set_margin(interface::params::margin);
     set_expand();
+}
 
+RightMenuContainer::~RightMenuContainer() {}
+
+/*
+ * Have a separate function outside of the constructor, because some of the signal handlers depend on member variables
+ * that have yet to be defined (PuzzleGrid, etc.)
+ */
+void RightMenuContainer::setup(PuzzleGrid& puzzleGrid_, FillManager& fillManager_) {
+
+    puzzleGrid = &puzzleGrid_;
+    fillManager = &fillManager_;
     setUpMenuPage();
     setUpCluesPage();
     setUpSummaryPage(); // TODO: Set up signal handler; when tab is clicked, update stats.
 }
-
-RightMenuContainer::~RightMenuContainer() {}
 
 void RightMenuContainer::setUpMenuPage() {
 
@@ -130,8 +139,8 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
         // gridDimSpin[i].set_climb_rate(); // accleration rate when button is held down
         gridDimSpin[i].set_snap_to_ticks(true);
         gridDimSpin[i].set_size_request(interface::params::minButtonWidth, interface::params::minButtonHeight);
-        // gridDimSpin[i].signal_value_changed().connect(
-        //     sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_sizeSpinner_clicked), i));
+        gridDimSpin[i].signal_value_changed().connect(
+            sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_sizeSpinner_clicked), i));
         gridSizeBox.attach(gridDimSpin[i], i, 1);
     }
     gridDimSpin[0].set_value(grid::params::initRows);
@@ -146,8 +155,8 @@ Gtk::Grid RightMenuContainer::setUpGridDimensionSettings() {
         int col = i - row * nCols;
         gridSizePresetButtons[i].set_label(gridSizePresetLabels[i]);
         gridSizePresetButtons[i].set_can_focus(false);
-        // gridSizePresetButtons[i].signal_toggled().connect(
-        //     sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_size_button_clicked), i));
+        gridSizePresetButtons[i].signal_toggled().connect(
+            sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_size_button_clicked), i));
         gridSizeBox.attach(gridSizePresetButtons[i], col, row + 2);
         if (i > 0) gridSizePresetButtons[i].set_group(gridSizePresetButtons[0]);
         if (grid::params::initRows == presetSizes[i] && grid::params::initCols == presetSizes[i]) {
@@ -192,7 +201,7 @@ Gtk::Grid RightMenuContainer::setUpToolbar() {
     clearGridButton.set_can_focus(false);
     Gtk::Image clearIcon("../../data/icons/trash-icon.png");
     clearGridButton.set_child(clearIcon);
-    // clearGridButton.signal_clicked().connect(sigc::mem_fun(*this, &RightMenuContainer::on_clearGrid_button_clicked));
+    clearGridButton.signal_clicked().connect(sigc::mem_fun(*this, &RightMenuContainer::on_clearGrid_button_clicked));
     toolbar.attach(clearGridButton, 1, 0);
     return toolbar;
 }
@@ -230,8 +239,8 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
     for (int i = 0; i < nOptions; i++) {
         fillButtons[i].setText(fillButtonLabels[i]);
         fillButtons[i].set_can_focus(false);
-        // fillButtons[i].signal_clicked().connect(
-        //     sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_fill_clicked), fillButtonLabels[i]));
+        fillButtons[i].signal_clicked().connect(
+            sigc::bind(sigc::mem_fun(*this, &RightMenuContainer::on_fill_clicked), fillButtonLabels[i]));
     }
 
     // Attach "Fill word"
@@ -310,48 +319,52 @@ void RightMenuContainer::setUpSummaryPage() {
 
 // =================================== SIGNAL HANDLERS ===================================
 
-// void RightMenuContainer::on_size_button_clicked(int buttonIndex) {
+void RightMenuContainer::on_size_button_clicked(int buttonIndex) {
 
-//     size_t nRows = presetSizes[buttonIndex];
-//     size_t nCols = nRows;
-//     // Update values in the spin buttons to reflect the change
-//     gridDimSpin[0].set_value(nRows);
-//     gridDimSpin[1].set_value(nCols);
+    size_t nRows = presetSizes[buttonIndex];
+    size_t nCols = nRows;
+    // Update values in the spin buttons to reflect the change
+    gridDimSpin[0].set_value(nRows);
+    gridDimSpin[1].set_value(nCols);
 
-//     puzzleGrid->setSize(nRows, nCols);
-// }
+    puzzleGrid->setSize(nRows, nCols);
+}
 
-// void RightMenuContainer::on_sizeSpinner_clicked(int buttonIndex) {
-//     // Assume there are only 2 dimensions.
-//     if (buttonIndex == 0) {
-//         puzzleGrid->setRows(gridDimSpin[buttonIndex].get_value_as_int());
-//         return;
-//     }
-//     puzzleGrid->setCols(gridDimSpin[buttonIndex].get_value_as_int());
-// }
+void RightMenuContainer::on_sizeSpinner_clicked(int buttonIndex) {
+    // Assume there are only 2 dimensions.
+    if (buttonIndex == 0) {
+        puzzleGrid->setRows(gridDimSpin[buttonIndex].get_value_as_int());
+        return;
+    }
+    puzzleGrid->setCols(gridDimSpin[buttonIndex].get_value_as_int());
+}
 
-// void RightMenuContainer::on_fill_clicked(const std::string& button) {
 
-//     if (button == "Fill word") {
-//         std::vector<std::string> fills = fillManager->getWordFills(
-//             puzzleGrid->getSelectedWord(), ignorePenciled.get_active(), getFillWordConstraint(), -1);
-//         // Assumption is that getWordFills() always sets an appropriate message.
-//         // bottomMenuContainer.addMessageToList(interface::lastDialogMessage);
+void RightMenuContainer::generate_word_fills() {
+    std::vector<std::string> fills = fillManager->getWordFills(
+        puzzleGrid->getSelectedWord(), ignorePenciled.get_active(), getFillWordConstraint(), true, -1);
 
-//         fillOptionsList.clear();
-//         // instead of forcing the TreeView to continually add/delete options
-//         if (fills.size() > interface::params::maxFillOptions) fills.resize(interface::params::maxFillOptions);
-//         for (auto fill : fills) {
-//             fillOptionsList.addMessageToList(fill);
-//         }
-//     } else if (button == "Fill grid") {
-//         // TODO
-//     }
-// }
+    // Populate the little scroll window with fills
+    fillOptionsList.clear();
+    // instead of forcing the TreeView to continually add/delete options
+    if (fills.size() > interface::params::maxFillOptions) fills.resize(interface::params::maxFillOptions);
+    for (auto fill : fills) {
+        fillOptionsList.addMessageToList(fill);
+    }
+}
 
-// void RightMenuContainer::on_clearGrid_button_clicked() {
-//     puzzleGrid->clear(); // TODO: Set message "Puzzle cleared"?
-// }
+void RightMenuContainer::on_fill_clicked(const std::string& button) {
+
+    if (button == "Fill word") {
+        generate_word_fills();
+    } else if (button == "Fill grid") {
+        // TODO
+    }
+}
+
+void RightMenuContainer::on_clearGrid_button_clicked() {
+    puzzleGrid->clear(); // TODO: Set message "Puzzle cleared"?
+}
 
 void RightMenuContainer::on_makeSymmetric_button_toggled() const {
     state::makeSymmetric = makeSymmetricButton.get_active();

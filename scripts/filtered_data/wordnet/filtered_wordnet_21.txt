@@ -2,7 +2,7 @@ brown_rice
 human_right
 male_child
 chicken_coop
-religious_doctrine
+religious
 South_Pole
 drawn-out
 floral
@@ -71,16 +71,13 @@ speckle
 endemic
 civics
 sick_leave
-for_the_time_being
-bethel
-wasps'_nest
 linebacker
 counterculture
 peony
 socialize
 doorway
 console
-fallout_shelter
+fallout
 night_school
 vogue
 mathematician

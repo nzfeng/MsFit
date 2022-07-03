@@ -116,7 +116,6 @@ airport
 airship
 airspace
 alarm
-alb
 albatross
 album
 alcohol
@@ -4864,7 +4863,6 @@ screw
 screw-up
 screwdriver
 scrim
-scrip
 script
 scripture
 scrutiny
@@ -6209,7 +6207,6 @@ yam
 yang
 yard
 yarn
-yawl
 year
 yeast
 yellow

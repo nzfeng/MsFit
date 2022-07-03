@@ -685,6 +685,10 @@ bool PuzzleGrid::on_key_press(guint keyval, guint keycode, Gdk::ModifierType sta
                 // Toggle pencil
                 // TODO: need to toggle button
                 state::pencilSelected = !state::pencilSelected;
+                break;
+            case (GDK_KEY_F):
+                // TODO: Generate fills
+                break;
         }
         return true;
     }

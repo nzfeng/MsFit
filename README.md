@@ -126,6 +126,8 @@ Ideas for fill tools:
 * Automatically show "illegal" grids, i.e. 2-letter words, cells shared by only one word, etc. (can toggle this option)
 * Automatically detect duplicate entries. Also have option to display repeated substrings.
 * Keyboard shortcuts for everything.
+* Options to sort fill list: Alphabetical, search bar, order by average # of fills for all crossing words.
+* For "get most constrained" option: implement k-ply lookahead; i.e. pick the entry that has the fewest fill options (that allow at least 1 fill for all crossing words) after removing fills that result in 0 fills if chosen. I.e. attempting to prune dead-end sub-trees. k should balance accuracy vs. computation time per evaluation.
 
 # Puzzle ideas
 * Include hexagonal cells as 3-way intersections

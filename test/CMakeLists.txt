@@ -36,8 +36,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STR
   endif()
   
   SET(CMAKE_CXX_FLAGS "${BASE_CXX_FLAGS} ${DISABLED_WARNINGS}")
-  #SET(CMAKE_CXX_FLAGS_RELEASE        "-O3 -march=native -DNDEBUG")
-  #SET(CMAKE_CXX_FLAGS_RELEASE        "-O3 -mcpu=apple-m1 -DNDEBUG") # Apple M1
 
   # https://gitlab.kitware.com/cmake/cmake/-/issues/22484
   include(CheckCXXCompilerFlag)

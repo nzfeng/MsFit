@@ -102,7 +102,6 @@ yak
 orchard
 firepower
 mimetic
-senna
 budget_cut
 budget_cuts
 lefty

@@ -63,12 +63,12 @@ def main():
 
 	# TODO: Need to get Broda words 3-4 letters
 
-	# saveFilteredWords()
+	saveFilteredWords()
 
 	# harringtonRaw = filterPreviousWords(getRemainingPrefilter("harrington-nouns"));
 	# saveRawWords(harringtonRaw, dataset_name="harrington-nouns", incr=4000, offset=0)
 
-	outputAlphabetizedFiltered()
+	# outputAlphabetizedFiltered()
 
 if __name__=="__main__":
 	main()

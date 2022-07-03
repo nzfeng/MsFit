@@ -51,6 +51,9 @@ SET(HEADERS
   ${INCLUDE_ROOT}/engine/word_utils.h
 )
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(gtkmm REQUIRED IMPORTED_TARGET gtkmm-4.0)
+#pkg_check_modules(glibmm REQUIRED IMPORTED_TARGET glibmm>=2.4)
 
 # Create a single library for the project
 add_library(msfit ${SRCS} ${HEADERS})

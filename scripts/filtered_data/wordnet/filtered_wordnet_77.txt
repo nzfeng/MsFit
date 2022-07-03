@@ -24,7 +24,6 @@ spinning
 urban_legend
 macadamia
 humanize
-blotto
 plasma
 petticoat
 simulcast

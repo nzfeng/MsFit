@@ -5,7 +5,6 @@ abalone
 abandon
 abandoned
 abandoned_ship
-abandonment
 abase
 abashed
 abate
@@ -34,6 +33,7 @@ abide
 abiding
 abilities
 Ability
+abject
 ablate
 ablaze
 ABLE
@@ -71,6 +71,9 @@ abrogation
 abrogator
 abrupt
 abruptly
+abs
+abscence
+abscent
 abscess
 abscond
 Absence
@@ -86,11 +89,13 @@ ABSOLUTEMINIMUM
 ABSOLUTEPOWERCORRUPTSABSOLUTELY
 absolute_zero
 absolve
+absolved
 absorb
 absorbed
 absorbency
 absorbent
 absorbing
+absorbs
 absorption
 abstain
 abstainer
@@ -128,7 +133,11 @@ ACADEMYAWARDWINNINGDIRECTORS
 ACADEMYAWARDWINNINGDOCUMENTARY
 ACADEMYAWARDWINNINGPRODUCERS
 ACAI
+a_capella
 a_cappella
+accede
+acceded
+accedes
 accelerate
 accelerated
 acceleration
@@ -139,17 +148,24 @@ accent
 accented
 accenting
 accentuate
+accentuates
 accentuation
 accept
 acceptable
 acceptance
 accepted
 accepting
+accepts
 access
+accessaries
+accessary
 access_code
+accessed
 accesses
 accessibility
 accessible
+accessorize
+accessorizes
 accessory
 access_road
 Accident
@@ -157,8 +173,11 @@ accidental
 accident-prone
 acclaim
 acclimate
+acclimated
+acclimates
 acclimation
 accolade
+accolades
 accommodate
 accommodating
 accommodation
@@ -168,6 +187,7 @@ accompanist
 accompany
 accompanying
 accomplice
+accomplices
 accomplish
 accomplished
 accomplishment
@@ -178,13 +198,14 @@ accordingly
 accordion
 accordionist
 accost
+accosts
 Account
 accountability
 accountable
 accountant
 account_for
 accounting
-accounting_firm
+accouterment
 accredit
 accreditation
 accredited
@@ -290,7 +311,6 @@ act natural
 act normal
 act_on
 actor
-actor's_line
 act_out
 actress
 ACTS
@@ -304,7 +324,6 @@ actuary
 actuate
 actuator
 act_up
-act_upon
 acuity
 acumen
 acupuncture
@@ -322,6 +341,8 @@ adaptation
 adapted
 adapter
 adaptive
+adaptor
+ad_blocker
 ad_campaign
 Add
 addend
@@ -368,6 +389,8 @@ adjusted
 adjuster
 adjustment
 ad_lib
+ad_libbed
+ad_libs
 admin
 administer
 administration
@@ -412,6 +435,7 @@ adorn
 adorned
 adornment
 adrenaline
+adrenaline_rush
 adrift
 adroit
 adroitly
@@ -436,6 +460,7 @@ adventure
 adventurer
 adventurous
 adverb
+adversarial
 adversary
 Adverse
 adversity
@@ -497,11 +522,14 @@ afflicted
 Affliction
 affluence
 affluent
+affluenza
 afford
 affordable
 affront
+affrpmt
 Afghan
 aficionado
+afield
 afloat
 afoot
 aforementioned
@@ -516,13 +544,16 @@ afterimage
 afterlife
 aftermath
 afternoon
+after-party
 after-school
-after-shave
+aftershave
 aftershock
 aftertaste
+after-tax
 afterthought
 afterwards
 afterworld
+after_you
 again
 Against
 against_time
@@ -530,7 +561,9 @@ agar
 agate
 agave
 age
+age-appropriate
 AGED
+age_gap
 age_group
 ageless
 age_limit
@@ -582,6 +615,7 @@ agreement
 agricultural
 agriculture
 aground
+aha_moment
 ahead
 AHEM
 AHHS
@@ -601,6 +635,7 @@ aioli
 Air
 air_bag
 air_bags
+airball
 airborne
 airbrush
 airbrushed
@@ -619,9 +654,12 @@ air-filled
 air_flow
 airfoil
 air_force
+air_freshener
 air_fryer
 air_fryers
-air_horn
+air_guitar
+air_hockey
+airhorn
 airing
 airlift
 Airline
@@ -636,12 +674,14 @@ air_pollution
 Airport
 airport_terminal
 air_pump
+air_quality
 air-raid_shelter
 AIRS
 air-ship
 airspace
 airspeed
-air-tight
+airtight
+airtime
 air_traffic
 air_transportation
 air_travel
@@ -649,6 +689,7 @@ airwave
 airwaves
 airy
 aisle
+aisles
 ajar
 AKIMBO
 alabaster
@@ -706,10 +747,11 @@ alive
 alkaline
 All
 all_along
+all-American
 all-around
 all_at_once
 allay
-all_clear
+all-clear
 all_day_long
 allegation
 allege
@@ -723,6 +765,7 @@ allele
 allergen
 allergic
 allergic_reaction
+allergies
 allergy
 alleviate
 alleviated
@@ -747,6 +790,8 @@ alliteration
 alliterative
 alliterator
 all-knowing
+all-nighter
+all-nighters
 allocate
 allocation
 all-or-nothing
@@ -764,6 +809,7 @@ all-powerful
 all-purpose
 all_right
 allspice
+all_that
 all_the_same
 all_the_time
 all_the_way
@@ -785,7 +831,6 @@ ALMS
 ALOE
 ALOFT
 aloha
-Aloha_State
 ALONE
 ALONG
 alongside
@@ -1001,13 +1046,15 @@ angel_food_cake
 angel hair
 angelic
 angel investor
+angel_wings
 Anger
 angered
+angers
 angle
 angled
 angle_of_attack
 angler
-angler_fish
+angles
 anglicize
 angling
 angora
@@ -1019,6 +1066,8 @@ anguish
 anguished
 angular
 animal
+animal_cracker
+animal_crackers
 animalistic
 animal_kingdom
 animal_products
@@ -1035,6 +1084,8 @@ ankle
 ankle_brace
 ankle_joint
 anklet
+anneal
+anneals
 annex
 annexation
 Annie_Oakley
@@ -1072,7 +1123,6 @@ anonymously
 ANONYMOUSPOSTING
 anorak
 anorexia
-anorexic
 Another
 answer
 answerer
@@ -1123,13 +1173,11 @@ antihero
 antihistamine
 ANTIINFLAMMATORY
 antiknock
-antimalarial
 antimatter
 antimicrobial
 antioxidant
 antiparallel
 antipathy
-antipsychotic_drug
 antiquated
 antique
 antiquity
@@ -1214,6 +1262,7 @@ appendage
 appendix
 appetite
 appetizer
+appetizers
 appetizing
 applaud
 applaudable
@@ -1221,10 +1270,11 @@ applauder
 applause
 Apple
 apple_butter
+apple_core
 apple_fritter
 apple_juice
 apple_pie
-apple_sauce
+applesauce
 apple_tart
 apple_tree
 apple_turnover
@@ -1281,6 +1331,7 @@ apron
 apropos
 apt
 aptitude
+aptronym
 AQUA
 aquafarm
 aquafarming
@@ -1306,6 +1357,7 @@ arboretum
 arborist
 arc
 arcade
+arcana
 arcane
 arch
 archaeologist
@@ -1314,6 +1366,7 @@ arched
 archeological_site
 archeology
 archer
+archers
 Archery
 archetype
 arching
@@ -1322,14 +1375,14 @@ architect
 architecture
 archival
 archive
+archived
 archives
 archivist
-arch-rival
+archrival
 arch_support
 Archtype
 archway
 ARCS
-arcsine
 Arctic
 Arctic_Circle
 ardent
@@ -1383,6 +1436,7 @@ armored vehicle
 armory
 armpit
 armrest
+armrests
 ARMS
 arms deal
 arms dealer
@@ -1395,6 +1449,8 @@ arms race
 arms races
 arm swing
 arm-twisting
+arm-wrestle
+arm-wrestles
 Army
 army_base
 army boots
@@ -1488,7 +1544,6 @@ ascot
 ascribe
 asexuality
 asexual_reproduction
-as_far_as_possible
 ash
 ashamed
 ashen
@@ -1673,6 +1728,7 @@ atone
 atonement
 at_peace
 at_random
+at-risk
 atrium
 atrocious
 atrocity
@@ -1731,6 +1787,7 @@ attrition
 at_will
 atypical
 aubergine
+auburn
 Auction
 auction_block
 Auctioneer
@@ -1741,6 +1798,8 @@ audible
 audibly
 Audience
 audio
+audio_book
+audio_books
 audio guide
 audiophile
 audio_recording
@@ -1749,15 +1808,20 @@ audiovisual
 audiovisual_aid
 audit
 audition
+auditioned
+auditions
 auditor
 auditorium
 auditory
+audits
+aughts
 augment
 augmentation
 augmented
 augmented reality
 augur
 aunt
+Aunt_Flo
 auntie
 au_pair
 aura
@@ -1792,6 +1856,8 @@ autobiographer
 autobiographical
 AUTOBIOGRAPHIES
 autobiography
+autocomplete
+autocorrect
 Autograph
 autographed
 autoimmune
@@ -1820,6 +1886,7 @@ autotuned
 autotunes
 autum equinox
 AUTUMN
+aux
 auxiliary
 AVAIL
 availability
@@ -1896,19 +1963,24 @@ babbler
 babbling
 BABE
 Babe_Ruth
+babied
 BABIES
 baboon
 Baby
 baby_boom
 baby_boomer
+baby_bump
 baby-faced
+baby_grand
 BABYGRANDPIANOS
 baby_oil
 baby_powder
+babysat
 baby_shoe
-baby-sit
+babysit
 babysitter
 baby_sitting
+baby_steps
 babytalk
 baby_tooth
 baccalaureate
@@ -1940,6 +2012,7 @@ back_end
 backer
 backfire
 backfired
+backfires
 backfiring
 backflip
 backgammon
@@ -1958,6 +2031,7 @@ backlog
 back_off
 back_out
 back_pack
+backpacked
 backpacker
 backpacking
 backpedal
@@ -2065,7 +2139,6 @@ BALK
 balking
 Ball
 ballad
-ball_and_chain
 ballast
 ball_carrier
 ballerina
@@ -2127,6 +2200,7 @@ BANG
 banger
 banging
 bangle
+bangles
 BANGS
 BANHMI
 banister
@@ -2418,6 +2492,7 @@ beaming
 beam_of_light
 BEAN
 beanbag
+beanbags
 bean_counter
 beancurd
 bean_dip
@@ -2431,7 +2506,6 @@ bear_claw
 beard
 bearded
 beardown
-bear_down_upon
 bearer
 bear_hug
 Bearing
@@ -2442,6 +2516,10 @@ beast
 beastie
 BEAT
 beat_around_the_bush
+beatbox
+beatboxed
+beatboxer
+beatboxes
 beaten
 beaten up
 beater
@@ -2464,6 +2542,7 @@ bebop
 Because
 BECK
 beckon
+beckons
 become
 becoming
 Bed
@@ -2475,6 +2554,7 @@ bedcover
 bedding
 bedeck
 bedfellow
+bedhead
 Bedlam
 bed_linen
 bed_of_roses
@@ -2554,7 +2634,6 @@ behave
 Behavior
 behavioral
 behaviorist
-behavior_therapy
 behaviour
 behaviours
 beheading
@@ -2735,6 +2814,9 @@ Beyond
 bialy
 biannual
 bias
+biased
+biathlete
+biathlon
 Bib
 bibbed
 bible
@@ -2748,6 +2830,7 @@ Bicep
 biceps
 bicker
 bickering
+bickers
 bicycle
 bicycle_pump
 bicycler
@@ -2760,6 +2843,7 @@ bicyclist
 Bid
 bidder
 bidding
+bidding_war
 bide
 BIDET
 bidirectional
@@ -2779,6 +2863,7 @@ big_brother
 big_bucks
 big_cat
 big_cheese
+big_data
 big_deal
 big_dipper
 big_fish
@@ -2786,15 +2871,18 @@ Bigfoot
 big_game
 bigger
 big_league
+big_rig
 big_screen
 bigshot
 big_sister
 Big_Sur
 big tech
+big-ticket
 big_time
 big_toe
 bigwig
 bike
+biker
 bike_rack
 bikers
 Bikini
@@ -2824,13 +2912,14 @@ bimodal
 bimonthly
 Bin
 binary
-binary_code
 BIND
 binder
 Binding
 bing_cherry
 binge
+binged
 binger
+binges
 binge-watch
 binge-watched
 binge-watcher
@@ -2849,11 +2938,11 @@ biography
 biohazard
 biological_warfare
 biology
-biology_lab
 bioluminescence
 biome
 biometrics
 bionic
+biopic
 biopsy
 BIOS
 biosphere
@@ -2978,9 +3067,11 @@ BLAH
 blame
 blamed
 blame_game
+blames
 blanch
 blanched
 BLANCHEDALMONDS
+blanches
 BLAND
 blank
 blank canvas
@@ -2995,6 +3086,7 @@ blasphemous
 Blasphemy
 blast
 blasted
+blaster
 blast from the past
 blast_furnace
 blasting
@@ -3003,7 +3095,9 @@ BLASTS
 blatant
 blather
 blaze
+blazed
 blazer
+blazes
 blazing
 bleach
 bleached
@@ -3013,12 +3107,15 @@ bleak
 bleary
 bleary-eyed
 bleat
+bleats
 BLED
 bleed
 bleeding
 bleeding_heart
 BLEEDS
 bleep
+bleeped
+bleeps
 blemish
 blemished
 blend
@@ -3026,6 +3123,7 @@ blended
 blender
 blend_in
 blending
+blends
 bless
 blessed
 blessing
@@ -3043,13 +3141,14 @@ blindfold
 blindfolded
 blindly
 blindness
-blind_side
+blindside
+blindsided
 blind_spot
 blind_trust
 bling
-blini
 blink
 blinker
+blinkers
 blinking
 blinks
 blintz
@@ -3061,10 +3160,14 @@ blistering
 blithe
 blithesome
 blitz
+blitzed
 blizzard
 bloat
+bloated
+bloats
 bloatware
 BLOB
+blobfish
 bloc
 Block
 blockade
@@ -3088,6 +3191,8 @@ blogs
 Bloke
 blond
 blonde
+blondie
+blondies
 Blood
 blood_bank
 bloodbath
@@ -3095,7 +3200,6 @@ blood_cell
 blood_clot
 bloodcurdling
 blood_donor
-blood-filled
 bloodflow
 bloodhound
 bloodletting
@@ -3198,6 +3302,7 @@ boa_constrictor
 boar
 Board
 board_game
+board_games
 boarding
 boarding_pass
 boarding_school
@@ -3207,6 +3312,7 @@ board_of_education
 board_of_trustees
 boardroom
 boards
+board_shorts
 board sport
 board_up
 boardwalk
@@ -3222,6 +3328,8 @@ bob
 BOBA
 BOBBED
 bobble
+bobbled
+bobbles
 bobby
 bobby_pin
 bobby_pins
@@ -3250,7 +3358,8 @@ body-build
 bodybuilder
 bodybuilding
 body_count
-body_guard
+bodyguard
+bodyguards
 body_hair
 body_language
 body_lotion
@@ -3267,6 +3376,7 @@ body_suit
 body-surf
 body temperature
 body_type
+body_wash
 body_weight
 BOFF
 Bog
@@ -3290,15 +3400,16 @@ boiling_point
 boil_over
 boisterous
 bok_choy
+bokeh
 BOLD
 boldface
 Bollywood
 bologna
 bolster
+bolsters
 BOLT
 bolt_down
 BOLTSOFLIGHTNING
-Boltzmann
 BOMB
 bombard
 bombardment
@@ -3312,9 +3423,11 @@ bonanza
 bonbon
 bond
 bond_certificate
+bonded
 bondholder
 bonding
 BONDINGEXERCISE
+bonds
 bone
 bone-dry
 boneheaded
@@ -3549,12 +3662,16 @@ bracelet
 braces
 bracing
 bracket
+bracket-buster
+bracketed
+brackets
 brackish
 BRAG
 braggadocio
 braggart
 bragger
 bragging
+bragging_rights
 braid
 braided
 braiding
@@ -3563,11 +3680,13 @@ braille
 Brain
 brainchild
 brain_drain
+brain_freeze
 brainiac
 brainpower
 brain_stem
 brainstorm
 brainstorming
+brainstorms
 brain_surgeon
 brain_surgery
 brain-teaser
@@ -3581,8 +3700,10 @@ brain_waves
 brainy
 braise
 braised
+braises
 braising
 brake
+braked
 brake_light
 brake pad
 brake pads
@@ -3601,9 +3722,10 @@ BRAND
 branded
 branding
 brandish
-brand_name
+brand-name
 brand-name_drug
-brand-new
+brand_new
+brands
 brandy
 bran_flake
 bran_flakes
@@ -3619,11 +3741,17 @@ bratty
 bratwurst
 bravado
 brave
+braved
 bravery
+braves
 bravo
 bravura
 brawl
+brawled
+brawls
 BRAWN
+brawns
+brawny
 BRAY
 brazen
 brazil_nut
@@ -3636,11 +3764,15 @@ breadbasket
 breadcrumb
 breadcrumbs
 bread_dough
+breaded
 bread flour
 breadfruit
+breading
 bread_knife
 bread machine
+breads
 breadstick
+breadsticks
 breadth
 breadwinner
 Break
@@ -3699,6 +3831,7 @@ breathlessly
 breath mint
 breath_of_fresh_air
 breathtaking
+breathy
 BRED
 breech
 breeches
@@ -3867,8 +4000,9 @@ brutally
 brutish
 bubble
 bubble_bath
-bubble_gum
+bubblegum
 bubble_up
+bubble_wrap
 bubbling
 bubbly
 bubonic
@@ -3878,11 +4012,14 @@ BUCK
 buckaroo
 bucket
 bucketful
+bucket_list
+buckets
 bucket_shop
 buckeye
 Buckeye_State
 Buckingham_Palace
 buckle
+buckled
 buckle_down
 BUCKS
 buckskin
@@ -3935,13 +4072,14 @@ bulge
 bulging
 bulgogi
 bulgur
-bulima_nervosa
 BULK
 bulky
 BULL
 bulldog
 bulldoze
+bulldozed
 bulldozer
+bulldozes
 bullet
 bullet_hole
 bulletin
@@ -3962,11 +4100,11 @@ Bully
 bullying
 bulwark
 Bum
-bum_around
 bumble
 bumblebee
 bumbling
 bummer
+bum_out
 bump
 bumper
 bumper_car
@@ -3980,7 +4118,9 @@ bunch
 bunchgrass
 bunch_up
 bundle
+bundled
 bundled-up
+bundles
 bundle_up
 bundling
 bungalow
@@ -3989,6 +4129,7 @@ bungee_cord
 bunghole
 bungle
 bungled
+bungles
 bungling
 bun_in_the_oven
 bunion
@@ -4008,6 +4149,7 @@ buoyant
 BURBS
 Burden
 burden_of_proof
+burdens
 Bureau
 bureaucracy
 bureaucrat
@@ -4258,7 +4400,6 @@ call_center
 called in sick
 caller
 caller_ID
-calligraph
 calligrapher
 calligraphy
 Calling
@@ -4336,7 +4477,6 @@ CANADIANROCKIES
 canal
 canard
 CANARY
-canary_bird
 can_buoy
 cancan
 cancel
@@ -4584,7 +4724,6 @@ carry_weight
 car_seat
 carsick
 cart
-carte_blanche
 cartel
 carter
 cartilage
@@ -4689,7 +4828,6 @@ catch_up
 catchy
 catch you later
 categorical
-categorically
 categorize
 categorized
 Category
@@ -4840,7 +4978,6 @@ cereal_bowl
 cereal_box
 cerebellum
 cerebral
-cerebral_palsy
 ceremonial
 CEREMONIALSWORD
 Ceremony
@@ -5068,7 +5205,6 @@ Chemistry
 chemistry_lab
 cherish
 cherished
-Chernobyl
 cherry
 cherry_tomato
 cherub
@@ -5223,7 +5359,6 @@ chocolate milk
 chocolate mousse
 chocolate_pudding
 chocolates
-chocolate_sauce
 CHOCOLATESUNDAE
 chocolate_syrup
 chocolate_truffle
@@ -5324,7 +5459,6 @@ cigarette
 cigarette_butt
 cigarette_lighter
 cigarette_smoker
-cigar-shaped
 cilantro
 cinch
 cinder
@@ -5659,7 +5793,6 @@ cloverleaf
 cloves
 clowder
 clown
-clown_around
 cloy
 cloying
 Club
@@ -5695,7 +5828,6 @@ CMYK
 CO2
 Coach
 coaching
-coaching_job
 coagulant
 coagulate
 coagulated
@@ -6100,7 +6232,6 @@ communism
 communities
 community
 community_center
-community_chest
 COMMUNITYGARDENS
 community_service
 commute
@@ -6162,7 +6293,6 @@ complainer
 complaining
 Complaint
 complement
-complementary_angles
 complementary_color
 Complete
 completed
@@ -6189,6 +6319,7 @@ composing
 composite
 composition
 compost
+compostable
 compost bin
 compost_pile
 composure
@@ -6365,7 +6496,6 @@ conformation
 conforming
 Conformist
 conformity
-conform_to
 confound
 confounding
 Confront
@@ -6582,7 +6712,6 @@ contour
 contraband
 contraception
 contraceptive
-contraceptive_device
 contraceptive_pill
 Contract
 contracted
@@ -6644,7 +6773,6 @@ conversational
 conversation_piece
 converse
 conversion
-conversion_factor
 conversion therapy
 Convert
 converted
@@ -7751,7 +7879,6 @@ deathbed
 deathly
 death_penalty
 death_rate
-death_row
 death_toll
 Death_Valley
 deathwatch
@@ -7792,7 +7919,6 @@ decathlon
 decay
 decayed
 Deceased
-deceased_person
 deceit
 deceitful
 deceive
@@ -7834,17 +7960,14 @@ declared
 declassified
 declassify
 declaw
-declension
 Decline
 declutter
 decluttered
 declutters
-decoagulant
 decode
 decoder
 decoding
 decommission
-decomposable
 decompose
 decomposition
 decompress
@@ -8098,7 +8221,6 @@ demur
 demure
 demurely
 demurral
-demyelination
 demystify
 Den
 denature
@@ -8134,7 +8256,6 @@ depart
 departed
 departer
 department
-department_of_physics
 department_store
 departure
 departure_gate
@@ -8226,7 +8347,6 @@ Desert
 deserted
 deserter
 desertion
-desert_rose
 deserts
 deserve
 deserved
@@ -8321,7 +8441,6 @@ detestable
 detested
 dethrone
 detonate
-detonating_fuse
 detonation
 detonator
 detour
@@ -8663,7 +8782,6 @@ disco
 discography
 discolor
 discoloration
-discolour
 discombobulate
 discombobulated
 discomfit
@@ -8752,7 +8870,6 @@ disillusionment
 disinfect
 disinfectant
 disinformation
-disinheritance
 disintegrate
 disintegration
 disinterest
@@ -9560,7 +9677,6 @@ dust_bowl
 dust_cloud
 dust_devil
 duster
-dustlike
 dustpan
 dust_storm
 dusty
@@ -9856,7 +9972,6 @@ electric_shaver
 electric_shock
 electrify
 electrifying
-electrocardiogram
 electrocute
 electrode
 electrolysis
@@ -10238,7 +10353,6 @@ Entrance
 entranced
 entrance_exam
 entrance_fee
-entranceway
 entrant
 entreaty
 entree
@@ -10461,7 +10575,6 @@ evasive
 evasively
 Eve
 EVEN
-evenhanded
 Evening
 evening_gown
 evening_shift
@@ -10473,9 +10586,7 @@ eventful
 event_planner
 Eventual
 eventually
-even_up
 EVER
-ever-changing
 Everest
 Everglades
 evergreen
@@ -10765,7 +10876,6 @@ extrapolation
 extrasensory
 extrasensory_perception
 extraterrestrial
-extraterrestrial_object
 extra_time
 extravagance
 extravagant
@@ -11143,7 +11253,6 @@ fattening
 fatty
 fatty_acid
 fatty_oil
-fatty_tissue
 fatuous
 faucet
 Fault
@@ -11254,7 +11363,6 @@ fenugreek
 feral
 ferment
 fermentable
-fermentation
 fermented
 fermenting
 ferments
@@ -11548,7 +11656,6 @@ first_person
 first-rate
 first-string
 first-year
-fir_tree
 Fiscal
 fiscal_year
 Fish
@@ -12161,7 +12268,6 @@ fostering
 foster-mother
 foster_parent
 foster_sister
-Foucault_pendulum
 Fought
 FOUL
 foul_ball
@@ -12336,7 +12442,6 @@ fresh on the heels of
 FRESHPAIROFEYES
 fresh_start
 freshwater
-freshwater_fish
 fret
 fretted
 fricassee
@@ -12642,7 +12747,6 @@ game_room
 game_show
 gamete
 game_theory
-game_warden
 gamification
 gaming
 gamma_radiation
@@ -12753,14 +12857,12 @@ GAWK
 gawker
 gawky
 Gay
-Gay-Lussac
 GAZE
 gazebo
 gazelle
 gazette
 gazillion
 gazpacho
-G_clef
 GEAR
 gearbox
 geared
@@ -12886,7 +12988,6 @@ gesture
 Get
 get acquainted with
 get acquanted
-get_a_line
 get_along
 get_along_with
 get_around
@@ -13146,7 +13247,6 @@ gnu
 GOAD
 goaded
 goading
-go_after
 go-ahead
 Goal
 goal celebration
@@ -13187,7 +13287,6 @@ godchild
 goddaughter
 goddess
 godfather
-god-fearing
 godmother
 godparent
 GODS
@@ -13226,7 +13325,6 @@ golden_age
 golden_boy
 golden-brown
 GOLDENDELICIOUS
-golden_glow
 golden_goose
 golden_hour
 golden_parachute
@@ -13324,7 +13422,8 @@ GOOMBA
 GOON
 goop
 goose
-goose_bump
+goosebump
+goosebumps
 go_out
 go_over
 gopher
@@ -13461,7 +13560,6 @@ grape_vine
 graph
 graphic
 graphical
-graphically
 graphic_design
 graphic_designer
 Graphics
@@ -13638,7 +13736,6 @@ GROOVY
 grope
 groping
 GROSS
-gross_domestic_product
 grossing
 GROSSMISCONDUCT
 gross_out
@@ -14008,7 +14105,6 @@ handlebar
 handle-bars
 handled
 handler
-handle_with_kid_gloves
 Handling
 hand_lotion
 handmade
@@ -14207,7 +14303,6 @@ have_in_mind
 haven
 have-not
 HAVES
-have_words
 HAVOC
 haw
 HAWK
@@ -14268,7 +14363,6 @@ headrest
 headroom
 headscarf
 headset
-headshaking
 headshot
 head space
 Headstand
@@ -14370,7 +14464,6 @@ heavy_cream
 heavy-duty
 heavy-handed
 heavyhearted
-heavyheartedness
 heavy_hitter
 heavy_lifting
 heavy_metal
@@ -14416,7 +14509,6 @@ hell-bent
 hellfire
 hellish
 hello
-hell_on_earth
 Hell's_Kitchen
 HELM
 HELMED
@@ -14442,7 +14534,6 @@ hemispherical
 hemline
 hemlock
 hemoglobin
-hemophilia
 hemorrhage
 hemorrhoid
 HEMP
@@ -14722,7 +14813,6 @@ hockey
 hockey_game
 hockey mom
 hockey_player
-hockey_puck
 hockey_stick
 HOCUS
 hocus-pocus
@@ -14826,7 +14916,6 @@ homey
 homing
 homing_pigeon
 hominid
-homogeneity
 homogeneous
 homogenized
 homonym
@@ -14841,7 +14930,6 @@ honest-to-god
 honest-to-goodness
 honesty
 honey
-honey_badger
 honeybee
 honeycomb
 honeycombed
@@ -15393,7 +15481,6 @@ illustrator
 illustrious
 ill_will
 Image
-image_compression
 imagery
 imaginary
 imaginary_number
@@ -15570,7 +15657,6 @@ inadvisable
 in_agreement
 inalienable
 in_all_likelihood
-in_a_low_voice
 inanimate
 in_a_nutshell
 in_any_case
@@ -15737,7 +15823,6 @@ inducing
 induct
 inductee
 induction
-induction_coil
 indulge
 indulgence
 indulgent
@@ -15826,7 +15911,6 @@ Inflection
 INFLECTIONPOINT
 inflexible
 inflict
-infliction
 inflow
 influence
 influential
@@ -15957,7 +16041,6 @@ innings
 innkeeper
 innocence
 Innocent
-innocently
 innocuous
 innovate
 innovation
@@ -16122,7 +16205,6 @@ integrity
 intellect
 intellectual
 intellectually
-intellectual_nourishment
 intelligence
 intelligent
 INTELLIGENTLIFE
@@ -16241,7 +16323,6 @@ interwoven
 intestine
 in the cards
 in_the_lead
-in_the_least
 INTHEWRONGPLACE
 INTHEWRONGPLACEATTHEWRONGTIME
 intimacy
@@ -16483,7 +16564,6 @@ jade
 jaded
 jag
 jagged
-jaggedly
 jaguar
 JAIL
 jailbreak
@@ -16791,7 +16871,6 @@ keep_in
 Keeping
 keep on keeping on
 keep_out
-keep_quiet
 keepsake
 KEEPSTOTHERIGHT
 keep_to_oneself
@@ -17403,7 +17482,6 @@ leery
 leeway
 LEFT
 LEFTASANEXERCISEFORTHEREADER
-left_atrium
 left brain
 left_brained
 left_coast
@@ -17446,7 +17524,7 @@ leg hair
 legibility
 legible
 legibly
-legion
+legions
 legislate
 legislation
 legislations
@@ -17522,7 +17600,6 @@ let_on
 let_out
 LETS
 Letter
-letter_carrier
 lettered
 letterer
 letterhead
@@ -18178,7 +18255,6 @@ lucid
 Lucidity
 Lucifer
 LUCK
-luckless
 LUCKOFTHEIRISH
 luck_out
 lucky
@@ -18276,7 +18352,6 @@ MACHINEWASHING
 machismo
 Machu_Picchu
 MACRO
-macroeconomic
 MACROECONOMICS
 MACROECONOMIST
 macromolecule
@@ -18520,7 +18595,6 @@ manhandle
 Manhattan
 Manhattan_Project
 manhole_cover
-manhood
 man_hour
 man_hours
 manhunt
@@ -18609,7 +18683,6 @@ margarita
 Margin
 Marginal
 margin_of_error
-margin_of_safety
 mariachi
 Marie_Curie
 marigold
@@ -18702,13 +18775,11 @@ masking
 masking_tape
 masochistic
 MASON
-Mason_and_Dixon_line
 Mason_jar
 masonry
 masquerade
 masquerade_party
 mass
-Massachusetts
 massage
 massage parlor
 massage parlors
@@ -18779,12 +18850,10 @@ matriarch
 matriarchal
 matriarchy
 matriculate
-matriculation
 matrilineal
 matrimonial
 matrimony
 matrix
-matrix_addition
 matron
 matronly
 MATS
@@ -18801,7 +18870,6 @@ matured
 Maturity
 matzah
 matzah_ball
-matzah_meal
 matzo
 matzo_ball
 matzoh_ball
@@ -18978,7 +19046,6 @@ mellifluous
 mellow
 mellowed
 mellowing
-mellow_out
 melodic
 melodious
 melodrama
@@ -19041,9 +19108,7 @@ MENSTRUALBLOOD
 MENSTRUALCYCLE
 MENSTRUALPHASE
 menstruate
-menstruation
 Mental
-mental_anguish
 mental_block
 MENTALCAPACITY
 MENTALDISORDER
@@ -19124,7 +19189,6 @@ metabolite
 metabolize
 metadata
 Metal
-metal_bar
 metal_detector
 METALDETECTORS
 metallic
@@ -19392,7 +19456,6 @@ mink
 MINNESOTATWINS
 Minnie_Mouse
 minnow
-Minoan
 minor
 MINORCHARACTER
 MINORCRITICISM
@@ -19409,7 +19472,6 @@ minor_role
 minors
 Minotaur
 MINT
-mint_julep
 minty
 minuet
 minus
@@ -19418,7 +19480,6 @@ minus_sign
 MINUTE
 MINUTEBYMINUTE
 minute_hand
-minutely
 MINUTEMAIDPARK
 Minutes
 minutia
@@ -19865,7 +19926,6 @@ mounted
 Mounting
 Mount_McKinley
 Mount_Olympus
-Mount_Raniert
 mourn
 mourner
 mourning
@@ -19979,7 +20039,6 @@ multipurpose
 multiracial
 Multistage
 multitude
-multivariate
 multivitamin
 mum
 mumble
@@ -20034,7 +20093,6 @@ musical_style
 musical_theater
 musical_theme
 music-box
-music_critic
 music_festival
 music_hall
 Musician
@@ -20085,7 +20143,6 @@ muumuu
 muzzle
 MVP
 myalgia
-myelinated
 Myopia
 myopic
 myriad
@@ -20340,7 +20397,6 @@ nervously
 nervous_system
 nest
 nest_egg
-nesting_place
 nestle
 nestled
 nestling
@@ -20589,13 +20645,11 @@ nontoxic
 nontraditional
 NONTRANSMISSIBLE
 nonuniform
-nonuniformity
 nonverbal
 nonverbal_intelligence
 non-verbally
 nonviolence
 nonviolent
-nonviolent_resistance
 noodle
 noodles
 NOOK
@@ -20726,7 +20780,6 @@ numbing
 numbly
 numerator
 numeric
-numerical_value
 Numerous
 nun
 NUNS
@@ -21113,6 +21166,7 @@ OPED
 Open
 open_air
 open-and-shut
+open_book
 open_door
 opened
 open-ended
@@ -21125,6 +21179,7 @@ opening_move
 opening_night
 opening statement
 openly
+open_mind
 open-minded
 openmouthed
 open_secret
@@ -21378,7 +21433,6 @@ out-of-bounds
 out-of-business
 out-of-date
 out_of_hand
-out_of_nothing
 out-of-pocket
 out_of_practice
 out_of_reach
@@ -21958,7 +22012,6 @@ pass
 passable
 Passage
 passageway
-pass_along
 pass_away
 passbook
 passe
@@ -22110,7 +22163,6 @@ peace_offering
 peacetime
 peace_treaty
 peach
-peach-colored
 peach_pit
 peach_tree
 peachy
@@ -22226,6 +22278,7 @@ penetrate
 penetrating
 penetration
 penguin
+penguins
 penicillin
 PENICILLINRESISTANTBACTERIA
 peninsula
@@ -22302,7 +22355,6 @@ percuss
 percussion
 percussion_instrument
 percussionist
-percussion_section
 percussive
 per_diem
 perennial
@@ -22567,7 +22619,6 @@ phylum
 Physical
 physical_attraction
 physical distancing
-physical_exertion
 physicality
 physically
 physical_therapist
@@ -22823,10 +22874,10 @@ placid
 placode
 plagiarisation
 plagiarism
-plagiarization
 plagiarize
 plagiarized
 plagiarizer
+plagiarizes
 plague
 plaid
 plain
@@ -23093,6 +23144,7 @@ poking
 POKY
 polar
 polar_bear
+polar_bears
 polarity
 polarization
 polarize
@@ -23121,7 +23173,6 @@ polished
 polisher
 polishing
 polish_off
-polish_up
 polite
 politely
 political
@@ -23241,7 +23292,6 @@ popular_music
 popular_opinion
 populate
 populated
-populated_area
 population
 population_control
 population_growth
@@ -23650,7 +23700,6 @@ price-fixing
 price gouge
 price gouger
 price gouging
-price_increase
 priceless
 price_tag
 price_war
@@ -23696,7 +23745,6 @@ Prince
 prince_charming
 Princess
 Principal
-principal_investigator
 principle
 principled
 print
@@ -23747,7 +23795,6 @@ probiotic
 Problem
 problematic
 problems
-problem_solver
 problem_solving
 pro_bono
 procedure
@@ -23801,7 +23848,6 @@ professing
 Profession
 professional
 professional_baseball
-professional_basketball
 professionalism
 professionally
 professional_tennis
@@ -23852,7 +23898,6 @@ projectile
 projecting
 projection
 projector
-pro-life
 proliferate
 proliferation
 prolific
@@ -24060,14 +24105,12 @@ public_domain
 public_eye
 public-facing
 public_figure
-public_housing
 publicist
 publicity
 PUBLICITYAGENTS
 publicize
 publicized
 publicizing
-public_lavatory
 public_library
 Publicly
 public_nudity
@@ -24125,7 +24168,6 @@ pull_strings
 pull_the_plug
 PULLTHEWOOLOVERSOMEONESEYES
 pull_through
-pull_together
 pull_up
 pull_up_stakes
 PULP
@@ -24349,7 +24391,6 @@ QUEASY
 Queen
 queen_bee
 queen-size
-queen-sized
 queer
 queerbaiting
 quell
@@ -24446,7 +24487,6 @@ Race
 race_driver
 race_horse
 racer
-race_riot
 racetrack
 raceway
 rachet_up
@@ -24603,7 +24643,6 @@ ranking
 rankle
 ransack
 ransacked
-ransacki
 ransacking
 ransacks
 ransom
@@ -24666,7 +24705,6 @@ RATS
 rattail
 rattle
 rattled
-rattle_off
 rattler
 rattlesnake
 rattling
@@ -25652,6 +25690,7 @@ riddled
 RIDE
 ride_horseback
 rider
+ride_shotgun
 ridge
 ridged
 ridicule
@@ -25685,7 +25724,6 @@ rightful
 rightfully
 right-hand
 right-handed
-right-handed_pitcher
 right-hand_man
 right-of-way
 right-side-up
@@ -25835,6 +25873,7 @@ Rod
 RODE
 rodent
 rodeo
+rode_shotgun
 Roe
 rogue
 roil
@@ -25934,7 +25973,6 @@ rotation
 rotator_cuff
 ROTC
 ROTE
-rote_learning
 ROTH
 rotisserie
 rotor
@@ -26049,7 +26087,6 @@ ruler
 RULES
 Ruling
 ruling_class
-ruly
 Rum
 rumble
 rumbling
@@ -26139,7 +26176,6 @@ sack_race
 SACKS
 sacred
 sacred_text
-sacred_writing
 sacrifice
 sacrificial
 sacrilege
@@ -26549,7 +26585,6 @@ scintillating
 scion
 scission
 scissor
-scissor_hold
 scissors
 SCOFF
 scoffing
@@ -26582,7 +26617,6 @@ scorned
 scorpion
 scotch
 scotch_tape
-Scottish_deerhound
 scoundrel
 scour
 scoured
@@ -26724,7 +26758,6 @@ Search
 search and recovery
 search and replace
 search_and_rescue_mission
-search_and_seizure
 search_engine
 searcher
 searches
@@ -26769,7 +26802,6 @@ Second
 Secondary
 secondary_school
 second_base
-second_baseman
 second_cousin
 second_fiddle
 second_gear
@@ -26786,6 +26818,8 @@ second_thoughts
 second_wind
 secrecy
 Secret
+secret_admirer
+secret_admirers
 secret_agent
 secretaries
 secretary
@@ -26815,7 +26849,6 @@ security_blanket
 security_deposit
 SECURITYFOOTAGE
 security_guard
-security_measures
 security_system
 SECURITYSYSTEMS
 sedan
@@ -26875,7 +26908,6 @@ Select
 selected
 selection
 selective
-selectivity
 selectwoman
 selenium
 self
@@ -26963,7 +26995,6 @@ senate_race
 senator
 SEND
 send_a_message
-send_around
 sender
 sending
 send-off
@@ -27413,7 +27444,6 @@ short_order
 short_ribs
 shorts
 shortsighted
-shortsightedness
 short_sleeved
 short-staffed
 SHORTSTHEMARKET
@@ -27606,7 +27636,6 @@ signage
 Signal
 signaler
 signaling
-signally
 signal-to-noise
 signal-to-noise_ratio
 signatory
@@ -28718,7 +28747,6 @@ Speech
 speeches
 speechless
 speechmaker
-speech_therapist
 speech_therapy
 speechwriter
 Speed
@@ -28815,6 +28843,7 @@ spiraling
 spirally
 spire
 SPIRIT
+spirit_animal
 spirited
 spirits
 Spiritual
@@ -29101,7 +29130,6 @@ stage_name
 stage_technician
 stagger
 staggering
-staggeringly
 staggers
 staging
 stagnant
@@ -29309,7 +29337,6 @@ steepen
 steeper
 steeple
 steeplechase
-steeply
 steer
 steering
 steering_system
@@ -29554,7 +29581,6 @@ stow_away
 stowing
 STOWS
 straddle
-Stradivarius
 straggle
 straggler
 Straight
@@ -30116,7 +30142,6 @@ supplies
 Supply
 supply_closet
 supplying
-supply_route
 Support
 Supported
 supporter
@@ -30346,7 +30371,6 @@ sycophantic
 syllable
 syllables
 syllabus
-Sylvia_Plath
 symbiosis
 symbiotic
 SYMBOL
@@ -30397,7 +30421,6 @@ synthesizer
 synthetic
 synthetic_fiber
 synthetic_rubber
-synthetic_substance
 syphilis
 Syringe
 syrup
@@ -30427,7 +30450,6 @@ table_saw
 tablespoon
 tablet
 table_tennis
-table-tennis_table
 tabletop
 tableware
 tabloid
@@ -30748,7 +30770,6 @@ tax_shelter
 tax_write-off
 taylor
 TBONE
-T-bone_steak
 tchotchke
 tchotchkes
 Tea
@@ -30956,7 +30977,6 @@ tenure
 tenured
 tepee
 tepid
-tepidly
 tequila
 TERA
 terabyte
@@ -31051,7 +31071,6 @@ theater_stage
 Theatre
 theatrical
 theatricality
-theatrical_role
 THEFT
 THEHITCHHIKERSGUIDETOTHEGALAXY
 THEHOBBITTHEDESOLATIONOFSMAUG
@@ -31140,7 +31159,6 @@ Third
 third_base
 third_baseman
 third_eye
-third_gear
 THIRDLAWOFTHERMODYNAMICS
 thirdly
 third_party
@@ -31187,9 +31205,7 @@ three-piece_suit
 THREEPIECESUITS
 three-point_turn
 three-pronged
-three-quarters
 three-ring-binder
-three-sided
 three-wheeled
 thresh
 Threshhold
@@ -31251,6 +31267,8 @@ thumbnail
 thumbprint
 thumbs_down
 thumbtack
+thumb-wrestle
+thumb-wrestles
 thump
 thumping
 thunder
@@ -31367,7 +31385,6 @@ Timesaver
 time_sharing
 time_slot
 timetable
-time-tested
 time_traveler
 timewarp
 timeworn
@@ -31747,7 +31764,6 @@ tradition
 traditional
 traditionally
 Traffic
-traffic_circle
 traffic_control
 traffic_cop
 traffic_court
@@ -32250,7 +32266,6 @@ tweezers
 Twelve
 Twenty
 twenty-eight
-twenty-one
 twenty-six
 twice
 twiddle
@@ -32423,7 +32438,6 @@ uncertainty
 unchained
 unchanged
 uncharacteristic
-uncharitable
 uncharted
 unchaste
 unchecked
@@ -32588,7 +32602,6 @@ uneven
 uneven_bars
 unevenly
 uneventful
-unexacting
 unexpected
 unexplained
 unfair
@@ -32623,7 +32636,6 @@ unfurrowed
 ungainly
 ungraceful
 ungrateful
-unguarded
 unhand
 unhappy
 unharmed
@@ -32808,10 +32820,8 @@ unresolved
 unrest
 unrestrained
 unripe
-unripened
 unrivaled
 unroll
-unruffled
 unruly
 unsaid
 unsalted
@@ -32834,7 +32844,6 @@ unseat
 unsecured
 unseeded
 unseen
-unsegregated
 unsettle
 unsettled
 unshakable
@@ -33053,7 +33062,6 @@ usability
 usable
 usage
 Usama_bin_Laden
-US_Coast_Guard
 USDA
 Use
 USEBY
@@ -33477,7 +33485,6 @@ VISITS
 visor
 vista
 Visual
-visual_acuity
 visual_cortex
 visual_impairment
 visualize
@@ -33545,7 +33552,6 @@ VOLT
 voltage
 Volume
 volumetric
-voluntarily
 voluntary
 Volunteer
 volunteering
@@ -33981,7 +33987,6 @@ well-connected
 well-done
 well-educated
 well-fed
-well-founded
 well-kept
 well-known
 well-lined
@@ -34027,6 +34032,7 @@ whacked
 whacker
 whacking
 whale
+whales
 wham
 whammy
 wharf
@@ -34178,7 +34184,6 @@ wide-eyed
 widely
 widen
 widening
-wide_of_the_mark
 wide-open
 wide-ranging
 wide_screen
@@ -34619,6 +34624,7 @@ write_in
 write-off
 write_out
 Writer
+write-up
 writhe
 writhed
 writhing

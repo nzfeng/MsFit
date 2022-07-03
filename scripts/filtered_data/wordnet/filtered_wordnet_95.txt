@@ -145,7 +145,6 @@ lattice
 wispy
 undisclosed
 blowtorch
-bong
 daisy_chain
 blown
 TV_dinner

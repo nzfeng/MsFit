@@ -796,5 +796,4 @@ Sum
 Sad
 Arm
 Bet
-Les
 Lab

@@ -135,7 +135,8 @@ def computePercentageWordnetKept():
 def main():
 	# allWords = getAllWords();
 	# print("Total number of words: %d" %len(allWords))
-	computePercentageWordnetKept()
+	# computePercentageWordnetKept()
+	print(ALL_LETTER_PAIRS)
 	
 
 if __name__=="__main__":

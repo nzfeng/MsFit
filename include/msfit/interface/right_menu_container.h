@@ -28,9 +28,7 @@ class RightMenuContainer : public Gtk::Notebook {
     RightMenuContainer();
     virtual ~RightMenuContainer();
 
-    void setUpMenuPage();
-    void setUpCluesPage();
-    void setUpSummaryPage();
+    void setup(PuzzleGrid& puzzleGrid, FillManager& fillManager);
 
     // Frames containing user-defined callbacks, general crossword settings
     Gtk::Box menuBox, clueBox, summaryBox;
@@ -65,10 +63,17 @@ class RightMenuContainer : public Gtk::Notebook {
     int presetSizes[4] = {15, 21, 23, 25};
     Glib::ustring gridSizePresetLabels[4] = {"15 x 15", "21 x 21", "23 x 23", "25 x 25"};
 
+    // These need to be pointers rather than reference variables, because this object will never be constructed with
+    // these variables to auto-initialize. In fact, none of the main objects in MainWindow can contain references to
+    // other objects, because they all contain circular references to each other.
     PuzzleGrid* puzzleGrid;
     FillManager* fillManager;
 
   private:
+    void setUpMenuPage();
+    void setUpCluesPage();
+    void setUpSummaryPage();
+
     // For Menu page -- grid settings
     Gtk::Grid setUpGridSymmetrySettings();
     Gtk::Grid setUpGridDimensionSettings();
@@ -78,12 +83,13 @@ class RightMenuContainer : public Gtk::Notebook {
     Gtk::Grid setUpFillTools();
 
     // Signal handlers
-    // void on_size_button_clicked(int buttonIndex);
-    // void on_sizeSpinner_clicked(int buttonIndex);
+    void on_size_button_clicked(int buttonIndex);
+    void on_sizeSpinner_clicked(int buttonIndex);
 
-    // void on_fill_clicked(const std::string& button);
+    void generate_word_fills();
+    void on_fill_clicked(const std::string& button);
 
-    // void on_clearGrid_button_clicked();
+    void on_clearGrid_button_clicked();
 
     void on_makeSymmetric_button_toggled() const;
     void on_symmetry_button_clicked(int buttonIndex) const;
