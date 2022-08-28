@@ -2,7 +2,12 @@
 
 DatasetManager::DatasetManager() {}
 
+/*
+ * Load in all the wordlists from crossword-dataset.
+ * TODO: Add options to GUI to specify which wordlists to load in (may be a far-future option.)
+ */
 void DatasetManager::loadFromFile() {
+
     // Get all txt files in the data directory
     std::string path, num, fn;
     for (const auto& entry : std::filesystem::directory_iterator(dir)) {
