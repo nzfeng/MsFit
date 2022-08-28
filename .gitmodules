@@ -1,0 +1,3 @@
+[submodule "deps/crossword-dataset"]
+	path = deps/crossword-dataset
+	url = https://github.com/nzfeng/crossword-dataset.git
