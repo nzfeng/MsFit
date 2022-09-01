@@ -34,4 +34,6 @@ class FillManager {
 
     void buildSearchStructures(std::vector<std::string>& cells, std::vector<std::vector<size_t>>& words,
                                std::vector<std::vector<size_t>>& xMap, std::vector<Square*>& cellToSquare) const;
+
+    // TODO: All legal letter pairs...
 };
