@@ -7,11 +7,37 @@ FillManager::FillManager(DatasetManager& datasetManager_, PuzzleGrid& puzzleGrid
     : datasetManager(datasetManager_), puzzleGrid(puzzleGrid_) {}
 
 /*
+ * Helper function to perform set intersection in-place (replacing setA.)
+ * https://stackoverflow.com/a/1773620
+ */
+template <typename T>
+void FillManager::setIntersectionInPlace(std::set<T>& setA, const std::set<T>& setB) const {
+
+    typename std::set<T>::iterator itA = setA.begin();
+    typename std::set<T>::iterator itB = setB.begin();
+    while ((itA != setA.end()) && (itB != setB.end())) {
+        if (*itA < *itB) {
+            setA.erase(itA++);
+        } else if (*itB < *itA) {
+            ++itB;
+        } else { // *it1 == *it2
+            ++itA;
+            ++itB;
+        }
+    }
+    setA.erase(itA, setA.end());
+}
+
+/*
  * Given a word fill pattern, return all possible options.
  */
 std::vector<std::string> FillManager::getAllWordFills(const std::string& regexPattern) const {
 
     size_t n = regexPattern.length();
+
+    // empty pattern just yields the whole list
+    std::string emptyPattern(n, '.');
+    if (regexPattern == emptyPattern) return datasetManager.words[n];
 
     HashMap& hashMap = datasetManager.hashMaps[n];
     // TODO: Doing all these set intersections will be really slow. Look into google::dense_hash_set, etc.
@@ -20,12 +46,9 @@ std::vector<std::string> FillManager::getAllWordFills(const std::string& regexPa
         if (regexPattern[i] != '.') {
             std::string pattern(n, '.');
             pattern[i] = regexPattern[i];
-            std::set<size_t>& matches = hashMap[pattern];
+            const std::set<size_t>& matches = hashMap[pattern];
             if (allMatches.size() != 0) {
-                std::set<size_t> temp;
-                std::set_intersection(allMatches.begin(), allMatches.end(), matches.begin(), matches.end(),
-                                      std::inserter(temp, temp.end()));
-                allMatches = temp;
+                setIntersectionInPlace(allMatches, matches);
             } else {
                 allMatches = matches;
             }
@@ -110,16 +133,20 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, bool ignorePe
  */
 bool FillManager::doFillsExist(GridWord* word, bool ignorePenciled) const {
 
-    std::smatch match;
-    const std::regex pattern = word->toRegex(ignorePenciled);
-    size_t n = word->length();
-    std::vector<std::string>& options = datasetManager.words[n];
-    for (const auto& option : options) {
-        if (std::regex_match(option, match, pattern)) {
-            return true;
-        }
-    }
-    return false;
+    // std::smatch match;
+    // const std::regex pattern = word->toRegex(ignorePenciled);
+    // size_t n = word->length();
+    // std::vector<std::string>& options = datasetManager.words[n];
+    // for (const auto& option : options) {
+    //     if (std::regex_match(option, match, pattern)) {
+    //         return true;
+    //     }
+    // }
+    // return false;
+
+    // TODO: no need to compute the whole word list...
+    std::vector<std::string> fills = getAllWordFills(word->toRegexPattern(ignorePenciled));
+    return fills.size() > 0;
 }
 
 /*
@@ -138,7 +165,7 @@ std::vector<std::string> FillManager::getGridCompliantWords(GridWord* word, cons
         for (size_t i = 0; i < n; i++) {
             sq = word->squares[i];
             if (!sq->isEmpty()) continue;
-
+            // TODO: better to work directly with regex patterns rather than changing the grid itself
             sq->setData(match.substr(i, 1));
 
             // Which word intersects the current word at this square.
@@ -229,6 +256,8 @@ GridWord* FillManager::getMostConstrainedWord(bool ignorePenciled, const std::st
 
     std::vector<std::vector<GridWord>>& gridWords = puzzleGrid.getWords();
 
+    auto t1 = high_resolution_clock::now();
+
     size_t minFills = 100000;
     GridWord* minWord = NULL;
     for (size_t i = 0; i < gridWords.size(); i++) {
@@ -241,6 +270,11 @@ GridWord* FillManager::getMostConstrainedWord(bool ignorePenciled, const std::st
             }
         }
     }
+
+    auto t2 = high_resolution_clock::now();
+    auto ns_int = duration_cast<nanoseconds>(t2 - t1);
+    std::cerr << "Get most constrained time: " << ns_int.count() / 1e9 << "s" << std::endl;
+
     bottomMenuContainer->addMessageToList("Most constrained word has " + std::to_string(minFills) + " fills.");
     return minWord;
 }

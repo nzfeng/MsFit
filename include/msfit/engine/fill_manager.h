@@ -37,6 +37,9 @@ class FillManager {
     DatasetManager& datasetManager;
     PuzzleGrid& puzzleGrid;
 
+    template <typename T>
+    void setIntersectionInPlace(std::set<T>& setA, const std::set<T>& setB) const;
+
     std::vector<std::string> getAllWordFills(const std::string& regexPattern) const;
 
     bool doFillsExist(GridWord* word, bool ignorePenciled) const;

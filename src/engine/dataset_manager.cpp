@@ -220,7 +220,14 @@ void DatasetManager::buildHashTables() {
                 }
                 hashMap.insert({strPattern, results});
             }
-            hashMaps.insert({n, hashMap});
         }
+
+        // // empty pattern just yields the whole list
+        // std::string strPattern(n, '.');
+        // std::set<size_t> all;
+        // for (size_t k = 0; k < allFills.size(); k++) all.insert(k);
+        // hashMap.insert({strPattern, all});
+
+        hashMaps.insert({n, hashMap});
     }
 }
