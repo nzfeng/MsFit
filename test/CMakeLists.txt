@@ -70,7 +70,10 @@ endif()
 
 # gtkmm
 find_package(PkgConfig)
-pkg_check_modules(GTKMM gtkmm-4.0) # sets GTKMM_INCLUDE_DIRS, GTKMM_LIBRARY_DIRS and GTKMM_LIBRARIES
+pkg_check_modules(GTKMM REQUIRED gtkmm-4.0) # sets GTKMM_INCLUDE_DIRS, GTKMM_LIBRARY_DIRS and GTKMM_LIBRARIES
+#pkg_check_modules(GTKMM_VARS REQUIRED IMPORTED_TARGET gtkmm-4.0)
+
+# This always fails for some reason
 #if (GTKMM)
 #  message(STATUS "gtkmm-4.0 found")
 #else()
