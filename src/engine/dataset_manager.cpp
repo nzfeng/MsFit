@@ -65,6 +65,12 @@ void DatasetManager::loadData() {
 
     // Run stats
     analyzeLetterPairs();
+
+    auto t1 = high_resolution_clock::now();
+    buildHashTables();
+    auto t2 = high_resolution_clock::now();
+    auto ms_int = duration_cast<milliseconds>(t2 - t1);
+    std::cerr << "Building hash tables took " << ms_int.count() / 1000. << "s" << std::endl;
 }
 
 /*
@@ -174,4 +180,47 @@ void DatasetManager::analyzeLetterPairs() const {
     data::endingPairRegex = unusedPairsToRegexMap(unusedEndingPairs);
     data::startingPairRegex["."] = ".";
     data::endingPairRegex["."] = ".";
+}
+
+/*
+ * Several options for speeding up C++ standard regex.
+ * (1) Build tries for Aho-Corasick algorithm
+ * (2) Build a hash table for each word length, that maps a query to a list of results. We won't compute every possible
+ * query since that would take exponential memory, but for one for each letter in each spot, with wildcards in the rest
+ * of the spots.
+ */
+
+/*
+ * Build hash tables for faster searching.
+ */
+void DatasetManager::buildHashTables() {
+
+    std::vector<std::string> alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                                         "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+    for (auto const& pair : words) {
+        const size_t& n = pair.first;
+        const std::vector<std::string>& allFills = pair.second;
+
+        HashMap hashMap;
+        for (size_t i = 0; i < n; i++) {
+            for (size_t j = 0; j < 26; j++) {
+                // Build regex pattern
+                std::string strPattern(n, '.');
+                strPattern.replace(i, 1, alphabet[j]);
+                const std::regex pattern(strPattern);
+                std::smatch match;
+                // Get results list
+                std::set<size_t> results;
+                for (size_t k = 0; k < allFills.size(); k++) {
+                    const std::string& option = allFills[k];
+                    if (std::regex_match(option, match, pattern)) {
+                        results.insert(k);
+                    }
+                }
+                hashMap.insert({strPattern, results});
+            }
+            hashMaps.insert({n, hashMap});
+        }
+    }
 }

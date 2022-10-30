@@ -17,7 +17,7 @@ inline bool GridWord::isOpen() {
 
 inline size_t GridWord::length() { return this->squares.size(); }
 
-inline std::regex GridWord::toRegex(bool ignorePenciled) const {
+inline std::string GridWord::toRegexPattern(bool ignorePenciled) const {
     std::string pattern = "";
     size_t nChars = this->squares.size();
     for (size_t i = 0; i < nChars; i++) {
@@ -29,5 +29,9 @@ inline std::regex GridWord::toRegex(bool ignorePenciled) const {
             pattern += this->squares[i]->getData();
         }
     }
-    return std::regex(pattern);
+    return pattern;
+}
+
+inline std::regex GridWord::toRegex(bool ignorePenciled) const {
+    return std::regex(this->toRegexPattern(ignorePenciled));
 }

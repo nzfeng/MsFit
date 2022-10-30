@@ -16,7 +16,7 @@ namespace params {
     int minButtonHeight = 20;
     int button_space = 5;
     // int grid_width = 0.9 * grid_container_height; // default size of the puzzle grid
-    size_t maxFillOptions = 10000;  // maximum number of fill options to display
+    size_t maxFillOptions = 50000;  // maximum number of fill options to display
     size_t maxDialogMessages = 100; // max number of messages in the bottom dialog to keep
 } // namespace params
 } // namespace interface

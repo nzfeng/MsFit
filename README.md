@@ -18,6 +18,8 @@ Better documentation (more up-to-date with gtkmm4) is [here](https://developer-o
 
 Possibly [RE2](https://github.com/google/re2).
 
+Possibly[dense_hash_map/dense_hash_set](https://github.com/sparsehash/sparsehash);
+
 # Interface controls
 
 * `Shift-P`: Toggle pencil.

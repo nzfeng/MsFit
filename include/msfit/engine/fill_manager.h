@@ -1,5 +1,9 @@
 #pragma once
 
+#include <chrono>
+#include <set>
+//#include <sparsehash/dense_hash_map>
+//#include <sparsehash/dense_hash_set>
 #include <string_view>
 
 #include "msfit/engine/dataset_manager.h"
@@ -7,6 +11,12 @@
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/puzzle_grid.h"
 #include "msfit/utilities/state.h"
+
+using std::chrono::duration;
+using std::chrono::duration_cast;
+using std::chrono::high_resolution_clock;
+using std::chrono::milliseconds;
+using std::chrono::nanoseconds;
 
 class FillManager {
   public:
@@ -26,6 +36,8 @@ class FillManager {
   private:
     DatasetManager& datasetManager;
     PuzzleGrid& puzzleGrid;
+
+    std::vector<std::string> getAllWordFills(const std::string& regexPattern) const;
 
     bool doFillsExist(GridWord* word, bool ignorePenciled) const;
     std::regex getGridFeasibleRegex(GridWord* word, bool ignorePenciled) const;

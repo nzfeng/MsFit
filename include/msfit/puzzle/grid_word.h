@@ -13,10 +13,11 @@ struct GridWord {
 
     // Convert a GridWord into a Glib::ustring.
     Glib::ustring toUstring(); // no chars for spaces
-    // Translate a GridWord into a std::string?
+                               // Translate a GridWord into a std::string?
 
     // To a regex expression ready to be used by std::regex.
     // This only considers the word in isolation; does not consider how crossing words may limit choices.
+    std::string toRegexPattern(bool ignorePenciled) const;
     std::regex toRegex(bool ignorePenciled) const;
 
     // Return true if the word has not been completely filled.
