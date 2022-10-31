@@ -1,4 +1,4 @@
-inline Glib::ustring GridWord::toUstring() {
+inline Glib::ustring GridWord::toUstring() const {
     Glib::ustring str;
     size_t nChars = this->squares.size();
     for (size_t i = 0; i < nChars; i++) {
@@ -7,7 +7,7 @@ inline Glib::ustring GridWord::toUstring() {
     return str;
 }
 
-inline bool GridWord::isOpen() {
+inline bool GridWord::isOpen() const {
     size_t nChars = this->squares.size();
     for (size_t i = 0; i < nChars; i++) {
         if (this->squares[i]->isEmpty()) return true;
@@ -15,7 +15,7 @@ inline bool GridWord::isOpen() {
     return false;
 }
 
-inline size_t GridWord::length() { return this->squares.size(); }
+inline size_t GridWord::length() const { return this->squares.size(); }
 
 inline std::string GridWord::toRegexPattern(bool ignorePenciled) const {
     std::string pattern = "";

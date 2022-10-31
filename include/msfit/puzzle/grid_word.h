@@ -12,8 +12,8 @@ struct GridWord {
     std::vector<Square*> squares;
 
     // Convert a GridWord into a Glib::ustring.
-    Glib::ustring toUstring(); // no chars for spaces
-                               // Translate a GridWord into a std::string?
+    Glib::ustring toUstring() const; // no chars for spaces
+                                     // Translate a GridWord into a std::string?
 
     // To a regex expression ready to be used by std::regex.
     // This only considers the word in isolation; does not consider how crossing words may limit choices.
@@ -21,9 +21,9 @@ struct GridWord {
     std::regex toRegex(bool ignorePenciled) const;
 
     // Return true if the word has not been completely filled.
-    bool isOpen();
+    bool isOpen() const;
     // Return the length of the word.
-    size_t length();
+    size_t length() const;
 };
 
 #include "msfit/puzzle/grid_word.ipp"

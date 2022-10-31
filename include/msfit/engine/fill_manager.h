@@ -4,6 +4,8 @@
 #include <set>
 //#include <sparsehash/dense_hash_map>
 //#include <sparsehash/dense_hash_set>
+#include <map>
+#include <random>
 #include <string_view>
 
 #include "msfit/engine/dataset_manager.h"
@@ -28,7 +30,7 @@ class FillManager {
 
     GridWord* getMostConstrainedWord(bool ignorePenciled, const std::string& constraint);
 
-    void fillGridDFS() const;
+    void fillGridDFS();
 
     // to send messages to the dialog
     MessagesList* bottomMenuContainer;
@@ -40,6 +42,7 @@ class FillManager {
     template <typename T>
     void setIntersectionInPlace(std::set<T>& setA, const std::set<T>& setB) const;
 
+    std::set<size_t> getAllWordFillIndices(const std::string& regexPattern) const;
     std::vector<std::string> getAllWordFills(const std::string& regexPattern) const;
 
     bool doFillsExist(GridWord* word, bool ignorePenciled) const;
@@ -49,6 +52,12 @@ class FillManager {
 
     void buildSearchStructures(std::vector<std::string>& cells, std::vector<std::vector<size_t>>& words,
                                std::vector<std::vector<size_t>>& xMap, std::vector<Square*>& cellToSquare) const;
+    bool fillGridDFSHelper(std::vector<std::string>& cells, const std::vector<std::vector<size_t>>& words,
+                           const std::vector<std::vector<size_t>>& xMap, std::vector<std::string>& wordsUsedSoFar);
+    std::vector<std::string> getGridCompliantFills(const size_t& wordIdx, const std::vector<std::string>& cells,
+                                                   const std::vector<std::vector<size_t>>& words,
+                                                   const std::vector<std::vector<size_t>>& xMap,
+                                                   const std::vector<std::string>& wordsUsedSoFar) const;
 
     // TODO: All legal letter pairs...
 };

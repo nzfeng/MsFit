@@ -234,6 +234,7 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
     ignorePenciled.set_label("Ignore penciled");
     ignorePenciled.set_can_focus(false);
     fillBox.attach(ignorePenciled, 0, 0);
+    size_t offset = 1;
 
     int nOptions = *(&fillButtons + 1) - fillButtons;
     for (int i = 0; i < nOptions; i++) {
@@ -244,7 +245,7 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
     }
 
     // Attach "Fill word"
-    fillBox.attach(fillButtons[0], 0, 0);
+    fillBox.attach(fillButtons[0], 0, offset);
     int nFillConstraints = *(&fillConstraints + 1) - fillConstraints;
     int nCols = 2;
     int nRows = nFillConstraints / nCols;
@@ -255,7 +256,7 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
         fillConstraints[i].set_can_focus(false);
         int row = i / nCols;
         int col = i - row * nCols;
-        fillBox.attach(fillConstraints[i], col, row + 2);
+        fillBox.attach(fillConstraints[i], col, offset + row + 2);
         if (i > 0) fillConstraints[i].set_group(fillConstraints[0]);
     }
     fillConstraints[0].set_active(true);
@@ -266,10 +267,10 @@ Gtk::Grid RightMenuContainer::setUpFillTools() {
     getMostConstrainedButton.set_can_focus(false);
     getMostConstrainedButton.signal_clicked().connect(
         sigc::mem_fun(*this, &RightMenuContainer::on_getMostConstrained_clicked));
-    fillBox.attach(getMostConstrainedButton, 1, 0);
+    fillBox.attach(getMostConstrainedButton, 1, offset);
 
     // Attach "Fill grid"
-    fillBox.attach(fillButtons[1], 0, nRows + 3);
+    fillBox.attach(fillButtons[1], 0, offset + nRows + 3);
 
     return fillBox;
 }
@@ -358,7 +359,8 @@ void RightMenuContainer::on_fill_clicked(const std::string& button) {
     if (button == "Fill word") {
         generate_word_fills();
     } else if (button == "Fill grid") {
-        // TODO
+        // TODO: add option to ignore penciled?
+        fillManager->fillGridDFS();
     }
 }
 
