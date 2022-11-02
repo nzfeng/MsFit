@@ -51,7 +51,6 @@ class DatasetManager {
     // TODO: Better to make this private and define get()
     // word length => hash map
     // hash value => set of indices into datasetManager.words[n]
-    void buildHashTables();
     std::unordered_map<size_t, HashMap> hashMaps;
 
     MessagesList* bottomMenuContainer;
@@ -74,4 +73,8 @@ class DatasetManager {
     std::vector<std::string> getUnusedLetterPairs(const std::string& location) const;
     std::map<std::string, std::string> unusedPairsToRegexMap(const std::vector<std::string>& unusedPairs) const;
     void analyzeLetterPairs() const;
+
+    void buildHashTables();
+    std::set<size_t> regexFills(const std::regex& pattern, const std::vector<std::string>& allFills) const;
+    std::set<std::set<size_t>> nChooseKCombos(size_t N, size_t K) const;
 };

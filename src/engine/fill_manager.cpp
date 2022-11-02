@@ -41,6 +41,13 @@ std::set<size_t> FillManager::getAllWordFillIndices(const std::string& regexPatt
     }
 
     HashMap& hashMap = datasetManager.hashMaps[n];
+
+    // // TODO: For some reason, this is super slow when doing autofill (and only when doing autofill...)
+    // if (n <= data::N_MAX_QUERY) {
+    //     std::set<size_t>& matches = hashMap[regexPattern];
+    //     return matches;
+    // }
+
     // TODO: Doing all these set intersections will be really slow. Look into google::dense_hash_set, etc.
     bool initalized = false;
     std::set<size_t> allMatches;
@@ -320,6 +327,7 @@ void FillManager::buildSearchStructures(std::vector<std::string>& cells, std::ve
     std::map<Square*, size_t> squareToDenseIdx; // Square in puzzleGrid to index in <cells>
 
     // Fill cells.
+    // TODO: If square data is in autofill mode, treat it as an empty square.
     for (size_t i = 0; i < data.size(); i++) {
         for (size_t j = 0; j < data[i].size(); j++) {
             Square& sq = data[i][j];
@@ -366,8 +374,10 @@ void FillManager::buildSearchStructures(std::vector<std::string>& cells, std::ve
  *
  * Set originally open squares to "autofill" pen mode, so autofilled entries show up in a
  * different color.
+ *
+ * <timeLimit> = time limit in seconds
  */
-void FillManager::fillGridDFS() {
+void FillManager::fillGridDFS(const double timeLimit) {
 
     // Convert the current puzzle into something with a more compact (smaller memory), and faster to do word-lookups on.
     // Everything is index-based; hopefully the time savings add up vs. pointer-chasing (which is how the data in
@@ -382,15 +392,6 @@ void FillManager::fillGridDFS() {
     std::vector<std::vector<size_t>> xMap;
     std::vector<Square*> cellToSquare;
     buildSearchStructures(cells, words, xMap, cellToSquare);
-
-    // For debugging
-    // for (size_t i = 0; i < xMap.size(); i++) {
-    //     std::cerr << "Cell # " << i << ": ";
-    //     for (size_t j = 0; j < xMap[i].size(); j++) {
-    //         std::cerr << xMap[i][j] << " ";
-    //     }
-    //     std::cerr << "\n";
-    // }
 
     // TODO: At each step, start at the incomplete word with the fewest fills. This may be slower, though.
     auto t1 = high_resolution_clock::now();
@@ -438,16 +439,23 @@ bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::
                                     std::vector<std::string>& wordsUsedSoFar) {
 
     // Currently, getMostConstrainedWord() is rather slow; it will be faster to simply try to fill words as we go, and
-    // terminate a path when we reach an entry with zero possible fills. Right now, just go in order of <words>.
-    for (size_t i = 0; i < words.size(); i++) {
+    // terminate a path when we reach an entry with zero possible fills. Right now, just go in some random permutation
+    // of <words>.
+    size_t nWords = words.size();
+    std::vector<size_t> wordOrder(nWords);
+    std::iota(wordOrder.begin(), wordOrder.end(), 0);
+    auto rd = std::random_device{};
+    auto rng = std::default_random_engine{rd()};
+    std::shuffle(std::begin(wordOrder), std::end(wordOrder), rng);
+
+    // TODO: Return the furthest solution obtained.
+    for (const auto& i : wordOrder) {
         // Determine if word is incomplete.
         const std::vector<size_t>& word = words[i];
         size_t n = word.size();
         for (const auto& cellIdx : word) {
             if (cells[cellIdx] == "") {
-                // Word is incomplete; determine possible fills.
-                // Can't just use getAllWordFills(), need to make sure all filled-in words are valid, i.e. use
-                // getGridCompliant().
+                // Word is incomplete; determine possible fills. Need to make sure all filled-in words are valid.
                 std::vector<std::string> fills = getGridCompliantFills(i, cells, words, xMap, wordsUsedSoFar);
                 // Get rid of any words already used in the puzzle.
                 for (const auto& existingWord : wordsUsedSoFar) {
@@ -462,6 +470,10 @@ bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::
                 }
 
                 // Update cells with each possible fill at a time; call recursive function.
+                // TODO: Use DFS/BFS, which I imagine would rule out dead ends faster than going in random word order
+                // (because always starting from a point where words already are); also won't need a recursive function.
+                // Look into Dijkstra.
+                std::shuffle(std::begin(fills), std::end(fills), rng);
                 for (const auto& possibleFill : fills) {
                     std::map<size_t, std::string> origFill; // save original fill
                     for (size_t k = 0; k < n; k++) {
@@ -504,6 +516,13 @@ std::vector<std::string> FillManager::getGridCompliantFills(const size_t& wordId
 
     size_t n = word.size();
     std::vector<std::string> fills = getAllWordFills(pattern);
+    // // Get rid of any words already used in the puzzle. Don't strictly need to do this, since duplicates are taken
+    // // care of upon returning to fillGridDFSHelper().
+    // for (const auto& existingWord : wordsUsedSoFar) {
+    //     if (existingWord.size() == n) {
+    //         fills.erase(std::remove(fills.begin(), fills.end(), existingWord), fills.end());
+    //     }
+    // }
     std::vector<std::string> compliantFills;
 
     // For each match, go through each square and make sure it results at least 1 fill option for the crossing word.

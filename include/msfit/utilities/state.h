@@ -100,4 +100,6 @@ namespace data {
 extern std::map<std::string, std::string> startingPairRegex;
 // Map from a pair of chars at the end of a word, to a regex pattern for the blank spot.
 extern std::map<std::string, std::string> endingPairRegex;
+// Maximum word length for which all possible queries are stored in the hash maps.
+extern size_t N_MAX_QUERY;
 } // namespace data

@@ -4,6 +4,7 @@
 #include <set>
 //#include <sparsehash/dense_hash_map>
 //#include <sparsehash/dense_hash_set>
+#include <algorithm>
 #include <map>
 #include <random>
 #include <string_view>
@@ -30,7 +31,7 @@ class FillManager {
 
     GridWord* getMostConstrainedWord(bool ignorePenciled, const std::string& constraint);
 
-    void fillGridDFS();
+    void fillGridDFS(const double timeLimit = 120);
 
     // to send messages to the dialog
     MessagesList* bottomMenuContainer;

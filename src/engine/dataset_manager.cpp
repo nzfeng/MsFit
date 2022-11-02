@@ -191,33 +191,87 @@ void DatasetManager::analyzeLetterPairs() const {
  */
 
 /*
+ * Return the indices of all words in <allWords>, a set of constant-length words, that match the given regex pattern,
+ * using C++ standard regex. Used primarily as a helper for buildHashTables().
+ */
+std::set<size_t> DatasetManager::regexFills(const std::regex& pattern, const std::vector<std::string>& allFills) const {
+
+    std::smatch match;
+    std::set<size_t> results;
+    for (size_t k = 0; k < allFills.size(); k++) {
+        const std::string& option = allFills[k];
+        if (std::regex_match(option, match, pattern)) {
+            results.insert(k);
+        }
+    }
+    return results;
+}
+
+/*
+ * Helper function for buildHashTables().
+ * Return all combinations of k items from a set of n (returns their indices.)
+ * https://stackoverflow.com/a/28698654
+ */
+std::set<std::set<size_t>> DatasetManager::nChooseKCombos(size_t N, size_t K) const {
+
+    std::string bitmask(K, 1);
+    bitmask.resize(N, 0);
+
+    std::set<std::set<size_t>> combos;
+    do {
+        std::set<size_t> combo;
+        for (size_t i = 0; i < N; ++i) {
+            if (bitmask[i]) combo.insert(i);
+        }
+        combos.insert(combo);
+    } while (std::prev_permutation(bitmask.begin(), bitmask.end()));
+
+    return combos;
+}
+
+/*
  * Build hash tables for faster searching.
  */
 void DatasetManager::buildHashTables() {
 
-    std::vector<std::string> alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-                                         "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    // For words with length <= n, construct *all* possible queries (2^n - 2 total.) For words of length > n, just store
+    // single-letter queries.
 
     for (auto const& pair : words) {
         const size_t& n = pair.first;
         const std::vector<std::string>& allFills = pair.second;
 
         HashMap hashMap;
+
+        // if (n < 3) continue;
+        // if (n <= data::N_MAX_QUERY) {
+        //     // Build regex pattern for all (n choose k) possible query patterns.
+        //     for (size_t k = 2; k <= n - 1; k++) {
+        //         std::set<std::set<size_t>> combos = nChooseKCombos(n, k);
+        //         for (const auto& combo : combos) {
+        //             for (const auto& word : allFills) {
+        //                 std::string strPattern(n, '.');
+        //                 for (const auto& idx : combo) {
+        //                     strPattern[idx] = word[idx];
+        //                 }
+        //                 const std::regex pattern(strPattern);
+        //                 // Get results list
+        //                 std::set<size_t> results = regexFills(pattern, allFills);
+        //                 hashMap.insert({strPattern, results});
+        //             }
+        //         }
+        //     }
+        // }
+
+        // Form single-letter queries (single letter known, all others missing.)
         for (size_t i = 0; i < n; i++) {
-            for (size_t j = 0; j < 26; j++) {
+            for (const auto& LETTER : ALL_LETTERS) {
                 // Build regex pattern
                 std::string strPattern(n, '.');
-                strPattern.replace(i, 1, alphabet[j]);
+                strPattern.replace(i, 1, LETTER);
                 const std::regex pattern(strPattern);
-                std::smatch match;
                 // Get results list
-                std::set<size_t> results;
-                for (size_t k = 0; k < allFills.size(); k++) {
-                    const std::string& option = allFills[k];
-                    if (std::regex_match(option, match, pattern)) {
-                        results.insert(k);
-                    }
-                }
+                std::set<size_t> results = regexFills(pattern, allFills);
                 hashMap.insert({strPattern, results});
             }
         }
