@@ -15,19 +15,13 @@
 #include "msfit/puzzle/puzzle_grid.h"
 #include "msfit/utilities/state.h"
 
-using std::chrono::duration;
-using std::chrono::duration_cast;
-using std::chrono::high_resolution_clock;
-using std::chrono::milliseconds;
-using std::chrono::nanoseconds;
-
 class FillManager {
   public:
     FillManager(DatasetManager& datasetManager, PuzzleGrid& puzzleGrid);
     ~FillManager() {}
 
     std::vector<std::string> getWordFills(GridWord* word, bool ignorePenciled, const std::string& constraint = "none",
-                                          bool printMessage = false, int nOptions = -1) const;
+                                          bool printMessage = false) const;
 
     GridWord* getMostConstrainedWord(bool ignorePenciled, const std::string& constraint);
 

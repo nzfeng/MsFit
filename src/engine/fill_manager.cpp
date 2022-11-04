@@ -1,5 +1,11 @@
 #include "msfit/engine/fill_manager.h"
 
+using std::chrono::duration;
+using std::chrono::duration_cast;
+using std::chrono::high_resolution_clock;
+using std::chrono::milliseconds;
+using std::chrono::nanoseconds;
+
 FillManager::FillManager(DatasetManager& datasetManager_, PuzzleGrid& puzzleGrid_)
     : datasetManager(datasetManager_), puzzleGrid(puzzleGrid_) {}
 
@@ -32,23 +38,28 @@ std::set<size_t> FillManager::getAllWordFillIndices(const std::string& regexPatt
 
     size_t n = regexPattern.length();
 
-    // empty pattern just yields the whole list
-    std::string emptyPattern(n, '.');
-    if (regexPattern == emptyPattern) {
-        std::set<size_t> indices;
-        for (size_t i = 0; i < datasetManager.words[n].size(); i++) indices.insert(i);
-        return indices;
-    }
+    // // empty pattern just yields the whole list
+    // std::string emptyPattern(n, '.');
+    // if (regexPattern == emptyPattern) {
+    //     std::set<size_t> indices;
+    //     for (size_t i = 0; i < datasetManager.words[n].size(); i++) indices.insert(i);
+    //     return indices;
+    // }
 
     HashMap& hashMap = datasetManager.hashMaps[n];
 
-    // // TODO: For some reason, this is super slow when doing autofill (and only when doing autofill...)
+    // TODO: For some reason, this is super slow when doing autofill (and only when doing autofill...)
+    // My guess is that it severely thrashes the cache since the query patterns will end up having no coherency, whereas
+    // the single-letter queries form a much smaller working set.
     // if (n <= data::N_MAX_QUERY) {
     //     std::set<size_t>& matches = hashMap[regexPattern];
     //     return matches;
     // }
 
     // TODO: Doing all these set intersections will be really slow. Look into google::dense_hash_set, etc.
+    // TODO: Maybe cache and store two-letter patterns too? KMP and all other linear-time string-matching algos won't
+    // help much, because we still have to check against every possible n-letter word in the dataset. Better to narrow
+    // down the susbet of the dataset first, then do set intersections (each of which takes min(len(setA), len(setB)).)
     bool initalized = false;
     std::set<size_t> allMatches;
     for (size_t i = 0; i < n; i++) {
@@ -77,15 +88,18 @@ std::vector<std::string> FillManager::getAllWordFills(const std::string& regexPa
 
     // empty pattern just yields the whole list
     std::string emptyPattern(n, '.');
-    if (regexPattern == emptyPattern) return datasetManager.words[n];
+    const std::vector<std::string>& words_n = datasetManager.words[n];
+    if (regexPattern == emptyPattern) {
+        return words_n;
+    }
+
 
     std::set<size_t> allMatches = getAllWordFillIndices(regexPattern);
 
     // Convert indices to strings.
-    const std::vector<std::string>& options = datasetManager.words[n];
     std::vector<std::string> matches;
-    for (auto& idx : allMatches) {
-        matches.push_back(options[idx]);
+    for (const auto& idx : allMatches) {
+        matches.push_back(words_n[idx]);
     }
     return matches;
 }
@@ -103,7 +117,7 @@ std::vector<std::string> FillManager::getAllWordFills(const std::string& regexPa
  * TODO: Only add message to dialog if explicitly specified.
  */
 std::vector<std::string> FillManager::getWordFills(GridWord* word, bool ignorePenciled, const std::string& constraint,
-                                                   bool printMessage, int nOptions) const {
+                                                   bool printMessage) const {
 
 
     std::vector<std::string> matches;
@@ -149,7 +163,6 @@ std::vector<std::string> FillManager::getWordFills(GridWord* word, bool ignorePe
     size_t nMatches = matches.size();
     std::string message = "Fills generated: " + std::to_string(nMatches) + " matches.";
     if (printMessage) bottomMenuContainer->addMessageToList(message);
-    if (nOptions != -1 && (size_t)nOptions < nMatches) matches.resize(nOptions);
     return matches;
 }
 
@@ -447,6 +460,10 @@ bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::
     auto rd = std::random_device{};
     auto rng = std::default_random_engine{rd()};
     std::shuffle(std::begin(wordOrder), std::end(wordOrder), rng);
+    // TODO: Go in order of an intersecting word, which I imagine would rule out dead ends faster than going
+    // in random word order (because always starting from a point where words already are).
+
+    // TODO: Keep track of the time taken, and terminate if the time limit has been exceeded.
 
     // TODO: Return the furthest solution obtained.
     for (const auto& i : wordOrder) {
@@ -470,9 +487,6 @@ bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::
                 }
 
                 // Update cells with each possible fill at a time; call recursive function.
-                // TODO: Use DFS/BFS, which I imagine would rule out dead ends faster than going in random word order
-                // (because always starting from a point where words already are); also won't need a recursive function.
-                // Look into Dijkstra.
                 std::shuffle(std::begin(fills), std::end(fills), rng);
                 for (const auto& possibleFill : fills) {
                     std::map<size_t, std::string> origFill; // save original fill

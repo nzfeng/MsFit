@@ -1,5 +1,11 @@
 #include "msfit/engine/dataset_manager.h"
 
+using std::chrono::duration;
+using std::chrono::duration_cast;
+using std::chrono::high_resolution_clock;
+using std::chrono::milliseconds;
+
+
 DatasetManager::DatasetManager() {}
 
 /*
@@ -198,10 +204,10 @@ std::set<size_t> DatasetManager::regexFills(const std::regex& pattern, const std
 
     std::smatch match;
     std::set<size_t> results;
-    for (size_t k = 0; k < allFills.size(); k++) {
-        const std::string& option = allFills[k];
+    for (size_t i = 0; i < allFills.size(); i++) {
+        const std::string& option = allFills[i];
         if (std::regex_match(option, match, pattern)) {
-            results.insert(k);
+            results.insert(i);
         }
     }
     return results;

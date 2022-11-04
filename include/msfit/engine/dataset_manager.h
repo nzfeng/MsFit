@@ -20,11 +20,6 @@
 #include "msfit/interface/messages_list.h"
 #include "msfit/utilities/state.h"
 
-using std::chrono::duration;
-using std::chrono::duration_cast;
-using std::chrono::high_resolution_clock;
-using std::chrono::milliseconds;
-
 // TODO: Currently passing messages to the message dialog in the bottom menu isn't very elegant. Would probably make
 // more sense if everything was defined in the main_window.cpp file (which contains the central logic of the program),
 // but currently I like the class setup I have currently, for modularity and code maintenance reasons... I may need to
@@ -39,7 +34,8 @@ class DatasetManager {
 
     void loadData();
 
-    // datasets, indexed by wordlength
+    // datasets, indexed by wordlength. Each array of words of length n is a std::vector (sequential) because we want to
+    // access words by index in FillManager.
     // TODO: better to make this private, and define get() since it should not be altered by any other object
     std::map<size_t, std::vector<std::string>> words;
     // // Map from a pair of chars at the start of a word, to a regex pattern for the blank spot.

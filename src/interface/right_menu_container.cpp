@@ -343,13 +343,13 @@ void RightMenuContainer::on_sizeSpinner_clicked(int buttonIndex) {
 
 void RightMenuContainer::generate_word_fills() {
     std::vector<std::string> fills = fillManager->getWordFills(
-        puzzleGrid->getSelectedWord(), ignorePenciled.get_active(), getFillWordConstraint(), true, -1);
+        puzzleGrid->getSelectedWord(), ignorePenciled.get_active(), getFillWordConstraint(), true);
 
     // Populate the little scroll window with fills
     fillOptionsList.clear();
     // instead of forcing the TreeView to continually add/delete options
-    if (fills.size() > interface::params::maxFillOptions) fills.resize(interface::params::maxFillOptions);
-    for (auto fill : fills) {
+    // if (fills.size() > interface::params::maxFillOptions) fills.resize(interface::params::maxFillOptions);
+    for (const auto& fill : fills) {
         fillOptionsList.addMessageToList(fill);
     }
 }
