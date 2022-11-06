@@ -54,6 +54,7 @@ MainWindow::MainWindow()
     // Pass around all the pointers/reference variables we need to enable info-passing between different objects
     fillManager.bottomMenuContainer = &bottomMenuContainer;
     datasetManager.bottomMenuContainer = &bottomMenuContainer;
+    puzzleGrid.rightMenuContainer = &rightMenuContainer;
     // puzzleGrid.mainWindow = this;
 
     // Load wordlist as default upon startup.

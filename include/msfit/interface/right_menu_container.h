@@ -29,7 +29,15 @@ class RightMenuContainer : public Gtk::Notebook {
     virtual ~RightMenuContainer();
 
     void setup(PuzzleGrid& puzzleGrid, FillManager& fillManager);
+    void updateSummaryStats();
 
+    // These need to be pointers rather than reference variables, because this object will never be constructed with
+    // these variables to auto-initialize. In fact, none of the main objects in MainWindow can contain references to
+    // other objects, because they all contain circular references to each other.
+    PuzzleGrid* puzzleGrid;
+    FillManager* fillManager;
+
+  private:
     // Frames containing user-defined callbacks, general crossword settings
     Gtk::Box menuBox, clueBox, summaryBox;
     Gtk::Frame fillOptionsFrame, settingsFrame;
@@ -50,7 +58,6 @@ class RightMenuContainer : public Gtk::Notebook {
     // Also display little scroll window showing the first n other matches when "fill word" is clicked.
     // TODO: Options for sorting fill options by various criteria (alphabetical, various fill-quality metrics [diversity
     // of letters, etc.])
-    // TODO: When "Fill grid" is pressed, use this window to show different fill options (if any)
     MessagesList fillOptionsList;
 
     Gtk::CheckButton gridSymmetryButtons[4];
@@ -63,16 +70,11 @@ class RightMenuContainer : public Gtk::Notebook {
     int presetSizes[4] = {15, 21, 23, 25};
     Glib::ustring gridSizePresetLabels[4] = {"15 x 15", "21 x 21", "23 x 23", "25 x 25"};
 
-    // These need to be pointers rather than reference variables, because this object will never be constructed with
-    // these variables to auto-initialize. In fact, none of the main objects in MainWindow can contain references to
-    // other objects, because they all contain circular references to each other.
-    PuzzleGrid* puzzleGrid;
-    FillManager* fillManager;
+    Gtk::Label numWhiteSquares, numBlackSquares, numWords;
 
-  private:
     void setUpMenuPage();
     void setUpCluesPage();
-    void setUpSummaryPage();
+    void setUpSummaryPage(size_t nWhiteSquares, size_t nBlackSquares, size_t nWords);
 
     // For Menu page -- grid settings
     Gtk::Grid setUpGridSymmetrySettings();

@@ -593,6 +593,9 @@ void PuzzleGrid::on_right_click(int n_press, double x, double y) {
         setSelectedSquare(indices);
     }
 
+    // Update summary page.
+    rightMenuContainer->updateSummaryStats();
+
     // Request redraw.
     queue_draw();
 }

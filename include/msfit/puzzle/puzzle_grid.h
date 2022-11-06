@@ -18,7 +18,11 @@
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/grid.h>
 
-// #include "msfit/interface/main_window.h"
+// forward declarations; currently, I just need RightMenuContainer to be able to update the summary stats when
+// black/white squares are toggled in PuzzleGrid. (Not sure of a better way...)
+class RightMenuContainer;
+class FillManager;
+
 #include "msfit/puzzle/grid_word.h"
 #include "msfit/puzzle/square.h"
 #include "msfit/utilities/state.h"
@@ -37,6 +41,8 @@ class PuzzleGrid : public Gtk::DrawingArea {
     void setSize(size_t rows, size_t cols);
 
     size_t nWords() const;
+    size_t nWhiteSquares() const;
+    size_t nBlackSquares() const;
 
     std::vector<std::vector<Square>>& getData();
     std::vector<std::vector<GridWord>>& getWords();
@@ -78,7 +84,7 @@ class PuzzleGrid : public Gtk::DrawingArea {
 
     void setHighlightedWord(GridWord* word);
 
-    // MainWindow* mainWindow;
+    RightMenuContainer* rightMenuContainer;
 
   private:
     // A bunch of variables/functions in PuzzleGrid, GridWord, and Square depend on pointers to elements in <data>;
@@ -114,3 +120,6 @@ class PuzzleGrid : public Gtk::DrawingArea {
 };
 
 #include "msfit/puzzle/puzzle_grid.ipp"
+
+#include "msfit/engine/fill_manager.h"
+#include "msfit/interface/right_menu_container.h"

@@ -26,7 +26,7 @@ void RightMenuContainer::setup(PuzzleGrid& puzzleGrid_, FillManager& fillManager
     fillManager = &fillManager_;
     setUpMenuPage();
     setUpCluesPage();
-    setUpSummaryPage(); // TODO: Set up signal handler; when tab is clicked, update stats.
+    setUpSummaryPage(puzzleGrid->nWhiteSquares(), puzzleGrid->nBlackSquares(), puzzleGrid->nWords());
 }
 
 void RightMenuContainer::setUpMenuPage() {
@@ -285,7 +285,7 @@ std::string RightMenuContainer::getFillWordConstraint() const {
 
 void RightMenuContainer::setUpCluesPage() { append_page(clueBox, "Clues"); }
 
-void RightMenuContainer::setUpSummaryPage() {
+void RightMenuContainer::setUpSummaryPage(size_t nWhiteSquares, size_t nBlackSquares, size_t nWords) {
 
     // TODO
     Gtk::Grid summaryGrid;
@@ -296,16 +296,14 @@ void RightMenuContainer::setUpSummaryPage() {
     auto numWhiteSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of white squares: ");
     auto numBlackSquaresLabel = Gtk::make_managed<Gtk::Label>("Number of black squares: ");
     auto numWordsLabel = Gtk::make_managed<Gtk::Label>("Number of words: ");
-    auto numBlocksLabel = Gtk::make_managed<Gtk::Label>("Number of blocks: ");
     // TODO: Diversity of letters, syllables/phonemes in the puzzle.
 
-    auto numWhiteSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
-    auto numBlackSquares = Gtk::make_managed<Gtk::Label>(std::to_string(0));
-    auto numWords = Gtk::make_managed<Gtk::Label>(std::to_string(0));
-    auto numBlocks = Gtk::make_managed<Gtk::Label>(std::to_string(0));
+    numWhiteSquares.set_text(std::to_string(nWhiteSquares));
+    numBlackSquares.set_text(std::to_string(nBlackSquares));
+    numWords.set_text(std::to_string(nWords));
 
-    std::vector<Gtk::Label*> labels = {numWhiteSquaresLabel, numBlackSquaresLabel, numWordsLabel, numBlocksLabel};
-    std::vector<Gtk::Label*> values = {numWhiteSquares, numBlackSquares, numWords, numBlocks};
+    std::vector<Gtk::Label*> labels = {numWhiteSquaresLabel, numBlackSquaresLabel, numWordsLabel};
+    std::vector<Gtk::Label*> values = {&numWhiteSquares, &numBlackSquares, &numWords};
     for (size_t i = 0; i < labels.size(); i++) {
         labels[i]->set_halign(Gtk::Align::START);
         values[i]->set_halign(Gtk::Align::END);
@@ -318,7 +316,13 @@ void RightMenuContainer::setUpSummaryPage() {
 }
 
 
-// =================================== SIGNAL HANDLERS ===================================
+// =================================== SIGNAL HANDLERS / UPDATES ===================================
+
+void RightMenuContainer::updateSummaryStats() {
+    numWhiteSquares.set_text(std::to_string(puzzleGrid->nWhiteSquares()));
+    numBlackSquares.set_text(std::to_string(puzzleGrid->nBlackSquares()));
+    numWords.set_text(std::to_string(puzzleGrid->nWords()));
+}
 
 void RightMenuContainer::on_size_button_clicked(int buttonIndex) {
 
@@ -329,6 +333,8 @@ void RightMenuContainer::on_size_button_clicked(int buttonIndex) {
     gridDimSpin[1].set_value(nCols);
 
     puzzleGrid->setSize(nRows, nCols);
+
+    updateSummaryStats();
 }
 
 void RightMenuContainer::on_sizeSpinner_clicked(int buttonIndex) {
@@ -338,6 +344,8 @@ void RightMenuContainer::on_sizeSpinner_clicked(int buttonIndex) {
         return;
     }
     puzzleGrid->setCols(gridDimSpin[buttonIndex].get_value_as_int());
+
+    updateSummaryStats();
 }
 
 
