@@ -5,6 +5,7 @@ using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
 using std::chrono::milliseconds;
 using std::chrono::nanoseconds;
+using std::chrono::seconds;
 
 FillManager::FillManager(DatasetManager& datasetManager_, PuzzleGrid& puzzleGrid_)
     : datasetManager(datasetManager_), puzzleGrid(puzzleGrid_) {}
@@ -418,7 +419,8 @@ void FillManager::fillGridDFS(const double timeLimit) {
             if (!gridword.isOpen()) wordsUsedSoFar.push_back(gridword.toUstring());
         }
     }
-    fillGridDFSHelper(cells, words, xMap, wordsUsedSoFar);
+    double timeSoFar = 0;
+    fillGridDFSHelper(cells, words, xMap, wordsUsedSoFar, timeSoFar, timeLimit);
 
     auto t2 = high_resolution_clock::now();
     auto ns_int = duration_cast<nanoseconds>(t2 - t1);
@@ -449,7 +451,8 @@ void FillManager::fillGridDFS(const double timeLimit) {
  */
 bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::vector<std::vector<size_t>>& words,
                                     const std::vector<std::vector<size_t>>& xMap,
-                                    std::vector<std::string>& wordsUsedSoFar) {
+                                    std::vector<std::string>& wordsUsedSoFar, double& timeSoFar,
+                                    const double timeLimit) {
 
     // Currently, getMostConstrainedWord() is rather slow; it will be faster to simply try to fill words as we go, and
     // terminate a path when we reach an entry with zero possible fills. Right now, just go in some random permutation
@@ -461,17 +464,23 @@ bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::
     auto rng = std::default_random_engine{rd()};
     std::shuffle(std::begin(wordOrder), std::end(wordOrder), rng);
     // TODO: Go in order of an intersecting word, which I imagine would rule out dead ends faster than going
-    // in random word order (because always starting from a point where words already are).
+    // in random word order (because always starting from a point where words already are). Or go in order of most
+    // constrained.
 
     // TODO: Keep track of the time taken, and terminate if the time limit has been exceeded.
 
     // TODO: Return the furthest solution obtained.
     for (const auto& i : wordOrder) {
+
         // Determine if word is incomplete.
         const std::vector<size_t>& word = words[i];
         size_t n = word.size();
         for (const auto& cellIdx : word) {
             if (cells[cellIdx] == "") {
+
+                // Keep track of the time taken, and terminate if the time limit has been exceeded.
+                auto t1 = high_resolution_clock::now();
+
                 // Word is incomplete; determine possible fills. Need to make sure all filled-in words are valid.
                 std::vector<std::string> fills = getGridCompliantFills(i, cells, words, xMap, wordsUsedSoFar);
                 // Get rid of any words already used in the puzzle.
@@ -486,6 +495,15 @@ bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::
                     return false;
                 }
 
+                // Not sure if this is the best place to put the timer, but it should work ok.
+                auto t2 = high_resolution_clock::now();
+                auto s_int = duration_cast<seconds>(t2 - t1);
+                timeSoFar += s_int.count();
+                if (timeSoFar > timeLimit) {
+                    std::cerr << "Time limit exceeded" << std::endl;
+                    return true;
+                }
+
                 // Update cells with each possible fill at a time; call recursive function.
                 std::shuffle(std::begin(fills), std::end(fills), rng);
                 for (const auto& possibleFill : fills) {
@@ -496,7 +514,7 @@ bool FillManager::fillGridDFSHelper(std::vector<std::string>& cells, const std::
                         cells[idx] = possibleFill[k];
                     }
                     wordsUsedSoFar.push_back(possibleFill);
-                    if (!fillGridDFSHelper(cells, words, xMap, wordsUsedSoFar)) {
+                    if (!fillGridDFSHelper(cells, words, xMap, wordsUsedSoFar, timeSoFar, timeLimit)) {
                         wordsUsedSoFar.pop_back();
                         // Restore previous fill.
                         for (const auto& pair : origFill) cells[pair.first] = pair.second;

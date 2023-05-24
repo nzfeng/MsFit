@@ -25,7 +25,7 @@ class FillManager {
 
     GridWord* getMostConstrainedWord(bool ignorePenciled, const std::string& constraint);
 
-    void fillGridDFS(const double timeLimit = 120);
+    void fillGridDFS(const double timeLimit = 60);
 
     // to send messages to the dialog
     MessagesList* bottomMenuContainer;
@@ -48,7 +48,8 @@ class FillManager {
     void buildSearchStructures(std::vector<std::string>& cells, std::vector<std::vector<size_t>>& words,
                                std::vector<std::vector<size_t>>& xMap, std::vector<Square*>& cellToSquare) const;
     bool fillGridDFSHelper(std::vector<std::string>& cells, const std::vector<std::vector<size_t>>& words,
-                           const std::vector<std::vector<size_t>>& xMap, std::vector<std::string>& wordsUsedSoFar);
+                           const std::vector<std::vector<size_t>>& xMap, std::vector<std::string>& wordsUsedSoFar,
+                           double& timeSoFar, const double timeLimit);
     std::vector<std::string> getGridCompliantFills(const size_t& wordIdx, const std::vector<std::string>& cells,
                                                    const std::vector<std::vector<size_t>>& words,
                                                    const std::vector<std::vector<size_t>>& xMap,

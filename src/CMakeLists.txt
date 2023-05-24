@@ -51,8 +51,8 @@ SET(HEADERS
   ${INCLUDE_ROOT}/engine/word_utils.h
 )
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(gtkmm REQUIRED IMPORTED_TARGET gtkmm-4.0)
+#find_package(PkgConfig REQUIRED)
+#pkg_check_modules(gtkmm REQUIRED IMPORTED_TARGET gtkmm-4.0)
 #pkg_check_modules(glibmm REQUIRED IMPORTED_TARGET glibmm>=2.4)
 
 # Create a single library for the project
@@ -63,7 +63,7 @@ target_include_directories(msfit PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../include"
 target_include_directories(msfit PUBLIC ${GTKMM_INCLUDE_DIRS})
 
 # Add all includes and link libraries from dependencies, which were populated in deps/CMakeLists.txt
-target_link_libraries(msfit PUBLIC ${MSF_DEP_LIBS})
+target_link_libraries(msfit PUBLIC ${MSF_DEP_LIBS} ${GTKMM_LIBRARIES})
 
 # Set compiler properties for the library
 target_compile_features(msfit PUBLIC cxx_std_17)

@@ -11,7 +11,9 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STR
 endif()
 
 # === gtkmm
-# message("--  resolving gtkmm dependency:")
+message("--  resolving gtkmm dependency:")
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTKMM REQUIRED IMPORTED_TARGET gtkmm-4.0)
 
 # Propagate dep variables up to parent
 SET(MSF_DEP_LIBS ${MSF_DEP_LIBS} PARENT_SCOPE)

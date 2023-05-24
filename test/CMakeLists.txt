@@ -21,6 +21,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STR
   # using Clang (linux or apple) or GCC
   message("Using clang/gcc compiler flags")
   SET(BASE_CXX_FLAGS "-std=c++17 -Wall -Wextra")
+  #SET(GLIB_FLAGS "-I/opt/homebrew/Cellar/glib/2.74.5/include/glib-2.0/")
+  #SET(GTK_FLAGS "`pkg-config --cflags --libs gtkmm-4.0` `pkg-config --cflags --libs glib-2.0`")
   SET(DISABLED_WARNINGS " -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-deprecated-declarations -Wno-missing-braces -Wno-unused-private-field")
   SET(TRACE_INCLUDES " -H -Wno-error=unused-command-line-argument")
 
@@ -68,17 +70,19 @@ else()
 endif()
 
 
-# gtkmm
-find_package(PkgConfig)
+find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0) # sets GTKMM_INCLUDE_DIRS, GTKMM_LIBRARY_DIRS and GTKMM_LIBRARIES
-#pkg_check_modules(GTKMM_VARS REQUIRED IMPORTED_TARGET gtkmm-4.0)
-
-# This always fails for some reason
-#if (GTKMM)
-#  message(STATUS "gtkmm-4.0 found")
-#else()
-#  message(FATAL_ERROR "gtkmm-4.0 not found")
-#endif()
+pkg_check_modules(GLIB REQUIRED glib-2.0)
+pkg_check_modules(GLIBMM REQUIRED glibmm-2.68)
+if (GTKMM_FOUND)
+    message(STATUS "Found gtkmm-4.0")
+endif()
+if (GLIB_FOUND)
+    message(STATUS "Found glib-2.0")
+endif()
+if (GLIBMM_FOUND)
+    message(STATUS "Found glibmm-2.68")
+endif()
 
 # Add MsFit as a subproject
 add_subdirectory(../ "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
@@ -91,9 +95,8 @@ set(TEST_SRCS
 
 add_executable(msfit-test "${TEST_SRCS}")
 target_include_directories(msfit-test PRIVATE "include/")
-target_include_directories(msfit-test PRIVATE ${GTKMM_INCLUDE_DIRS})
+target_include_directories(msfit-test PRIVATE ${GLIBMM_INCLUDE_DIRS} ${GLIB_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS})
 
-target_link_directories(msfit-test  PRIVATE ${GTKMM_LIBRARY_DIRS})
-
-target_link_libraries(msfit-test msfit ${GTKMM_LIBRARIES})
+target_link_directories(msfit-test PRIVATE ${GLIBMM_LIBRARY_DIRS} ${GLIB_LIBRARY_DIRS} ${GTKMM_LIBRARY_DIRS})
+target_link_libraries(msfit-test msfit ${GLIBMM_LIBRARIES} ${GLIB_LIBRARIES} ${GTKMM_LIBRARIES})
 

@@ -1,3 +1,5 @@
+TODO: Re-name "grid-compliant" to "grid-feasible". Add a new "grid-compliant" option that only lists words that lead to at least one fill for every intersecting word, *and*  each of those possible intersecting fills should have at least one fill in common with the grid-feasible fills for the corresponding intersecting word (constraint propagation.) This will be O(n^2) time, but I think in general blocks should be small enough (and the regex should be fast enough) that this will be feasible... 
+
 # MsFit
 MsFit (pronounced "misfit") is a crossword construction tool.
 
