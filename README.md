@@ -3,6 +3,8 @@
 # MsFit
 MsFit is a crossword construction tool.
 
+_Warning_: MsFit is currently undergoing organizational changes, and changes to the fill algorithm. To try a tentative version of the softwrae, run `cmake` and `make` inside the `test` directory, to build an executable `msfit-test`.
+
 ![teaser image](media/teaser.png)
 
 # Getting started
@@ -40,11 +42,12 @@ For any box in the grid, black or white:
 
 * Right-click: Toggle black/white.
 
-## Graph crossword
+<!-- ## Graph crossword
 * `Space`: Toggle the current word. Aims to go roughly in CCW order around the currently selected square.
 * `Tab`:
 * `Esc`: Enter more than one letter in a cell.
 * Right-click: Toggle black/white cell.
+-->
 
 # Organization
 * The `interface` directory contains code that pertains purely to building the GUI to the screen. Specifically, this means building and laying out the container widgets for the panels, menus, etc. However, objects in the `puzzle` directory still have their own functions defining how they are rendered. I don't envision there being enough demand for flexibility & precise control of rendering crossword puzzles that it calls for de-coupling the core puzzle engine from rendering (at least not yet.)
@@ -83,27 +86,29 @@ Ultimately the fill algorithm will be some variant of BFS or DFS... Here are som
 * Automatically detect duplicate entries. Also have option to display repeated substrings.
 * Keyboard shortcuts for everything.
 * Options to sort fill list: Alphabetical, search bar, order by average # of fills for all crossing words.
-* For "get most constrained" option: implement k-ply lookahead; i.e. pick the entry that has the fewest fill options (that allow at least 1 fill for all crossing words) after removing fills that result in 0 fills if chosen. I.e. attempting to prune dead-end sub-trees. k should balance accuracy vs. computation time per evaluation.
+* For "get most constrained" option: implement a variant of k-ply lookahead; i.e. pick the entry that has the fewest fill options (that allow at least 1 fill for all crossing words) after removing fills that result in 0 fills if chosen. I.e. attempting to prune dead-end sub-trees. k should balance accuracy vs. computation time per evaluation.
+* Novelty puzzles
+  * Other tilings
+  * Tilings of surfaces
+  * Mobius band (need symmetric letters)
+  * I liked this puzzle: https://crosshare.org/crosswords/oC5KN16iBGMncNxU4ie5/2x3x4-3. TODO: Option for multiple chars per cell (i.e. use `.*` in regex.)
+  * [Polyhedral Patterns](https://geometry.stanford.edu/papers/jtvwp-pp-15/jtvwp-pp-15.pdf)
 
+<!--
 Ideas for fill tools:
 * Build database of English phonemes (? I mean legal letter combinations), to help narrow the search space based on feasible combos of letters. However, this may erroneously eliminate compound words (e.g. "pj" in "flapjack".)
 * When generating fills for a word, and it would complete in an intersecting word, only generate words that would complete both words.
 * When generating fills for a word, only generate fills that would leave at least n possibilities for every intersecting word.
 * Filter auto-fill results based on starting letter, whether starting vowel/consonant
 * Avoid repeated substrings, letters, and phonemes
-
-Novelty puzzles
-* Other tilings
-* Tilings of surfaces
-* Mobius band (need symmetric letters)
-* I liked this puzzle: https://crosshare.org/crosswords/oC5KN16iBGMncNxU4ie5/2x3x4-3. TODO: Option for multiple chars per cell (i.e. use `.*` in regex.)
-* [Polyhedral Patterns](https://geometry.stanford.edu/papers/jtvwp-pp-15/jtvwp-pp-15.pdf)
+-->
 
 # Limitations
 * Only English is supported.
 
-# License
+<!-- # License
 Currently MsFit is a private project.
+-->
 
 # Credits
 Software engineering-wise, I took organizational inspiration from [Geometry Central](https://github.com/nmwsharp/geometry-central) and [Polyscope](https://github.com/nmwsharp/polyscope).
